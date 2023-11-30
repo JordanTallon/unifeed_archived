@@ -569,7 +569,7 @@ UniFeed utilizes artificial intelligence to classify news articles with a politi
 - Evaluation metrics such as: accuracy, precision, recall, and F1 score will be used to assess the model performance. 
 ### AllSides Dataset Count Plot
 
-![[diagrams/DATASET.png]]
+![AllSides Count Plot](diagrams/DATASET.png)
 
 Count plot of articles within the AllSides dataset.  Generated with pandas - Python Data Analysis Library
 ### Development Environment and Tools
@@ -681,10 +681,10 @@ UniFeed will be a web-based application providing news aggregation and political
 ## 5.4 Data Flow Diagram
 ### Level 0
 
-![[diagrams/DFD0.png]]
+![Data Flow Diagram Level 0](diagrams/DFD0.png)
 ### Level 1
 
-![[diagrams/DFD1.png]]
+![Data Flow Diagram Level 1](diagrams/DFD1.png)
 # 6. Preliminary Schedule
 ## 6.1 Project Timeline
 ### Overview
@@ -736,7 +736,7 @@ Our preliminary schedule features 3 distinct phases concurrently across a 4 mont
 | UI Testing                  | Week 12    | Deadline |
 
 ## 6.2 Project Timeline Gantt Chart
-![[diagrams/GANTT_CHART.png]]
+![Gantt Chart](diagrams/GANTT_CHART.png)
 
 ## 6.3 Timeline Milestones
 
@@ -752,8 +752,8 @@ Our preliminary schedule features 3 distinct phases concurrently across a 4 mont
 
 ## Simple UI Mock-up
 
-![[diagrams/UI_MOCK.png]]
+![UI Mock](diagrams/UI_MOCK.png)
 
 ## Early System Flowchart
 
-**![[diagrams/FLOWCHART.png]]**
+![Early Flowchart](diagrams/FLOWCHART.png)
