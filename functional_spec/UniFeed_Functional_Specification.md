@@ -32,11 +32,12 @@
   - [3.18 Web Scraping Service](#318-web-scraping-service)
   - [3.19 Provide A.I Feedback](#319-provide-ai-feedback)
 - [4. System Architecture](#4-system-architecture)
-  - [4.1 A.I Component Architecture](#41-ai-component-architecture)
-  - [4.2 Web Application Framework](#42-web-application-framework)
-  - [4.3 Web Scraping Component](#43-web-scraping-component)
-  - [4.4 Third-Party Libraries and Dependencies](#44-third-party-libraries-and-dependencies)
-  - [4.5 Ethics and Compliance](#45-ethics-and-compliance)
+  - [4.1 System Architecture Diagram](#41-system-architecture-diagram)
+  - [4.2 A.I Component Architecture](#42-ai-component-architecture)
+  - [4.3 Web Application Framework](#43-web-application-framework)
+  - [4.4 Web Scraping Component](#44-web-scraping-component)
+  - [4.5 Third-Party Libraries and Dependencies](#45-third-party-libraries-and-dependencies)
+  - [4.6 Ethics and Compliance](#46-ethics-and-compliance)
 - [5. High-Level Design](#5-high-level-design)
   - [5.1 System Overview](#51-system-overview)
   - [5.2 Component Architecture](#52-component-architecture)
@@ -545,7 +546,11 @@ Feedback is essential for refining A.I accuracy but is not a core system functio
 - Database: to store feedback from users.
 - User Account: to authenticate and track user submitting feedback.
 # 4. System Architecture
-## 4.1 A.I Component Architecture
+## 4.1 System Architecture Diagram
+
+![System Architecture Diagram](diagrams/SYSTEM_ARCHITECTURE.png)
+
+## 4.2 A.I Component Architecture
 
 ### Overview
 UniFeed utilizes artificial intelligence to classify news articles with a political bias rating. The content of the articles will be passed to the A.I from the Web Scraper function. To develop the A.I we will make use of the leading A.I community platform: HuggingFace. The website provides many open source libraries, models, and data sets. HuggingFace's libraries provide a relatively low entry barrier for working with highly performant state-of-the-art machine learning models. 
@@ -575,7 +580,7 @@ Count plot of articles within the AllSides dataset.  Generated with pandas - Pyt
 ### Development Environment and Tools
 - Google Colab will be used for access to GPUs specialized in model training, and collaborative features.
 - Jupyter Notebooks shall be used due to their ease of use, segmented code, and capability to render visualizations such as graphs to aid in the evaluation of the models performance.
-## 4.2 Web Application Framework
+## 4.3 Web Application Framework
 
 ### Overview
 The UniFeed Web Application is designed to meet four primary requirements:
@@ -619,7 +624,7 @@ The primary languages that we will use during development are:
 - JavaScript
 - SQL
 
-## 4.3 Web Scraping Component
+## 4.4 Web Scraping Component
 ### Overview
 An integral part of UniFeed's functionality is its ability to aggregate and process content from various news sources. To achieve this, we utilize a web scraping component built with BeautifulSoup, a Python library designed for parsing HTML and XML documents. This component is responsible for reading RSS feeds by treating them as XML and extracting article content from the HTML of their web page. The article content is then analysed for political bias by the A.I system.
 
@@ -629,7 +634,7 @@ An integral part of UniFeed's functionality is its ability to aggregate and proc
 3. **Integration with Django Backend**: The web scraper works in tandem with the Django backend, feeding extracted data from articles to the A.I component for analysis and storing results in the database.
 4. **Tried and True**: BeautifulSoup released nearly 20 years ago, it is still to this day one of the most popular web scraping tools. The python package beautifulsoup4 receives over 16 million weekly downloads. This indicates that the package is widely popular for many use cases, with a rich history of honing for nearly 2 decades.
 
-## 4.4 Third-Party Libraries and Dependencies
+## 4.5 Third-Party Libraries and Dependencies
 ### Overview
 In the development of UniFeed, across all three main components, several third-party libraries and dependencies play important roles in enhancing the system’s functionality. Many of these libraries are essential for ensuring the systems robustness, and speeding up the development process.
 
