@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
-from .forms import UserRegistrationForm
-# Create your views here.
+from .forms import UserRegistrationForm, UserLoginForm
+from django.contrib.auth import authenticate, login
 
 
 def registration(request):
@@ -17,3 +17,25 @@ def registration(request):
 
     context = {'form': form}
     return render(request, "accounts/registration.html", context)
+
+
+def account_login(request):
+
+    form = UserLoginForm()
+
+    if request.method == "POST":
+        form = UserLoginForm(request, request.POST)
+
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+
+            user = authenticate(username=username, password=password)
+
+            if user is not None:
+                login(request, user)
+                # Redirect to the home page after succesful login
+                return redirect('/')
+
+    context = {'form': form}
+    return render(request, "accounts/login.html", context)
