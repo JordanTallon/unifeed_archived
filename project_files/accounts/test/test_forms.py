@@ -1,5 +1,6 @@
 from django.test import TestCase
 from ..forms import UserRegistrationForm
+from ..models import User
 from http import HTTPStatus
 from django.urls import reverse
 
@@ -35,6 +36,21 @@ class RegistrationTest(TestCase):
         form = self.form_class(sample_data)
 
         self.assertTrue(form.is_valid())
+
+    # Test to check if the form succesfully passes information to the database
+    def test_user_registration_form_writes_to_database(self):
+        sample_data = {
+            "username": "TestAccount",
+            "email": "test@example.com",
+            "password1": "33Test1234",
+            "password2": "33Test1234",
+            "track_analytics": False
+        }
+
+        form = self.form_class(sample_data)
+        form.save()
+
+        self.assertEqual(User.objects.count(), 1)
 
     # Test to assure that the form catches invalid usernames
 
