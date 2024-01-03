@@ -3,6 +3,7 @@ from django.db import IntegrityError
 from django.core.exceptions import ValidationError
 from .models import User
 from http import HTTPStatus
+from django.urls import reverse
 
 
 class UserModelTest(TestCase):
@@ -75,6 +76,6 @@ class RegistrationPageTest(TestCase):
         pass
 
     def test_registration_page_correct_response(self):
-        response = self.client.get('/registration/')
+        response = self.client.get(reverse('registration'))
         self.assertTemplateUsed(response, 'accounts/registration.html')
         self.assertEqual(response.status_code, HTTPStatus.OK)
