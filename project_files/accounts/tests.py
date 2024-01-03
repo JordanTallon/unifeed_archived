@@ -67,3 +67,15 @@ class UserModelTest(TestCase):
         # Toggle analytics off
         user.toggle_analytics()
         self.assertFalse(user.track_analytics)
+
+
+class RegistrationPageTest(TestCase):
+    # Runs at the start of the test
+    def setUp(self) -> None:
+        pass
+
+    def test_registration_page_correct_response(self):
+        response = self.client.get('/registration/')
+        print(response.content)
+        self.assertTemplateUsed(response, 'accounts/registration.html')
+        self.assertEqual(response.status_code, HTTPStatus.OK)
