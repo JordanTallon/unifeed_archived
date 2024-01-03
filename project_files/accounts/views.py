@@ -14,7 +14,7 @@ def registration(request):
             form.save()
 
             # Redirect to the login page after valid registration
-            return redirect('/')
+            return redirect(reverse('login'))
 
     context = {'form': form}
     return render(request, "accounts/registration.html", context)
