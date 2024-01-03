@@ -52,6 +52,19 @@ class RegistrationTest(TestCase):
 
         self.assertEqual(User.objects.count(), 1)
 
+    def test_registration_post_request_with_valid_data(self):
+        sample_data = {
+            "username": "TestAccount",
+            "email": "test@example.com",
+            "password1": "33Test1234",
+            "password2": "33Test1234",
+            "track_analytics": False
+        }
+        response = self.client.post(reverse('registration'), sample_data)
+        self.assertRedirects(response, reverse('login'))
+        self.assertEqual(User.objects.count(), 1)
+        self.assertTrue(User.objects.filter(username='TestAccount').exists())
+
     # Test to assure that the form catches invalid usernames
 
     def test_user_registration_form_with_invalid_username(self):
