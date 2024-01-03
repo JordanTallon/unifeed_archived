@@ -86,5 +86,63 @@ class RegistrationTest(TestCase):
         self.assertTrue(issubclass(self.form_class, UserRegistrationForm))
         self.assertTrue('username' in self.form_class.Meta.fields)
         self.assertTrue('email' in self.form_class.Meta.fields)
-        self.assertTrue('password' in self.form_class.Meta.fields)
+        self.assertTrue('password1' in self.form_class.Meta.fields)
+        self.assertTrue('password2' in self.form_class.Meta.fields)
         self.assertTrue('track_analytics' in self.form_class.Meta.fields)
+
+    # Test to assure that the form works when given valid data
+    def test_user_registration_form_succesful_validation(self):
+        sample_data = {
+            "username": "TestAccount",
+            "email": "test@example.com",
+            "password1": "33Test1234",
+            "password2": "33Test1234",
+            "track_analytics": True
+        }
+
+        form = self.form_class(sample_data)
+
+        self.assertTrue(form.is_valid())
+
+    # Test to assure that the form catches invalid emails
+    def test_user_registration_form_with_invalid_email(self):
+        sample_data = {
+            "username": "TestAccount",
+            "email": "invalid-email",
+            "password1": "33Test1234",
+            "password2": "33Test1234",
+            "track_analytics": True
+        }
+
+        form = self.form_class(sample_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('email', form.errors)
+
+    # Test to assure that the form catches invalid passwords
+    # e.g. ['This password is too short. It must contain at least 8 characters.', 'This password is too common.', 'This password is entirely numeric.']
+    def test_user_registration_form_with_invalid_password(self):
+        sample_data = {
+            "username": "TestAccount",
+            "email": "test@example.com",
+            "password1": "123",
+            "password2": "123",
+            "track_analytics": True
+        }
+
+        form = self.form_class(sample_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('password2', form.errors)
+
+    # Test to assure that the form catches mismatched password verification
+    def test_user_registration_form_with_mismatched_password_verification(self):
+        sample_data = {
+            "username": "TestAccount",
+            "email": "test@example.com",
+            "password1": "33Test1234",
+            "password2": "33Test12345",
+            "track_analytics": True
+        }
+
+        form = self.form_class(sample_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('password2', form.errors)
