@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .forms import UserRegistrationForm, UserLoginForm
 from django.contrib.auth import authenticate, login
+from django.urls import reverse
 
 
 def registration(request):
@@ -35,7 +36,7 @@ def account_login(request):
             if user is not None:
                 login(request, user)
                 # Redirect to the home page after succesful login
-                return redirect('/')
+                return redirect(reverse('home'))
 
     context = {'form': form}
     return render(request, "accounts/login.html", context)
