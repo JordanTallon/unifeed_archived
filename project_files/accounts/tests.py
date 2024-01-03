@@ -76,6 +76,5 @@ class RegistrationPageTest(TestCase):
 
     def test_registration_page_correct_response(self):
         response = self.client.get('/registration/')
-        print(response.content)
         self.assertTemplateUsed(response, 'accounts/registration.html')
         self.assertEqual(response.status_code, HTTPStatus.OK)
