@@ -2,8 +2,10 @@ from django.test import TestCase
 from django.db import IntegrityError
 from django.core.exceptions import ValidationError
 from .models import User
+from .forms import UserRegistrationForm
 from http import HTTPStatus
 from django.urls import reverse
+from django.contrib.auth.forms import UserCreationForm
 
 
 class UserModelTest(TestCase):
@@ -70,12 +72,19 @@ class UserModelTest(TestCase):
         self.assertFalse(user.track_analytics)
 
 
-class RegistrationPageTest(TestCase):
+class RegistrationTest(TestCase):
     # Runs at the start of the test
     def setUp(self) -> None:
-        pass
+        self.form_class = UserRegistrationForm
 
     def test_registration_page_correct_response(self):
         response = self.client.get(reverse('registration'))
         self.assertTemplateUsed(response, 'accounts/registration.html')
         self.assertEqual(response.status_code, HTTPStatus.OK)
+
+    def test_user_registration_form_has_expected_fields(self):
+        self.assertTrue(issubclass(self.form_class, UserRegistrationForm))
+        self.assertTrue('username' in self.form_class.Meta.fields)
+        self.assertTrue('email' in self.form_class.Meta.fields)
+        self.assertTrue('password' in self.form_class.Meta.fields)
+        self.assertTrue('track_analytics' in self.form_class.Meta.fields)
