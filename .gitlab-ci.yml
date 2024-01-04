@@ -3,25 +3,19 @@ stages:
   - test
 
 before_script:
-  - cd project_files  # Change to project_files directory
+  - cd project_files 
+  - apt-get update -qy
+  - apt-get install -y python-dev python-pip
+  - pip install -r requirements.txt
 
 build-job:
   stage: build
   script:
-    - echo "Creating virtual environment..."
-    - virtualenv venv  # Create virtual environment
-    - source venv/bin/activate  # Activate the virtual environment
-    - echo "Installing requirements..."
-    - pip install -r requirements.txt  # Install requirements
-  artifacts:
-    paths:
-      - venv  # Path is relative to project_files
+    - echo "Checking project..."
+    - python manage.py check  # Check for configuration issues
 
 test-job:
   stage: test
   script:
-    - echo "Activating virtual environment..."
-    - source venv/bin/activate  # Activate the virtual environment
     - echo "Running unit tests..."
     - python manage.py test  # Run tests
-    - echo "All tests completed successfully."
