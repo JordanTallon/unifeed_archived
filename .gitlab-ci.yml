@@ -6,8 +6,6 @@ before_script:
   - cd project_files  # Change to project_files directory
 
 build-job:
-  tags:
-    - vm-shell
   stage: build
   script:
     - echo "Creating virtual environment..."
@@ -20,8 +18,6 @@ build-job:
       - venv  # Path is relative to project_files
 
 test-job:
-  tags:
-    - vm-shell
   stage: test
   script:
     - echo "Activating virtual environment..."
