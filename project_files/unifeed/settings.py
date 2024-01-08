@@ -89,9 +89,9 @@ DATABASES = {
         'NAME': os.environ.get('DB_NAME'),
         'USER': os.environ.get('DB_USER'),
         'PASSWORD': os.environ.get('DB_PASS'),
-	'PORT': os.environ.get('DB_PORT', '25060'),  # Default to 25060 if not set
+	'PORT': os.environ.get('DB_PORT', '5432'),  # Default to 5432 if not set (this is the default port Postgresql uses)
         'OPTIONS': {
-            'sslmode': 'require',
+            'sslmode': os.environ.get('SSL_MODE', 'prefer'), # More info here https://www.postgresql.org/docs/current/libpq-ssl.html
         },
      }
 }
