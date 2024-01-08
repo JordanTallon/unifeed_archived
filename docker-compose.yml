@@ -12,6 +12,7 @@ services:
       - 8000:8000
     volumes:
       - ./project_files:/app
+      - ./data/web:/vol/web
     environment:
       - SECRET_KEY=devsecretkey
       - DEBUG=1
