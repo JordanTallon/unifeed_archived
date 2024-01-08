@@ -21,7 +21,14 @@ RUN python -m venv /py && \
     /py/bin/pip install -r /requirements.txt && \
     # Delete temporary dependencies
     apk del .tmp-deps && \  
-    adduser --disabled-password --no-create-home app
+    adduser --disabled-password --no-create-home app && \
+    # Create directories for media and static files
+    mkdir -p /vol/web/static && \
+    mkdir -p /vol/web/media && \
+    # Assign ownership
+    chown -R app:app /vol && \
+    chmod -R 755 /vol
+
 
 ENV PATH="/py/bin:$PATH"
 
