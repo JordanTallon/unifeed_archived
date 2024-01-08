@@ -7,7 +7,7 @@ ENV PYTHONUNBUFFERED 1
 
 COPY ./requirements.txt /requirements.txt
 COPY ./project_files /app
-
+COPY ./scripts /scripts
 
 WORKDIR /app
 EXPOSE 8000
@@ -17,7 +17,7 @@ RUN python -m venv /py && \
     apk add --update --no-cache postgresql-client && \
     # Add temporary dependencies required for installing postgresql
     apk add --update --no-cache --virtual .tmp-deps \ 
-	build-base postgresql-dev musl-dev libpq && \
+	build-base postgresql-dev musl-dev linux-headers libpq && \
     /py/bin/pip install -r /requirements.txt && \
     # Delete temporary dependencies
     apk del .tmp-deps && \  
@@ -27,9 +27,12 @@ RUN python -m venv /py && \
     mkdir -p /vol/web/media && \
     # Assign ownership
     chown -R app:app /vol && \
-    chmod -R 755 /vol
+    chmod -R 755 /vol && \
+    chmod -R +x /scripts
 
 
-ENV PATH="/py/bin:$PATH"
+ENV PATH="/scripts:/py/bin:$PATH"
 
 USER app
+
+CMD ["run.sh"]
