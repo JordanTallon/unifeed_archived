@@ -13,7 +13,7 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Testing the application..'
-                // Start the container
+                // Start container
                 sh "docker-compose up -d"
                 script {
                     // Run Django unit tests and capture the output
@@ -22,7 +22,7 @@ pipeline {
                     // Print the test output
                     echo testOutput
         
-                    // Check for any failures in the output
+                    // Check for test failures in the output
                     if(testOutput.contains("FAILED") || testOutput.contains("ERRORS")){
                         error "Tests failed, see output above"
                     }
@@ -33,11 +33,26 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                //TODO: SSH onto deployment server, git pull the repo, compose the docker file, switch docker container to new one.
                 echo 'Deploying the application..'
-                
+                sh '''
+                    ssh root@206.189.22.163 <<EOF
+                        echo "Stopping the old server and freeing up port 80..."
+
+                        docker-compose -f docker-compose-deploy.yml down
+                        # Sometimes the nginx proxy held port 80 (this is probably dangerous, if there's any issues; i'll find another way)
+                        lsof -ti:80 | xargs --no-run-if-empty kill
+                        
+                        echo "Pulling the Unifeed repo..."
+                        cd /opt/projects/2024-ca326-unifeed
+                        git pull
+                        
+                        echo "Starting the Docker containers..."
+                        docker-compose -f docker-compose-deploy.yml build
+                        docker-compose -f docker-compose-deploy.yml up -d
+                    EOF
+                '''
+                }
             }
-        }
     }
     post {
         always {
