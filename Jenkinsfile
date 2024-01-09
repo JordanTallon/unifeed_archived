@@ -14,10 +14,15 @@ pipeline {
             steps {
                 // Todo: unit / regression tests, health tests?
                 echo 'Testing the application..'
-                // Start all services
+                // Start container
                 sh "docker-compose up -d"
-                sh 'docker-compose exec app python manage.py test -v 3'
-                sh 'docker-compose logs app' 
+                // Run Django unit tests
+                def testStatus = sh(script: 'docker-compose exec app python manage.py test -v 3', returnStatus: true)
+
+                // Check result of tests (any number that isn't 0 indicates failure)
+                if(testStatus != 0){
+                    error "Tests failed with status: ${testStatus}"
+                }
             }
         }
 
