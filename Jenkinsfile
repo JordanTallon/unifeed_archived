@@ -39,6 +39,10 @@ pipeline {
                 echo 'Deploying the application..'
                 sh '''
                     ssh -v root@206.189.22.163 <<EOF
+                    
+                        echo "Entering project directory"
+                        cd /opt/projects/2024-ca326-unifeed
+                        
                         echo "Stopping the old server and freeing up port 80..."
 
                         docker-compose -f docker-compose-deploy.yml down
@@ -46,18 +50,14 @@ pipeline {
                         lsof -ti:80 | xargs --no-run-if-empty kill
                         
                         echo "Pulling the Unifeed repo..."
-                        cd /opt/projects/2024-ca326-unifeed
                         git pull
                         
                         echo "Starting the Docker containers..."
                         docker-compose -f docker-compose-deploy.yml build
                         docker-compose -f docker-compose-deploy.yml up -d
-                    EOF
-                '''
+                        << EOF
+                        '''
                 }
             }
     }
 }
-
-
-
