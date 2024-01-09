@@ -27,6 +27,9 @@ pipeline {
                         error "Tests failed, see output above"
                     }
                 }
+
+                echo 'Cleaning up...'
+                sh "docker-compose down"
             }
         }
 
@@ -53,13 +56,6 @@ pipeline {
                 '''
                 }
             }
-    }
-    post {
-        always {
-            // Cleanup after pipeline execution
-            echo 'Cleaning up...'
-            sh "docker-compose down"
-        }
     }
 }
 
