@@ -12,25 +12,30 @@ pipeline {
 
         stage('Test') {
             steps {
-                // Todo: unit / regression tests, health tests?
                 echo 'Testing the application..'
-                // Start container
+                // Start the container
                 sh "docker-compose up -d"
-                // Run Django unit tests
-                def testStatus = sh(script: 'docker-compose exec app python manage.py test -v 3', returnStatus: true)
-
-                // Check result of tests (any number that isn't 0 indicates failure)
-                if(testStatus != 0){
-                    error "Tests failed with status: ${testStatus}"
+                script {
+                    // Run Django unit tests and capture the output
+                    def testOutput = sh(script: 'docker-compose exec -T app python manage.py test -v 3', returnStdout: true).trim()
+        
+                    // Print the test output
+                    echo testOutput
+        
+                    // Check for any failures in the output
+                    if(testOutput.contains("FAILED") || testOutput.contains("ERRORS")){
+                        error "Tests failed, see output above"
+                    }
                 }
             }
         }
 
+
         stage('Deploy') {
             steps {
-                // Todo: Replace the old container with the new container?
+                //TODO: SSH onto deployment server, git pull the repo, compose the docker file, switch docker container to new one.
                 echo 'Deploying the application..'
-                sh "docker-compose up -d"
+                
             }
         }
     }
@@ -42,3 +47,6 @@ pipeline {
         }
     }
 }
+
+
+
