@@ -21,6 +21,7 @@ pipeline {
             steps {
                 // Todo: Replace the old container with the new container?
                 echo 'Deploying the application..'
+                sh "docker-compose up -d"
             }
         }
     }
