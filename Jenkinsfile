@@ -1,7 +1,7 @@
 pipeline {
     // Run on the next available agent
     agent any
-
+    
     stages {
         stage('Build') {
             steps {
@@ -14,6 +14,10 @@ pipeline {
             steps {
                 // Todo: unit / regression tests, health tests?
                 echo 'Testing the application..'
+                // Start all services
+                sh "docker-compose up -d"
+                sh 'docker-compose exec app python manage.py test -v 3
+                sh 'docker-compose logs app' 
             }
         }
 
