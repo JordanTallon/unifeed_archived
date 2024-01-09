@@ -38,7 +38,7 @@ pipeline {
             steps {
                 echo 'Deploying the application..'
                 sh '''
-                    ssh root@206.189.22.163 <<EOF
+                    ssh -v root@206.189.22.163 <<EOF
                         echo "Stopping the old server and freeing up port 80..."
 
                         docker-compose -f docker-compose-deploy.yml down
