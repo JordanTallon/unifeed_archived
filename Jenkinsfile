@@ -16,7 +16,7 @@ pipeline {
                 echo 'Testing the application..'
                 // Start all services
                 sh "docker-compose up -d"
-                sh 'docker-compose exec app python manage.py test -v 3
+                sh 'docker-compose exec app python manage.py test -v 3'
                 sh 'docker-compose logs app' 
             }
         }
