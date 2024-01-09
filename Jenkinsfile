@@ -1,43 +1,61 @@
 pipeline {
     // Run on the next available agent
     agent any
-    
+
+    options {
+        gitLabConnection('gitlab-unifeed')
+    }
+
+    // triggers from GitLab
+    triggers {
+        gitlab(triggerOnPush: true, triggerOnMergeRequest: true, branchFilterType: 'All')
+    }
+
     stages {
         stage('Build') {
             steps {
-                echo 'Building the Unifeed application..'
-                sh "docker-compose build"
+                script {
+                    updateGitlabCommitStatus name: 'build', state: 'running'
+                    echo 'Building the Unifeed application..'
+                    // Start container
+                    sh "docker-compose build"
+                    updateGitlabCommitStatus name: 'build', state: 'success'
+                }
             }
         }
 
         stage('Test') {
             steps {
-                echo 'Testing the application..'
-                // Start container
-                sh "docker-compose up -d"
                 script {
-                    // Run Django unit tests and capture the output
+                    updateGitlabCommitStatus name: 'test', state: 'running'
+                    echo 'Testing the application..'
+
+                    // Start container
+                    sh "docker-compose up -d"
                     def testOutput = sh(script: 'docker-compose exec -T app python manage.py test -v 3', returnStdout: true).trim()
-        
-                    // Print the test output
+
+                    // Print the test output                    
                     echo testOutput
-        
+
                     // Check for test failures in the output
-                    if(testOutput.contains("FAILED") || testOutput.contains("ERRORS")){
+                    if (testOutput.contains("FAILED") || testOutput.contains("ERRORS")) {
+                        updateGitlabCommitStatus name: 'test', state: 'failed'
                         error "Tests failed, see output above"
+                    } else {
+                        updateGitlabCommitStatus name: 'test', state: 'success'
                     }
                 }
-
                 echo 'Cleaning up...'
                 sh "docker-compose down"
             }
         }
 
-
         stage('Deploy') {
             steps {
-                echo 'Deploying the application..'
-                sh '''
+                script {
+                    updateGitlabCommitStatus name: 'deploy', state: 'running'
+                    echo 'Deploying the application..'
+                                    sh '''
                     ssh -v root@206.189.22.163 <<EOF
                     
                         echo "Entering project directory"
@@ -57,7 +75,21 @@ pipeline {
                         docker-compose -f docker-compose-deploy.yml up -d
                         << EOF
                         '''
+                    updateGitlabCommitStatus name: 'deploy', state: 'success'
                 }
             }
+        }
+    }
+
+    post {
+        failure {
+            updateGitlabCommitStatus name: 'build', state: 'failed'
+        }
+        success {
+            updateGitlabCommitStatus name: 'build', state: 'success'
+        }
+        aborted {
+            updateGitlabCommitStatus name: 'build', state: 'canceled'
+        }
     }
 }
