@@ -29,4 +29,11 @@ pipeline {
             }
         }
     }
+    post {
+        always {
+            // Cleanup after pipeline execution
+            echo 'Cleaning up...'
+            sh "docker-compose down"
+        }
+    }
 }
