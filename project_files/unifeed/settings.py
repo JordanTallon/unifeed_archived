@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'accounts.apps.AccountsConfig',
-    'profiles.app.ProfilesConfig',
+    'profiles.apps.ProfilesConfig',
     'unifeed'
 ]
 
@@ -90,11 +90,13 @@ DATABASES = {
         'NAME': os.environ.get('DB_NAME'),
         'USER': os.environ.get('DB_USER'),
         'PASSWORD': os.environ.get('DB_PASS'),
-	'PORT': os.environ.get('DB_PORT', '5432'),  # Default to 5432 if not set (this is the default port Postgresql uses)
+        # Default to 5432 if not set (this is the default port Postgresql uses)
+        'PORT': os.environ.get('DB_PORT', '5432'),
         'OPTIONS': {
-            'sslmode': os.environ.get('SSL_MODE', 'prefer'), # More info here https://www.postgresql.org/docs/current/libpq-ssl.html
+            # More info here https://www.postgresql.org/docs/current/libpq-ssl.html
+            'sslmode': os.environ.get('SSL_MODE', 'prefer'),
         },
-     }
+    }
 }
 
 AUTH_USER_MODEL = 'accounts.User'
