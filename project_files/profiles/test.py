@@ -4,6 +4,7 @@ from .models import UserProfile
 from accounts.models import User
 from accounts.forms import UserLoginForm
 
+
 class UserProfileTestCase(TestCase):
     # Initial account set up that can be used for each test
     def setUp(self) -> None:
@@ -37,5 +38,3 @@ class UserProfileTestCase(TestCase):
 
         # Check if the bio field is blank
         self.assertEqual(profile.bio, '')
-
-    # Add more test cases for any additional fields you may have added to the UserProfile model
