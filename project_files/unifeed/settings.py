@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'profiles.apps.ProfilesConfig',
     'unifeed',
-    'rest_framework'
+    'ai_analysis.apps.AiAnalysisConfig'
 ]
 
 
