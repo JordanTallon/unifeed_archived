@@ -3,6 +3,6 @@ from . import views
 from django.conf import settings
 
 urlpatterns = [
-    path('', views.getData),
+    path('', views.getData, name="get-political-bias"),
     # path('post/', views.postData),
 ]
