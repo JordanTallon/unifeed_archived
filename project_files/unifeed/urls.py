@@ -25,6 +25,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('account/', include('accounts.urls')),
     path('profile/', include('profiles.urls')),
+    path('detect-political-bias', include('ai_analysis.urls')),
     path('', views.home_page, name="home")
 ]
 
