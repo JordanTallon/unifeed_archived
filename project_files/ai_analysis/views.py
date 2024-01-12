@@ -18,14 +18,15 @@ def getData(request):
 
 @api_view(['POST'])
 def postPoliticalBiasAnalysis(request):
+
     # Serialize the request data
-    print("Before serializer", request.data)
     serializer = PoliticalBiasAnalysisSerializer(data=request.data)
+
     # Check if the serialization was succesful:
     if serializer.is_valid():
         # Valid, so save the object
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    print(serializer.errors)
+    # Invalid, return HTTP 400 bad request
     return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)

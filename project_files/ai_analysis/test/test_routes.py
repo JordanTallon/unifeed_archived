@@ -70,7 +70,7 @@ class test_political_bias_analysis_api_routes(TestCase):
         response = self.client.post(
             reverse('add-political-bias'), data=data)
 
-        # 400 = HTTP error
+        # 400 = HTTP bad request error
         self.assertEqual(response.status_code, 400)
 
         # Ensure the contain the newly posted object was not added
