@@ -45,7 +45,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accounts.apps.AccountsConfig',
     'profiles.apps.ProfilesConfig',
-    'unifeed'
+    'unifeed',
+    'rest_framework',
+    'ai_analysis.apps.AiAnalysisConfig'
 ]
 
 
