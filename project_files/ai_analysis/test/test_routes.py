@@ -54,3 +54,25 @@ class test_political_bias_analysis_api_routes(TestCase):
         # Check if the objects contain the newly posted object (length + 1)
         new_length = len(PoliticalBiasAnalysis.objects.all())
         self.assertEqual(new_length, length + 1)
+
+    def test_detect_political_bias_api_post_invalid_data(self):
+        # Get the count of objects before new addition
+        length = len(PoliticalBiasAnalysis.objects.all())
+
+        # Data for the new model
+        data = {
+            'article_url': 'badurl.com',
+            'article_text_md5': '1234123',
+            'political_bias': 100
+        }
+
+        # Post the data to the url
+        response = self.client.post(
+            reverse('add-political-bias'), data=data)
+
+        # 400 = HTTP error
+        self.assertEqual(response.status_code, 400)
+
+        # Ensure the contain the newly posted object was not added
+        new_length = len(PoliticalBiasAnalysis.objects.all())
+        self.assertEqual(new_length, length)
