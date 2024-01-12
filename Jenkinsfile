@@ -51,12 +51,15 @@ pipeline {
         }
 
         stage('Deploy') {
+            when {
+                branch 'main'
+            }
             steps {
                 script {
                     updateGitlabCommitStatus name: 'deploy', state: 'running'
                     echo 'Deploying the application..'
                                     sh '''
-                    ssh -v root@206.189.22.163 <<EOF
+                    ssh root@206.189.22.163 <<EOF
                     
                         echo "Entering project directory"
                         cd /opt/projects/2024-ca326-unifeed
