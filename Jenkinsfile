@@ -14,7 +14,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo "${BRANCH_NAME}"
+                echo "${env.BRANCH_NAME}"
                 script {
                     updateGitlabCommitStatus name: 'build', state: 'running'
                     echo 'Building the Unifeed application..'
