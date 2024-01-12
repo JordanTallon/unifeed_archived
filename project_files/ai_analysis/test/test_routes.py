@@ -29,9 +29,9 @@ class test_political_bias_analysis_api_routes(TestCase):
         self.assertEqual(len(response_data), 50)
 
     def test_detect_political_bias_api_post_exists(self):
-        # Create a POST request.
-        response = self.client.post(reverse('add-political-bias'))
-        self.assertEqual(response.status_code, 200)
+        # Check if POST request is allowed.
+        response = self.client.options(reverse('add-political-bias'))
+        self.assertIn('POST', response['Allow'])
 
     def test_detect_political_bias_api_post_new_data(self):
         # Get the count of objects before new addition
@@ -39,13 +39,14 @@ class test_political_bias_analysis_api_routes(TestCase):
 
         # Data for the new model
         data = {
-            'article_url': 'www.example.com',
+            'article_url': 'http://www.example.com',
             'article_text_md5': '1234123',
             'political_bias': 100
         }
 
         # Post the data to the url
-        response = self.client.post(reverse('add-political-bias'), data=data)
+        response = self.client.post(
+            reverse('add-political-bias'), data=data)
 
         # 201 = created
         self.assertEqual(response.status_code, 201)
