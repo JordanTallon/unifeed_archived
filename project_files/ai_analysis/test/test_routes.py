@@ -19,8 +19,6 @@ class test_political_bias_analysis_api_routes(TestCase):
         # Create a GET request.
         response = self.client.get(reverse('get-political-bias'))
 
-        print(response.content)
-        print(response.status_code)
         self.assertEqual(response.status_code, 200)
 
         # Read the content of the response as json.
