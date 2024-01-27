@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My RSS Reader{% endblock %}</title>
+    <!-- Add your stylesheets, scripts, or other head elements here -->
+</head>
+<body>
+
+    <header>
+        <h1>{% block header %}My RSS Reader{% endblock %}</h1>
+        <!-- Add any header elements, navigation, etc. here -->
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+        <!-- This is where the content of specific pages will be inserted -->
+    </main>
+
+    <footer>
+        <!-- Add footer content here -->
+    </footer>
+
+</body>
+</html>

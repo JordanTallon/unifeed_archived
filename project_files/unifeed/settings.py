@@ -39,6 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accounts.apps.AccountsConfig',
     'profiles',
+    'rss_app',
+    'scraper',
+    'folder_system',
 ]
 
 

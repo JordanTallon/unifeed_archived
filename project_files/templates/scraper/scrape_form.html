@@ -1,0 +1,7 @@
+<!-- scraper/templates/scraper/scrape_form.html -->
+
+<form method="post" action="{% url 'scrape' %}">
+    {% csrf_token %}
+    {{ form }}
+    <button type="submit">Scrape</button>
+</form>
