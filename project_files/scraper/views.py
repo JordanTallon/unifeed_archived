@@ -21,7 +21,6 @@ def scrape(request):
         if form.is_valid():
             url = form.cleaned_data['url']
             content = scrape_data(url)
-            scraped_data = ScrapedData.objects.create(url=url, content=content)
             return JsonResponse({'url': url, 'content': content})
     else:
         # No get route for scrape, instead display an error (might require get route later?)
