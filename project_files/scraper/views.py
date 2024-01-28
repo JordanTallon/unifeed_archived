@@ -1,6 +1,7 @@
 # scraper/views.py
 
 from django.shortcuts import render
+from django.http import JsonResponse
 from .forms import URLForm
 from .models import ScrapedData
 from bs4 import BeautifulSoup
@@ -23,6 +24,7 @@ def scrape(request):
             scraped_data = ScrapedData.objects.create(url=url, content=content)
             return render(request, 'scraper/scrape_result.html', {'scraped_data': scraped_data})
     else:
-        form = URLForm()
+        # No get route for scrape, instead display an error (might require get route later?)
+        return JsonResponse({'error': 'Method not allowed'}, status=405)
 
     return render(request, 'scraper/scrape_form.html', {'form': form})
