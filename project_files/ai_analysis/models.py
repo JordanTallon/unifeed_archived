@@ -17,3 +17,7 @@ class PoliticalBiasAnalysis(models.Model):
         md5_hash_result = hashlib.md5(encoded_text)
         # Digest the hash as hexadecimal and assign it to article_text_md5
         self.article_text_md5 = md5_hash_result.hexdigest()
+
+    class Meta:
+        # Override default admin display "Political bias analysiss" which is incorrect / ugly
+        verbose_name_plural = "Political Bias Analysis Records"
