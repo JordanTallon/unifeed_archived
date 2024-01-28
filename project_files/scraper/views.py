@@ -2,10 +2,9 @@
 
 from django.shortcuts import render
 from django.http import JsonResponse
-from .forms import URLForm
-from .models import ScrapedData
 from bs4 import BeautifulSoup
 import requests
+import json
 
 
 def scrape_data(url):
@@ -17,13 +16,14 @@ def scrape_data(url):
 
 def scrape(request):
     if request.method == 'POST':
-        form = URLForm(request.POST)
-        if form.is_valid():
-            url = form.cleaned_data['url']
-            content = scrape_data(url)
-            return JsonResponse({'url': url, 'content': content})
+        try:
+            data = json.loads(request.body)
+            url = data.get('url')
+            if url:
+                content = scrape_data(url)
+                return JsonResponse({'url': url, 'content': content})
+        except:
+            return JsonResponse({'error': 'Method not allowed'}, status=405)
     else:
         # No get route for scrape, instead display an error (might require get route later?)
         return JsonResponse({'error': 'Method not allowed'}, status=405)
-
-    return render(request, 'scraper/scrape_form.html', {'form': form})
