@@ -1,0 +1,6 @@
+<h2>Create Folder</h2>
+<form method="post" action="">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Create Folder</button>
+</form>

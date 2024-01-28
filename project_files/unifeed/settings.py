@@ -53,6 +53,10 @@ INSTALLED_APPS = [
     'unifeed',
     'rest_framework',
     'ai_analysis.apps.AiAnalysisConfig'
+    'profiles.apps.ProfilesConfig',
+    'rss_app.apps.RssAppConfig',
+    'scraper.apps.ScraperConfig',
+    'folder_system.apps.FolderSystemConfig',
 ]
 
 
