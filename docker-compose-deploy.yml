@@ -16,6 +16,7 @@ services:
       - SSL_MODE=${SSL_MODE}
       - SECRET_KEY=${SECRET_KEY}
       - ALLOWED_HOSTS=${ALLOWED_HOSTS}
+      - HUGGINGFACE_API_KEY=${HUGGINGFACE_API_KEY}
   proxy:
     build:
       context: ./proxy
