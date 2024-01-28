@@ -3,3 +3,4 @@ psycopg2==2.9.9
 uWSGI==2.0.23
 djangorestframework==3.14.0
 django-factory_boy==1.0.0
+requests==2.31.0
