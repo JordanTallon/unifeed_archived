@@ -22,7 +22,7 @@ def scrape(request):
             url = form.cleaned_data['url']
             content = scrape_data(url)
             scraped_data = ScrapedData.objects.create(url=url, content=content)
-            return render(request, 'scraper/scrape_result.html', {'scraped_data': scraped_data})
+            return JsonResponse({'url': url, 'content': content})
     else:
         # No get route for scrape, instead display an error (might require get route later?)
         return JsonResponse({'error': 'Method not allowed'}, status=405)
