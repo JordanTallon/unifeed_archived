@@ -72,6 +72,7 @@ pipeline {
                         lsof -ti:80 | xargs --no-run-if-empty kill
                         
                         echo "Pulling the Unifeed repo..."
+                        git checkout main
                         git pull
                         
                         echo "Starting the Docker containers..."
