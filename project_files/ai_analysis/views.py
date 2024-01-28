@@ -10,11 +10,6 @@ import requests
 
 @api_view(['GET'])
 def getData(request):
-
-    article = "This is a sentence. This is another. Yet another sentence. The second last sentence. Finally, the last sentence."
-    result = analyzePoliticalBias(article)
-
-    print(result)
     # Get all PoliticalBiasAnalysis objects
     biases = PoliticalBiasAnalysis.objects.all()
     # Apply the serializer to the entire array
@@ -36,6 +31,13 @@ def postPoliticalBiasAnalysis(request):
 
     # Invalid, return HTTP 400 bad request
     return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
+
+
+"""     article = "This is a sentence. This is another. Yet another sentence. The second last sentence. Finally, the last sentence."
+    result = analyzePoliticalBias(article)
+
+    print(result)
+     """
 
 
 def analyzePoliticalBias(article):
