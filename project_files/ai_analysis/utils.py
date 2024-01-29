@@ -1,11 +1,11 @@
 import hashlib
 
 
-# Function to assign the article_text_md5 hash based on the article text (using Python hashlib)
-def article_text_to_md5_hash(self, article_text):
-    # Encode article text
-    encoded_text = article_text.encode()
-    # Convert to md5 hash
+# Function to assign the given text to a hash (using Python hashlib)
+def text_to_md5_hash(self, text):
+    # Encode the text
+    encoded_text = text.encode()
+    # Convert encoded text to md5 hash
     md5_hash_result = hashlib.md5(encoded_text)
-    # Digest the hash as hexadecimal and return it
+    # Digest the hash as a hexadecimal and return it
     return md5_hash_result.hexdigest()
