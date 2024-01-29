@@ -1,11 +1,19 @@
-Django==5.0.1
+# PostgreSQL
 psycopg2==2.9.9
+# Proxy
 uWSGI==2.0.23
-djangorestframework==3.14.0
-django-factory_boy==1.0.0
-requests==2.31.0
 # For RSS App
 feedparser==6.0.11 
 sgmllib3k==1.0.0
 # Beautiful Soup
 bs4==0.0.2
+# Django
+Django==5.0.1
+# Rest Routes
+djangorestframework==3.14.0
+# Creating dummy data for tests
+django-factory_boy==1.0.0
+# Post requests
+requests==2.31.0
+# For JSONfield use in Django models
+JSONfield==3.1.0
