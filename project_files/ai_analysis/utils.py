@@ -13,7 +13,7 @@ def text_to_md5_hash(self, text):
     return md5_hash_result.hexdigest()
 
 
-def analyzePoliticalBias(self, article_text):
+def analyze_political_bias(self, article_text):
     # TODO: I will find 'ideal' sentences from an article
     sentences = article_text.split('.')
 

@@ -1,5 +1,7 @@
 from django.db import models
-import hashlib
+from jsonfield import JSONField
+from scraper.utils import scrape_data
+from utils import text_to_md5_hash, analyze_political_bias
 
 
 class PoliticalBiasAnalysis(models.Model):
@@ -7,16 +9,21 @@ class PoliticalBiasAnalysis(models.Model):
 
     # Stores the article text as a md5 hash
     article_text_md5 = models.CharField(max_length=32)
-    political_bias = models.IntegerField()
 
-    # Function to assign the article_text_md5 hash based on the article text (using Python hashlib)
-    def article_text_to_md5_hash(self, article_text):
-        # Encode article text
-        encoded_text = article_text.encode()
-        # Convert to md5 hash
-        md5_hash_result = hashlib.md5(encoded_text)
-        # Digest the hash as hexadecimal and assign it to article_text_md5
-        self.article_text_md5 = md5_hash_result.hexdigest()
+    article_text = models.TextField()
+
+    biased_sentences = models.JSONField()
+
+    @classmethod
+    def create(cls, article_url):
+
+        article_text = scrape_data(article_url)
+
+        article_text_md5 = text_to_md5_hash(article_text)
+
+        biased_sentences = analyze_political_bias(article_text)
+
+        return cls(article_text=article_text, article_text_md5=article_text_md5, biased_sentences=biased_sentences)
 
     class Meta:
         # Override default admin display "Political bias analysiss" which is incorrect / ugly
