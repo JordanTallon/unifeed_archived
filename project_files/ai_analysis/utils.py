@@ -4,7 +4,7 @@ from django.conf import settings
 
 
 # Function to assign the given text to a hash (using Python hashlib)
-def text_to_md5_hash(self, text):
+def text_to_md5_hash(text):
     # Encode the text
     encoded_text = text.encode()
     # Convert encoded text to md5 hash
@@ -13,7 +13,7 @@ def text_to_md5_hash(self, text):
     return md5_hash_result.hexdigest()
 
 
-def analyze_political_bias(self, article_text):
+def analyze_political_bias(article_text):
     # TODO: I will find 'ideal' sentences from an article
     sentences = article_text.split('.')
 
