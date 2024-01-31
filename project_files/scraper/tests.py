@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.db import IntegrityError
 from django.core.exceptions import ValidationError
-from utils import scrape_data
+from scraper.utils import scrape_data
 
 
 class ScraperViewsTest(TestCase):

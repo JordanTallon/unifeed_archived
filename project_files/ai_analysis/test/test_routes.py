@@ -39,9 +39,7 @@ class test_political_bias_analysis_api_routes(TestCase):
 
         # Data for the new model
         data = {
-            'article_url': 'http://www.example.com',
-            'article_text_md5': '1234123',
-            'political_bias': 100
+            'url': 'http://www.example.com'
         }
 
         # Post the data to the url
