@@ -1,15 +1,13 @@
 from django.test import TestCase
 from django.db import IntegrityError
 from django.core.exceptions import ValidationError
-from django.urls import reverse
+from utils import scrape_data
 
 
 class ScraperViewsTest(TestCase):
     def test_scaper_post_response(self):
-        response = self.client.post(
-            reverse('scrape'), {'url': 'https://example.com'})
 
-        content = response.json()['content']
+        content = scrape_data('https://example.com')
 
         self.assertIn(
             "This domain is for use in illustrative examples in documents", content)

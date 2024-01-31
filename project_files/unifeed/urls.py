@@ -27,7 +27,6 @@ urlpatterns = [
     path('profile/', include('profiles.urls')),
     path('detect-political-bias/', include('ai_analysis.urls')),
     path('rss/', include('rss_app.urls')),
-    path('scrape/', include('scraper.urls')),
     path('folder_system/', include('folder_system.urls')),
     path('', views.home_page, name="home")
 ]
