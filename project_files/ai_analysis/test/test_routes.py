@@ -28,6 +28,8 @@ class test_political_bias_analysis_api_routes(TestCase):
         # Make sure all 50 models are serialized in the data (batch size in setUp).
         self.assertEqual(len(response_data), 50)
 
+
+class test_political_bias_analysis_data_creation(TestCase):
     def test_detect_political_bias_api_post_exists(self):
         # Check if POST request is allowed.
         response = self.client.options(reverse('add-political-bias'))
@@ -57,20 +59,28 @@ class test_political_bias_analysis_api_routes(TestCase):
         # Get the count of objects before new addition
         length = len(PoliticalBiasAnalysis.objects.all())
 
-        # Data for the new model
-        data = {
-            'article_url': 'badurl.com',
-            'article_text_md5': '1234123',
-            'political_bias': 100
-        }
-
         # Post the data to the url
         response = self.client.post(
-            reverse('add-political-bias'), data=data)
+            reverse('add-political-bias'), data={'url': '123'})
 
         # 400 = HTTP bad request error
         self.assertEqual(response.status_code, 400)
 
-        # Ensure the contain the newly posted object was not added
+        # Ensure no new PoliticalBiasAnalysis object was added
+        new_length = len(PoliticalBiasAnalysis.objects.all())
+        self.assertEqual(new_length, length)
+
+    def test_detect_political_bias_api_post_non_existent_url(self):
+        # Get the count of objects before new addition
+        length = len(PoliticalBiasAnalysis.objects.all())
+
+        # Post the data to the url
+        response = self.client.post(
+            reverse('add-political-bias'), data={'url': 'https://www.ca326unifeedprojecttesting.com/'})
+
+        # 400 = HTTP bad request error
+        self.assertEqual(response.status_code, 400)
+
+        # Ensure no new PoliticalBiasAnalysis object was added
         new_length = len(PoliticalBiasAnalysis.objects.all())
         self.assertEqual(new_length, length)
