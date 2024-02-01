@@ -1,15 +1,14 @@
-from django.shortcuts import render
-from django.conf import settings
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
 from .models import PoliticalBiasAnalysis
 from .serializer import PoliticalBiasAnalysisSerializer
-import requests
+from django.core.validators import URLValidator
+from django.core.exceptions import ValidationError
 
 
 @api_view(['GET'])
-def getData(request):
+def getPoliticalBiasAnalysis(request):
     # Get all PoliticalBiasAnalysis objects
     biases = PoliticalBiasAnalysis.objects.all()
     # Apply the serializer to the entire array
@@ -20,49 +19,27 @@ def getData(request):
 
 @api_view(['POST'])
 def postPoliticalBiasAnalysis(request):
-    # Serialize the request data
-    serializer = PoliticalBiasAnalysisSerializer(data=request.data)
 
-    # Check if the serialization was succesful:
-    if serializer.is_valid():
-        # Valid, so save the object
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    data = request.data
 
-    # Invalid, return HTTP 400 bad request
-    return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
+    # Check if a 'url' param was even given in the request data
+    url = data.get('url')
 
+    if not url:
+        return Response({"error": "URL is required."}, status=status.HTTP_400_BAD_REQUEST)
 
-"""     article = "This is a sentence. This is another. Yet another sentence. The second last sentence. Finally, the last sentence."
-    result = analyzePoliticalBias(article)
+    # Verify that the 'url' param contained a genuine URL
+    validate = URLValidator()
+    try:
+        validate(url)
+    except ValidationError:
+        return Response({"error": "Invalid URL."}, status=status.HTTP_400_BAD_REQUEST)
 
-    print(result)
-     """
+    bias = PoliticalBiasAnalysis().create(url)
 
+    # If the returned bias object is non, return a bad request.
+    if not bias:
+        return Response({"error": "Unable to create bias analysis for the given URL"}, status=status.HTTP_400_BAD_REQUEST)
 
-def analyzePoliticalBias(article):
-
-    # TODO: I will find 'ideal' sentences from an article
-    sentences = article.split('.')
-
-    # Restrict to 5 sentences per article (5 is arbitrary for testing, i'm not sure what a good limit is yet)
-    if (len(sentences) >= 5):
-        sentences = sentences[:5]
-
-    def query(payload):
-        response = requests.post(settings.HUGGINGFACE_API_URL,
-                                 headers=settings.HUGGINGFACE_API_HEADERS, json=payload)
-        return response.json()
-
-    # Query for all sentences and gather the results in a 'results' array
-    results = []
-    for sentence in sentences:
-        output = query({"inputs": sentence})
-        results.append(output)
-
-    # Associate each result with the sentence text. For displaying to the user later on.
-    result_dict = {}
-    for i in range(5):
-        result_dict[sentences[i]] = results[i]
-
-    return result_dict
+    bias.save()
+    return Response({"message": "Political bias analysis created successfully."}, status=status.HTTP_201_CREATED)
