@@ -15,7 +15,14 @@ class PoliticalBiasAnalysis(models.Model):
     @classmethod
     def create(cls, article_url):
 
-        article_text = scrape_data(article_url)
+        # Try scrape article content from the given url
+        try:
+            article_text = scrape_data(article_url)
+        except ValueError as e:
+            # No political bias analysis can be created from a broken url But it is not a 'critical failure'
+            # if this happens, so returning a None object is safe here
+            # Conditional logic can be applied, like if the creation of this model returns none, display a failure message to the user.
+            return None
 
         article_text_md5 = text_to_md5_hash(article_text)
 

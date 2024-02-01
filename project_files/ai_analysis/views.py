@@ -1,11 +1,10 @@
-from django.shortcuts import render
-from django.conf import settings
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
 from .models import PoliticalBiasAnalysis
 from .serializer import PoliticalBiasAnalysisSerializer
-import requests
+from django.core.validators import URLValidator
+from django.core.exceptions import ValidationError
 
 
 @api_view(['GET'])
@@ -23,32 +22,24 @@ def postPoliticalBiasAnalysis(request):
 
     data = request.data
 
+    # Check if a 'url' param was even given in the request data
     url = data.get('url')
 
     if not url:
         return Response({"error": "URL is required."}, status=status.HTTP_400_BAD_REQUEST)
 
+    # Verify that the 'url' param contained a genuine URL
+    validate = URLValidator()
+    try:
+        validate(url)
+    except ValidationError:
+        return Response({"error": "Invalid URL."}, status=status.HTTP_400_BAD_REQUEST)
+
     bias = PoliticalBiasAnalysis().create(url)
+
+    # If the returned bias object is non, return a bad request.
+    if not bias:
+        return Response({"error": "Unable to create bias analysis for the given URL"}, status=status.HTTP_400_BAD_REQUEST)
+
     bias.save()
-
     return Response({"message": "Political bias analysis created successfully."}, status=status.HTTP_201_CREATED)
-
-
-"""     # Serialize the request data
-    serializer = PoliticalBiasAnalysisSerializer(data=request.data)
-
-    # Check if the serialization was succesful:
-    if serializer.is_valid():
-        # Valid, so save the object
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-    # Invalid, return HTTP 400 bad request
-    return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST) """
-
-
-"""     article = "This is a sentence. This is another. Yet another sentence. The second last sentence. Finally, the last sentence."
-    result = analyzePoliticalBias(article)
-
-    print(result)
-     """
