@@ -1,0 +1,37 @@
+html,
+body {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    min-height: 100vh;
+    display: grid;
+    grid-template-areas:
+        'side-nav header header header header header header'
+        'side-nav main main main main main main'
+        'side-nav footer footer footer footer footer footer';
+    grid-template-rows: auto 1fr auto;
+    gap: 10px;
+}
+
+/* Header */
+header {
+    grid-area: header;
+    height: 60px;
+}
+
+#left-sidebar {
+    grid-area: side-nav;
+}
+
+main {
+    margin-top: 0;
+    grid-area: main;
+}
+
+footer {
+    grid-area: footer;
+    margin-top: auto;
+    height: 100px;
+}
