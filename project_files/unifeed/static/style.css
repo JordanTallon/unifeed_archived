@@ -36,3 +36,7 @@ footer {
     margin-top: auto;
     height: 100px;
 }
+
+.active {
+    font-weight: bold;
+}

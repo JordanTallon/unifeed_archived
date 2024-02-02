@@ -3,27 +3,48 @@ Note: Should the side nav even render at all if the user is not logged in?
 {% endcomment %}
 <nav class="navbar-light bg-light h-100" aria-label="Sidebar navigation">
     <ul class="nav flex-column p-4">
-        <li class="nav-item">
+        <li class="nav-item mb-4">
             <a href="{% url "home" %}" class="navbar-brand h2">UniFeed</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="{% url 'feed-list' %}">Today</a>
+            <a class="nav-link text-dark active" href="{% url 'feed-list' %}">
+                <i class="me-3 bi bi-book"></i>
+                <span>My Reading List</span>
+            </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="{% url 'feed-list' %}">Read Later</a>
+            <a class="nav-link text-dark" href="{% url 'feed-list' %}">
+                <i class="me-3 bi bi-clock-history"></i>
+                <span>Recently Read</span>
+            </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="{% url 'feed-list' %}">Favourites</a>
+            <a class="nav-link text-dark" href="{% url 'feed-list' %}">
+                <i class="me-3 bi bi-star"></i>
+                <span>Saved</span>
+            </a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item mt-4">
             <span class="navbar-text">My Feeds</span>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="{% url 'feed-list' %}">All</a>
+            <a class="nav-link text-dark" href="{% url 'feed-list' %}">
+                <i class="me-3 bi bi-list-task"></i>
+                <span>All</span>
+            </a>
         </li>
         {% comment %}     List user folders here {% endcomment %}
         <li class="nav-item">
-            <a class="nav-link" href="{% url 'create_folder' %}">Add New Feed</a>
+            <a class="nav-link text-dark" href="{% url 'create_folder' %}">
+                <i class="me-3 bi bi-folder2"></i>
+                <span>Space</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" href="{% url 'create_folder' %}">
+                <i class="me-3 bi bi-plus-circle"></i>
+                <span>Add New Feed</span>
+            </a>
         </li>
     </ul>
 </nav>
