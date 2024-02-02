@@ -12,6 +12,7 @@ pipeline {
     }
 
     stages {
+
         stage('Build') {
             steps {
                 echo "${env.BRANCH_NAME}"
@@ -25,17 +26,36 @@ pipeline {
             }
         }
 
+        stage('Linting Templates') {
+            steps {
+                script {
+                    updateGitlabCommitStatus name: 'lint', state: 'running'
+                    
+                    // Start container
+                    sh "docker-compose up -d"
+                    
+                    echo 'Linting Django templates...'
+                    sh 'djlint ./templates/ --profile=django'
+                    
+                    // Check lint results
+                    if (lintOutput != 0) { // Not a '0' status indicates lint errors
+                        updateGitlabCommitStatus name: 'lint', state: 'failed'
+                        error "Linting failed, see output above"
+                    } else {
+                        updateGitlabCommitStatus name: 'lint', state: 'success'
+                    }
+                }
+            }
+        }
+
         stage('Test') {
             steps {
                 script {
                     updateGitlabCommitStatus name: 'test', state: 'running'
                     echo 'Testing the application..'
 
-                    // Start container
-                    sh "docker-compose up -d"
+                    // Print the test output    
                     def testOutput = sh(script: 'docker-compose exec -T app python manage.py test -v 3', returnStdout: true).trim()
-
-                    // Print the test output                    
                     echo testOutput
 
                     // Check for test failures in the output
