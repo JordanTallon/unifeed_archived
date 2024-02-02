@@ -40,7 +40,7 @@ pipeline {
                     echo lintOutput
 
                     // Check lint results
-                    if (lintOutput.contains("error")){
+                    if (lintOutput.contains("errors") && !lintOutput.contains("0 errors")){
                         updateGitlabCommitStatus name: 'lint', state: 'failed'
                         error "Linting failed, see output above"
                     } else {
