@@ -31,14 +31,16 @@ pipeline {
                 script {
                     updateGitlabCommitStatus name: 'lint', state: 'running'
                     
-                    // Start container
+                    // Start the Unifeed container
                     sh "docker-compose up -d"
                     
                     echo 'Linting Django templates...'
-                    sh 'djlint ./templates/ --profile=django'
                     
+                    def lintOutput = sh(script: 'docker-compose exec -T app djlint ./templates/ --profile=django', returnStdout: true)
+                    echo lintOutput
+
                     // Check lint results
-                    if (lintOutput != 0) { // Not a '0' status indicates lint errors
+                    if (lintOutput.contains("error")){
                         updateGitlabCommitStatus name: 'lint', state: 'failed'
                         error "Linting failed, see output above"
                     } else {
