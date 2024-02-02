@@ -52,6 +52,8 @@ INSTALLED_APPS = [
     'profiles.apps.ProfilesConfig',
     'unifeed',
     'rest_framework',
+    'crispy_forms',
+    'crispy_bootstrap5',
     'ai_analysis.apps.AiAnalysisConfig',
     'rss_app.apps.RssAppConfig',
     'scraper.apps.ScraperConfig',
@@ -86,6 +88,11 @@ TEMPLATES = [
         },
     },
 ]
+
+# django-crispy-forms settings
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+
 
 WSGI_APPLICATION = 'unifeed.wsgi.application'
 

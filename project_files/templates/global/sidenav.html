@@ -4,7 +4,8 @@ Note: Should the side nav even render at all if the user is not logged in?
 <nav class="navbar-light bg-light h-100" aria-label="Sidebar navigation">
     <ul class="nav flex-column p-4">
         <li class="nav-item mb-4">
-            <a href="{% url "home" %}" class="navbar-brand h2">UniFeed</a>
+            <a href="{% url "home" %}"
+               class="navbar-brand fs-2 fw-bold text-success">UniFeed</a>
         </li>
         <li class="nav-item">
             <a class="nav-link text-dark active" href="{% url 'feed-list' %}">
