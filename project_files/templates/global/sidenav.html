@@ -1,22 +1,29 @@
-<ul class="nav flex-column">
-    <!-- Link to the user's profile -->
-    <li class="nav-item">
-        <a class="nav-link" href="{% url 'feed-list' %}">Today</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{% url 'feed-list' %}">Read Later</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{% url 'feed-list' %}">Favourites</a>
-    </li>
-    <li class="nav-item">
-        <span class="navbar-text">My Feeds</span>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{% url 'feed-list' %}">All</a>
-    </li>
-    {% comment %}     List user folders here {% endcomment %}
-    <li class="nav-item">
-        <a class="nav-link" href="{% url 'create_folder' %}">Add New Feed</a>
-    </li>
-</ul>
+{% comment %} 
+Note: Should the side nav even render at all if the user is not logged in?
+{% endcomment %}
+<nav class="navbar-light bg-light h-100" aria-label="Sidebar navigation">
+    <ul class="nav flex-column p-4">
+        <li class="nav-item">
+            <a href="{% url "home" %}" class="navbar-brand h2">UniFeed</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'feed-list' %}">Today</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'feed-list' %}">Read Later</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'feed-list' %}">Favourites</a>
+        </li>
+        <li class="nav-item">
+            <span class="navbar-text">My Feeds</span>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'feed-list' %}">All</a>
+        </li>
+        {% comment %}     List user folders here {% endcomment %}
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'create_folder' %}">Add New Feed</a>
+        </li>
+    </ul>
+</nav>

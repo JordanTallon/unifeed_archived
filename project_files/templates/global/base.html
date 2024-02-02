@@ -22,9 +22,9 @@
     </title>
     <link href="{% static 'style.css' %}" rel="stylesheet">
   </head>
-  <body data-bs-theme="blue">
+  <body>
     <header>
-      Top Nav
+      {% include "global/topnav.html" %}
     </header>
     <aside id="left-sidebar">
       {% include "global/sidenav.html" %}
