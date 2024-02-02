@@ -42,4 +42,8 @@ def postPoliticalBiasAnalysis(request):
         return Response({"error": "Unable to create bias analysis for the given URL"}, status=status.HTTP_400_BAD_REQUEST)
 
     bias.save()
-    return Response({"message": "Political bias analysis created successfully."}, status=status.HTTP_201_CREATED)
+
+    # Serialize the bias object to return in the POST result
+    serialized_bias = PoliticalBiasAnalysisSerializer(bias).data
+
+    return Response({"message": "Political bias analysis created successfully.", "analysis_results": serialized_bias}, status=status.HTTP_201_CREATED)
