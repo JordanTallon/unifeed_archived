@@ -4,17 +4,5 @@ Page Title
 {% endblock title %} 
 
 {% block content %}
-  <h1>Home page</h1>
-  {% if user.is_authenticated %}
-    <p>You are logged in as {{ user.username }}</p>
-    <a href="{% url 'logout' %}">Logout</a>
-    <!-- Link to the user's profile -->
-    <a href="{% url 'profile' %}">View Profile</a>
-    <a href="{% url 'feed-list' %}">Rss Feed</a>
-    <a href="{% url 'create_folder' %}">Create Folder</a>
-  {% else %}
-    <p>You are not logged in</p>
-    <a href="{% url 'login' %}">Login</a>
-  {% endif %}
-
+  <h1>Home Page Content</h1>
 {% endblock content %}

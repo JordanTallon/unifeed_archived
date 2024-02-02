@@ -1,17 +1,22 @@
 <ul class="nav flex-column">
+    <!-- Link to the user's profile -->
     <li class="nav-item">
-        <a class="nav-link active" href="#">Home</a>
+        <a class="nav-link" href="{% url 'feed-list' %}">Today</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#">Link</a>
+        <a class="nav-link" href="{% url 'feed-list' %}">Read Later</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#">Link</a>
+        <a class="nav-link" href="{% url 'feed-list' %}">Favourites</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#">Link</a>
+        <span class="navbar-text">My Feeds</span>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#">Link</a>
+        <a class="nav-link" href="{% url 'feed-list' %}">All</a>
+    </li>
+    {% comment %}     List user folders here {% endcomment %}
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'create_folder' %}">Add New Feed</a>
     </li>
 </ul>
