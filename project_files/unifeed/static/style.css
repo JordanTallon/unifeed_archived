@@ -8,10 +8,11 @@ body {
     min-height: 100vh;
     display: grid;
     grid-template-areas:
-        'side-nav header header header header header header'
-        'side-nav main main main main main main'
-        'side-nav footer footer footer footer footer footer';
+        'side-nav header header header header header header header'
+        'side-nav main main main main main main main'
+        'side-nav footer footer footer footer footer footer footer';
     grid-template-rows: auto 1fr auto;
+    grid-template-columns: 350px 1fr; /* Fixed width (250 px) for side-nav and flexible for the rest */
     gap: 10px;
 }
 

@@ -1,0 +1,23 @@
+<nav class="navbar container-fluid">
+    <div class="container row mx-auto p-0">
+        {% if user.is_authenticated %}
+            <div class="d-flex justify-content-apart col-10">
+                <input class="form-control"
+                       type="search"
+                       placeholder="Search"
+                       aria-label="Search">
+                <button class="btn btn-outline-success ms-2" type="submit">Search</button>
+            </div>
+            <div class="col-2 d-flex">
+                <a href="{% url "logout" %}" class="btn btn-outline-success ms-auto">Logout</a>
+            </div>
+        {% else %}
+            <div class="d-flex justify-content-end col-12">
+                <a href="{% url "login" %}"
+                   class="btn btn-outline-success me-2"
+                   type="button">Log in</a>
+                <a href="{% url "registration" %}" class="btn btn-success" type="button">Register</a>
+            </div>
+        {% endif %}
+    </div>
+</nav>

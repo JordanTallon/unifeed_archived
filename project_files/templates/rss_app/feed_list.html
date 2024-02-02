@@ -1,21 +1,21 @@
-<!-- rss_app/templates/rss_app/index.html -->
-<form method="post" action="">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Fetch RSS</button>
-</form>
-
-<ul>
-    {% for item in feed_items %}
-        <li>
-            <strong>{{ item.title|striptags }}</strong><br>
-            {{ item.description|striptags }}<br>
-            <a href="{{ item.link }}" target="_blank">{{ item.link }}</a>
-            {% if item.folder %}
-                (Folder: {{ item.folder.name }})
-            {% endif %}
-            <a href="{% url 'delete_feed' feed_id=item.id %}">Delete</a>
-        </li>
-    {% endfor %}
-</ul>
-
+{% extends "global/base.html" %}
+{% block content %}
+    <form method="post" action="">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Fetch RSS</button>
+    </form>
+    <ul>
+        {% for item in feed_items %}
+            <li>
+                <strong>{{ item.title|striptags }}</strong>
+                <br>
+                {{ item.description|striptags }}
+                <br>
+                <a href="{{ item.link }}" target="_blank">{{ item.link }}</a>
+                {% if item.folder %}(Folder: {{ item.folder.name }}){% endif %}
+                <a href="{% url 'delete_feed' feed_id=item.id %}">Delete</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock content %}
