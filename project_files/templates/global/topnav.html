@@ -2,21 +2,30 @@
     <div class="container row mx-auto p-0">
         {% if user.is_authenticated %}
             <div class="d-flex justify-content-apart col-10">
-                <input class="form-control"
-                       type="search"
-                       placeholder="Search"
-                       aria-label="Search">
-                <button class="btn btn-outline-success ms-2" type="submit">Search</button>
+                <div class="input-group">
+                    <input class="form-control"
+                           type="search"
+                           placeholder="Search"
+                           aria-label="Search">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-success" type="button">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
             <div class="col-2 d-flex">
-                <a href="{% url "logout" %}" class="btn btn-outline-success ms-auto">Logout</a>
+                <a href="{% url "logout" %}" class="btn btn-outline-success ms-auto">
+                    <i class="bi bi-box-arrow-right"></i>
+                    Logout
+                </a>
             </div>
         {% else %}
             <div class="d-flex justify-content-end col-12">
                 <a href="{% url "login" %}"
                    class="btn btn-outline-success me-2"
-                   type="button">Log in</a>
-                <a href="{% url "registration" %}" class="btn btn-success" type="button">Register</a>
+                   type="button">Login</a>
+                <a href="{% url "registration" %}" class="btn btn-success" type="button">Sign Up</a>
             </div>
         {% endif %}
     </div>
