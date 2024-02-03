@@ -16,8 +16,15 @@
                 </div>
             </div>
         {% else %}
+            <div class="col-6">
+                <a href="{% url "home" %}"
+                   class="navbar-brand fs-3 fw-bold text-success">
+                    <i class="bi bi-rss-fill"></i>
+                    UniFeed
+                </a>
+            </div>
             <!-- Login / Sign up buttons-->
-            <div class="d-none d-md-flex justify-content-end col-12">
+            <div class="d-none d-md-flex justify-content-end col-6">
                 <a href="{% url "login" %}"
                    class="btn btn-outline-success me-2"
                    type="button">Login</a>
@@ -25,11 +32,13 @@
             </div>
         {% endif %}
     </div>
-    <!-- 'Hamburger' toggle, shown on mobile to toggle the sidebar open/closed-->
-    <div id="menu-toggle"
-         class="d-block d-md-none closed fs-2 text-dark"
-         onclick="toggleSidebar()">
-        <i class="bi bi-list"></i>
-        <i class="bi bi-x-lg"></i>
-    </div>
+    {% if user.is_authenticated %}
+        <!-- 'Hamburger' toggle, shown on mobile to toggle the sidebar open/closed-->
+        <div id="menu-toggle"
+             class="d-block d-md-none closed fs-2 text-dark"
+             onclick="toggleSidebar()">
+            <i class="bi bi-list"></i>
+            <i class="bi bi-x-lg"></i>
+        </div>
+    {% endif %}
 </nav>
