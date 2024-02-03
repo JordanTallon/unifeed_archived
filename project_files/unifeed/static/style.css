@@ -31,10 +31,6 @@ header {
   grid-area: header;
 }
 
-#left-sidebar {
-  grid-area: sidebar;
-}
-
 main {
   margin-top: 0;
   grid-area: main;
@@ -44,15 +40,65 @@ footer {
   grid-area: footer;
 }
 
+#left-sidebar {
+  grid-area: sidebar;
+}
+
+#menu-toggle {
+  position: absolute;
+  z-index: 9999;
+  top: 10px;
+  right: 20px;
+}
+
+#menu-toggle .bi-list {
+  display: none;
+}
+#menu-toggle .bi-x-lg {
+  display: block;
+}
+
+#menu-toggle.closed .bi-list {
+  display: block;
+}
+
+#menu-toggle.closed .bi-x-lg {
+  display: none;
+}
+
 .active {
   font-weight: bold;
 }
 
+/* This is Bootstrap's 'sm' breakpoint */
 @media (max-width: 576px) {
   #left-sidebar {
-    position: absolute;
+    transition: transform 0.5s;
+    position: fixed;
     top: 0;
     bottom: 0;
     z-index: 9999;
+  }
+
+  #left-sidebar.hidden {
+    transform: translateX(-100%);
+  }
+
+  #overlay {
+    transition: opacity 0.5s;
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: black;
+    opacity: 0.33;
+    z-index: 9000;
+  }
+
+  #overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
   }
 }

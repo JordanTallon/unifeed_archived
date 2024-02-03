@@ -31,7 +31,8 @@
     <link href="{% static 'style.css' %}" rel="stylesheet">
   </head>
   <body>
-    <aside id="left-sidebar">
+    <div id="overlay" class="hidden" onclick="toggleSidebar()"></div>
+    <aside id="left-sidebar" class="hidden">
       {% include "global/sidenav.html" %}
     </aside>
     <div class="content-container">
