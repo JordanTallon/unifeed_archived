@@ -15,8 +15,12 @@
                     </div>
                 </div>
             </div>
+            <!-- 'Hamburger' toggle, shown on mobile to toggle the sidebar open/closed-->
+            <button class="col-2 d-block d-md-none" onclick="toggleSidebar()">
+                <i class="bi bi-list"></i>
+            </button>
         {% else %}
-        <!-- Login / Sign up buttons-->
+            <!-- Login / Sign up buttons-->
             <div class="d-none d-md-flex justify-content-end col-12">
                 <a href="{% url "login" %}"
                    class="btn btn-outline-success me-2"
