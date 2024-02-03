@@ -70,8 +70,16 @@ footer {
   font-weight: bold;
 }
 
-/* This is Bootstrap's 'sm' breakpoint */
-@media (max-width: 576px) {
+/* For reference:
+xs: 0,
+sm: 576px,
+md: 768px,
+lg: 992px,
+xl: 1200px,
+xxl: 1400px */
+
+/* This is Bootstrap's 'md' breakpoint */
+@media (max-width: 767px) {
   #left-sidebar {
     transition: transform 0.5s;
     position: fixed;
