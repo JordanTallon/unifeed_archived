@@ -23,7 +23,6 @@ body {
 /* Header */
 header {
     grid-area: header;
-    height: 60px;
 }
 
 #left-sidebar {
@@ -37,8 +36,6 @@ main {
 
 footer {
     grid-area: footer;
-    margin-top: auto;
-    height: 100px;
 }
 
 .active {
