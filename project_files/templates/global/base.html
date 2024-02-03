@@ -31,23 +31,28 @@
     <link href="{% static 'style.css' %}" rel="stylesheet">
   </head>
   <body>
-    <header>
-      {% include "global/topnav.html" %}
-    </header>
-    <aside id="left-sidebar">
+    <div id="overlay" class="hidden" onclick="toggleSidebar()"></div>
+    <aside id="left-sidebar" class="hidden">
       {% include "global/sidenav.html" %}
     </aside>
-    <main>
-      {% block content %}
-        <!-- This is where children templates inject content -->
-      {% endblock content %}
-    </main>
-    <footer>
-      {% include "global/footer.html" %}
-    </footer>
+    <div class="content-container">
+      <header>
+        {% include "global/topnav.html" %}
+      </header>
+      <main>
+        {% block content %}
+          <!-- This is where children templates inject content -->
+        {% endblock content %}
+      </main>
+      <footer>
+        {% include "global/footer.html" %}
+      </footer>
+    </div>
     <!-- Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
+    <!-- Custom JS scripts -->
+    <script src="{% static 'scripts/sidebar.js' %}"></script>
   </body>
 </html>

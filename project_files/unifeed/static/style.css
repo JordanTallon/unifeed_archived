@@ -1,43 +1,104 @@
-*{
-    font-family: 'Nunito', sans-serif;
+* {
+  font-family: "Nunito", sans-serif;
 }
-
-html,
-body {
-    padding: 0;
-    margin: 0;
+html {
+  padding: 0;
+  margin: 0;
 }
 
 body {
-    min-height: 100vh;
-    display: grid;
-    grid-template-areas:
-        'side-nav header header header header header header header'
-        'side-nav main main main main main main main'
-        'side-nav footer footer footer footer footer footer footer';
-    grid-template-rows: auto 1fr auto;
-    grid-template-columns: 350px 1fr; /* Fixed width (250 px) for side-nav and flexible for the rest */
-    gap: 10px;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-areas: "sidebar content";
+  grid-template-columns: fit-content(350px) 1fr;
+}
+
+.content-container {
+  grid-area: content;
+  min-height: 100vh;
+  display: grid;
+  grid-template-areas:
+    "header header header header header header header"
+    "main main main main main main main"
+    "footer footer footer footer footer footer footer";
+  grid-template-rows: auto 1fr auto;
+  gap: 10px;
 }
 
 /* Header */
 header {
-    grid-area: header;
-}
-
-#left-sidebar {
-    grid-area: side-nav;
+  grid-area: header;
 }
 
 main {
-    margin-top: 0;
-    grid-area: main;
+  margin-top: 0;
+  grid-area: main;
 }
 
 footer {
-    grid-area: footer;
+  grid-area: footer;
+}
+
+#left-sidebar {
+  grid-area: sidebar;
+}
+
+#menu-toggle {
+  position: absolute;
+  z-index: 9999;
+  top: 10px;
+  right: 20px;
+}
+
+#menu-toggle .bi-list {
+  display: none;
+}
+#menu-toggle .bi-x-lg {
+  display: block;
+}
+
+#menu-toggle.closed .bi-list {
+  display: block;
+}
+
+#menu-toggle.closed .bi-x-lg {
+  display: none;
 }
 
 .active {
-    font-weight: bold;
+  font-weight: bold;
+}
+
+/* This is Bootstrap's 'sm' breakpoint */
+@media (max-width: 576px) {
+  #left-sidebar {
+    transition: transform 0.5s;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    z-index: 9999;
+  }
+
+  #left-sidebar.hidden {
+    transform: translateX(-100%);
+  }
+
+  #overlay {
+    transition: opacity 0.5s;
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: black;
+    opacity: 0.33;
+    z-index: 9000;
+  }
+
+  #overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
 }
