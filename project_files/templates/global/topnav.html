@@ -1,6 +1,7 @@
 <nav class="navbar container-fluid">
     <div class="container row mx-auto p-0">
         {% if user.is_authenticated %}
+            <!-- Search Bar -->
             <div class="d-flex justify-content-apart col-10">
                 <div class="input-group">
                     <input class="form-control"
@@ -14,14 +15,9 @@
                     </div>
                 </div>
             </div>
-            <div class="col-2 d-flex">
-                <a href="{% url "logout" %}" class="btn btn-outline-success ms-auto">
-                    <i class="bi bi-box-arrow-right"></i>
-                    Logout
-                </a>
-            </div>
         {% else %}
-            <div class="d-flex justify-content-end col-12">
+        <!-- Login / Sign up buttons-->
+            <div class="d-none d-md-flex justify-content-end col-12">
                 <a href="{% url "login" %}"
                    class="btn btn-outline-success me-2"
                    type="button">Login</a>
