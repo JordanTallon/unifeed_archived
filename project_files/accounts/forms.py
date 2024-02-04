@@ -23,6 +23,12 @@ class UserLoginForm(AuthenticationForm):
 
 class AccountSettingsForm(UserChangeForm):
 
+    def __init__(self, *args, **kwargs):
+        super(AccountSettingsForm, self).__init__(*args, **kwargs)
+        # Remove the password field that comes with UserChangeForm
+        # Custom fields for it are created in this form
+        self.fields.pop('password', None)
+
     password1 = forms.CharField(
         label='New password',
         widget=forms.PasswordInput
