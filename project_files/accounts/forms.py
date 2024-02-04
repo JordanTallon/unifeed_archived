@@ -31,12 +31,14 @@ class AccountSettingsForm(UserChangeForm):
 
     password1 = forms.CharField(
         label='New password',
-        widget=forms.PasswordInput
+        widget=forms.PasswordInput,
+        required=False
     )
 
     password2 = forms.CharField(
         label='New password confirmation',
-        widget=forms.PasswordInput
+        widget=forms.PasswordInput,
+        required=False
     )
 
     class Meta:
