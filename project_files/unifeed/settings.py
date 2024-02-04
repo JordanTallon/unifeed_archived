@@ -52,7 +52,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'accounts.apps.AccountsConfig',
-    'profiles.apps.ProfilesConfig',
     'unifeed',
     'rest_framework',
     'crispy_forms',

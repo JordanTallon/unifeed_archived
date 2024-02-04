@@ -1,7 +1,9 @@
-from django.shortcuts import render, redirect
-from .forms import UserRegistrationForm, UserLoginForm
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.urls import reverse
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .forms import UserRegistrationForm, UserLoginForm, AccountSettingsForm
 
 
 def account_register(request):
@@ -40,6 +42,20 @@ def account_login(request):
 
     context = {'form': form}
     return render(request, "accounts/login.html", context)
+
+
+@login_required
+def account_settings(request):
+    if request.method == 'POST':
+        form = AccountSettingsForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Account settings successfully updated.')
+            return redirect('account_settings')
+    else:
+        form = AccountSettingsForm(instance=request.user)
+
+    return render(request, 'accounts/settings.html', {'form': form})
 
 
 def account_logout(request):
