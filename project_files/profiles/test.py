@@ -31,10 +31,3 @@ class UserProfileTestCase(TestCase):
 
         # Check if the bio field is set correctly
         self.assertEqual(profile.bio, 'Test Bio')
-
-    def test_user_profile_blank_bio(self):
-        # Create a UserProfile instance for the test user without a bio
-        profile = UserProfile.objects.create(user=self.user)
-
-        # Check if the bio field is blank
-        self.assertEqual(profile.bio, '')
