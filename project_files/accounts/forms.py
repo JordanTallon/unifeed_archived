@@ -45,37 +45,29 @@ class AccountSettingsForm(UserChangeForm):
         model = get_user_model()
         fields = ['username', 'email']
 
-    def check_passwords_match(self, password1, password2):
-        # If both passwords were provided
-        if password1 and password2:
-            # Return the cleaned data if they match, otherwise continue to error
-            if password1 == password2:
-                return True
-
-        return False
-
-    def check_password_secure(self, password):
-        try:
-            # Use password_validation to make sure the password is 'secure'
-            # https://docs.djangoproject.com/en/5.0/topics/auth/passwords/#module-django.contrib.auth.password_validation
-            password_validation.validate_password(password, self.instance)
-        except ValidationError as e:
-            # If the password fails validation, add the error
-            self.add_error('password1', e)
-        return password
-
     # https://docs.djangoproject.com/en/5.0/ref/forms/validation/
-    # (for reminder on clean, TLDR: it runs automatically during form validation)
+    # (for reminder on clean, TLDR: django automatically runs the clean function during form validation)
     def clean(self):
         cleaned_data = super().clean()
         password1 = cleaned_data.get("password1")
         password2 = cleaned_data.get("password2")
 
-        if not self.check_passwords_match(password1, password2):
-            # Either the passwords didn't match or one was missing
-            self.add_error('password2', "Passwords don't match.")
+        # If both passwords were provided
+        if password1 and password2:
+            # If they don't match, raise an error
+            if password1 != password2:
+                raise ValidationError(
+                    {'password2': ["Passwords don't match."]})
 
-        password1 = self.check_password_secure(password1)
+            # Both passwords exist and match, check if they are secure/valid
+            # https://docs.djangoproject.com/en/5.0/topics/auth/passwords/#module-django.contrib.auth.password_validation
+            try:
+                password_validation.validate_password(password1, self.instance)
+            except ValidationError as errors:
+                # If the password isn't valid, raise an error
+                raise ValidationError({'password1': errors})
+
+        return cleaned_data
 
     def save(self, commit=True):
         user = super().save(commit=False)
