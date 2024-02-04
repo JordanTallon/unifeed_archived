@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 import os
+import sys
 from pathlib import Path
 
 # HuggingFace API settings
@@ -38,6 +39,8 @@ ALLOWED_HOSTS.extend(
     )
 )
 
+# Set to true when the app is launched for unit testing
+TESTING = 'test' in sys.argv
 
 # Application definition
 

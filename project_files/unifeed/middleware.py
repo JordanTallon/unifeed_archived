@@ -11,6 +11,11 @@ def RequireLoginMiddleware(get_response):
     def middleware(request):
         response = get_response(request)
 
+        # Ignore this middleware logic when it is called by a unit test
+        # This ensures that the unit tests can cover the whole website without needing to be user authenticated
+        if settings.TESTING:
+            return response
+
         # List of 'public/whitelisted' paths (don't require user login)
         public_paths = [
             reverse('login'),
