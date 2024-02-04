@@ -1,26 +1,17 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import DetailView, UpdateView
-from .models import UserProfile
 from .forms import UserProfileForm
-
-class UserProfileView(LoginRequiredMixin, DetailView):
-    model = UserProfile
-    template_name = 'profiles/profile_info.html'
-    context_object_name = 'profile'
-
-    def get_object(self, queryset=None):
-        return self.request.user.username
-
-user_profile = UserProfileView.as_view()
+from django.shortcuts import render, redirect
 
 
-class UserProfileUpdateView(LoginRequiredMixin, UpdateView):
-    model = UserProfile
-    form_class = UserProfileForm
-    template_name = 'profiles/profile_update.html'
+def UserProfile(request):
+    # This is just adapted from the register form system
+    # To be changed later.
+    form = UserProfileForm()
 
-    def get_object(self, queryset=None):
-        return self.request.user.username
+    if request.method == "POST":
+        form = UserProfileForm(request.POST)
 
-user_profile_update = UserProfileUpdateView.as_view()
+        if form.is_valid():
+            form.save()
 
+    context = {'form': form}
+    return render(request, "profiles/profile_update.html", context)
