@@ -19,7 +19,9 @@ def RequireLoginMiddleware(get_response):
         # List of 'public/whitelisted' paths (don't require user login)
         public_paths = [
             reverse('login'),
-            reverse('register')
+            reverse('register'),
+            '/admin/login/',
+            '/admin/',
         ]
 
         only_public_paths = [
