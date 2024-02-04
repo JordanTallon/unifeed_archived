@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
-from .forms import UserRegistrationForm, UserLoginForm
+from .forms import UserRegistrationForm, UserLoginForm, AccountSettingsForm
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 
 
@@ -40,6 +41,19 @@ def account_login(request):
 
     context = {'form': form}
     return render(request, "accounts/login.html", context)
+
+
+@login_required
+def account_settings(request):
+    if request.method == 'POST':
+        form = AccountSettingsForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('account_settings')
+    else:
+        form = AccountSettingsForm(instance=request.user)
+
+    return render(request, 'accounts/settings.html', {'form': form})
 
 
 def account_logout(request):
