@@ -1,5 +1,6 @@
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, password_validation
+from django.core.exceptions import ValidationError
 from django import forms
 
 from .models import User
@@ -36,19 +37,25 @@ class AccountSettingsForm(UserChangeForm):
         model = get_user_model()
         fields = ['username', 'email']
 
-    # https://docs.djangoproject.com/en/5.0/ref/forms/validation/ (for reminder on clean, TLDR: it runs automatically during form validation)
-    def clean(self):
-        cleaned_data = super().clean()
-        password1 = cleaned_data.get("password1")
-        password2 = cleaned_data.get("password2")
+    def check_passwords_match(self, password1, password2):
         # If both passwords were provided
         if password1 and password2:
             # Return the cleaned data if they match, otherwise continue to error
             if password1 == password2:
-                return cleaned_data
+                return True
 
-        # Either the passwords didn't match or one was missing
-        self.add_error('password2', "Passwords don't match.")
+        return False
+
+    # https://docs.djangoproject.com/en/5.0/ref/forms/validation/
+    # (for reminder on clean, TLDR: it runs automatically during form validation)
+    def clean(self):
+        cleaned_data = super().clean()
+        password1 = cleaned_data.get("password1")
+        password2 = cleaned_data.get("password2")
+
+        if not self.check_passwords_match(password1, password2):
+            # Either the passwords didn't match or one was missing
+            self.add_error('password2', "Passwords don't match.")
 
     def save(self, commit=True):
         user = super().save(commit=False)
