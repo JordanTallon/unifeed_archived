@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 
 
-def registration(request):
+def account_register(request):
     form = UserRegistrationForm()
 
     if request.method == "POST":
@@ -17,7 +17,7 @@ def registration(request):
             return redirect(reverse('login'))
 
     context = {'form': form}
-    return render(request, "accounts/registration.html", context)
+    return render(request, "accounts/register.html", context)
 
 
 def account_login(request):

@@ -69,6 +69,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'unifeed.middleware.RequireLoginMiddleware',
 ]
 
 ROOT_URLCONF = 'unifeed.urls'
@@ -118,6 +119,7 @@ DATABASES = {
 
 AUTH_USER_MODEL = 'accounts.User'
 
+LOGIN_URL = 'login'
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators

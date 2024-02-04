@@ -11,8 +11,8 @@ class RegistrationTest(TestCase):
         self.form_class = UserRegistrationForm
 
     def test_registration_page_correct_response(self):
-        response = self.client.get(reverse('registration'))
-        self.assertTemplateUsed(response, 'accounts/registration.html')
+        response = self.client.get(reverse('register'))
+        self.assertTemplateUsed(response, 'accounts/register.html')
         self.assertEqual(response.status_code, HTTPStatus.OK)
 
     def test_user_registration_form_has_expected_fields(self):
@@ -60,7 +60,7 @@ class RegistrationTest(TestCase):
             "password2": "33Test1234",
             "track_analytics": False
         }
-        response = self.client.post(reverse('registration'), sample_data)
+        response = self.client.post(reverse('register'), sample_data)
         self.assertRedirects(response, reverse('login'))
         self.assertEqual(User.objects.count(), 1)
         self.assertTrue(User.objects.filter(username='TestAccount').exists())
