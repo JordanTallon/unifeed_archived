@@ -13,7 +13,7 @@ class FeedItem(models.Model):
         if self.folder:
             return reverse('feeds_in_folder', args=[str(self.folder.id)])
         else:
-            return reverse('index')  # Adjust this if needed
+            return reverse('index')  
 
     def __str__(self):
         return self.title

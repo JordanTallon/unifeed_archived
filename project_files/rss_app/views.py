@@ -49,7 +49,7 @@ def index(request, folder_id=None):
                     title=title,
                     description=description,
                     link=link,
-                    folder_id=folder_id  # Set the folder attribute
+                    folder_id=folder_id
                 )
 
                 new_feed.save()
@@ -100,7 +100,6 @@ def add_feed(request):
 
         # Create or save the feed object here
 
-        # Redirect to feed list or another appropriate view
         return redirect('feed_list')
 
     return render(request, 'feed_feed.html', {'form': form})
