@@ -14,18 +14,6 @@ body {
   grid-template-columns: fit-content(350px) 1fr;
 }
 
-.content-container {
-  grid-area: content;
-  min-height: 100vh;
-  display: grid;
-  grid-template-areas:
-    "header header header header header header header"
-    "main main main main main main main"
-    "footer footer footer footer footer footer footer";
-  grid-template-rows: auto 1fr auto;
-  gap: 10px;
-}
-
 /* Header */
 header {
   grid-area: header;
@@ -45,10 +33,7 @@ footer {
 }
 
 #menu-toggle {
-  position: absolute;
   z-index: 9999;
-  top: 10px;
-  right: 20px;
 }
 
 #menu-toggle .bi-list {
@@ -64,6 +49,18 @@ footer {
 
 #menu-toggle.closed .bi-x-lg {
   display: none;
+}
+
+.content-container {
+  grid-area: content;
+  min-height: 100vh;
+  display: grid;
+  grid-template-areas:
+    "header header header header header header header"
+    "main main main main main main main"
+    "footer footer footer footer footer footer footer";
+  grid-template-rows: auto 1fr auto;
+  gap: 10px;
 }
 
 .active {
