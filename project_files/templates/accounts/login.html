@@ -9,8 +9,8 @@
           Welcome back to <span class="text-success">UniFeed</span>
         </h1>
       </div>
-      <hr class="mb-4 w-100 mx-auto" />
-      <div class="row pt-4 mt-4">
+      <hr class="mb-4 w-75 mx-auto" />
+      <div class="row pt-4 mt-4 mx-auto w-75">
         <div class="col-6 d-none d-lg-block p-4 d-flex flex-column justify-content-end">
           <img src="{% static 'images/login.svg' %}"
                class="img-fluid"
@@ -19,23 +19,25 @@
                height="auto">
         </div>
         <div class="col-12 col-lg-6 p-4 d-flex flex-column">
-          <h2 class="text-muted h3 mb-4">
-            <span class="text-dark fw-bold">Login</span> to your account
-          </h2>
-          <form action="" method="post">
-            {% csrf_token %}
-            {{ form | crispy }}
-            <button type="submit" class="btn btn-success mt-4">
-              Login <i class="bi bi-door-open ms-2"></i>
-            </button>
-          </form>
-          <p class="mt-auto mb-0">
-            <a href="{% url 'register' %}"
-               class="text-decoration-none mt-3 d-block text-muted">
-              Don't have a UniFeed account?
-              <span class="fw-bold text-dark">Sign up</span>
-            </a>
-          </p>
+          <div class="mx-auto h-100 d-flex flex-column">
+            <h2 class="text-muted h3 mb-4">
+              <span class="text-dark fw-bold">Login</span> to your account
+            </h2>
+            <form action="" method="post">
+              {% csrf_token %}
+              {{ form | crispy }}
+              <button type="submit" class="btn btn-success my-2">
+                Login <i class="bi bi-door-open ms-2"></i>
+              </button>
+            </form>
+            <div class="mt-auto">
+              <a href="{% url 'register' %}"
+                 class="text-decoration-none d-block text-muted">
+                Don't have a UniFeed account?
+                <span class="fw-bold text-dark">Sign up</span>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
