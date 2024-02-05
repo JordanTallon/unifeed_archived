@@ -7,8 +7,7 @@ from rest_framework import status
 from .forms import FeedForm
 from .models import FeedItem
 from .serializers import FeedItemListSerializer
-from folder_system.models import Folder
-import feedparser
+from feeds.models import Folder
 
 
 class RssView(GenericAPIView):
@@ -34,25 +33,6 @@ def index(request, folder_id=None):
             rss_url = form.cleaned_data['rss_url']
             folder_id = form.cleaned_data.get(
                 'folder').id if form.cleaned_data.get('folder') else None
-
-            # Use feedparser to parse the RSS feed
-            feed = feedparser.parse(rss_url)
-            items = feed.entries
-
-            for item in items:
-                title = item.title if hasattr(item, 'title') else 'No title'
-                description = item.description if hasattr(
-                    item, 'description') else 'No description'
-                link = item.link if hasattr(item, 'link') else 'No link'
-
-                new_feed = FeedItem(
-                    title=title,
-                    description=description,
-                    link=link,
-                    folder_id=folder_id
-                )
-
-                new_feed.save()
 
     else:
         form = FeedForm(folder_id=folder_id)
