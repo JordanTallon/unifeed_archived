@@ -22,3 +22,5 @@ django-crispy-forms==2.1
 crispy-bootstrap5==2023.10
 # For Django Lint (CI/CD check if HTML templates are well structured)
 djlint==1.34.1
+# For generating Unit Test coverage maps
+coverage==7.4.1
