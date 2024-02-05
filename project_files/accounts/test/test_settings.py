@@ -91,3 +91,70 @@ class AccountSettingsTest(TestCase):
 
         # Assert that the username has been changed to the new_data username
         self.assertEqual(new_data['username'], user.username)
+
+    def test_form_change_email(self):
+
+        original_data = {
+            'username': 'original_name',
+            'email': 'original@mail.com',
+            'password': '@password123!'
+        }
+
+        # Create a new user with the original data
+        user = User.objects.create_user(**original_data)
+
+        # Verify that the email of the new user is currently the original_data email
+        self.assertEqual(original_data['email'], user.email)
+
+        # Copy the original_data to new_data and change the email
+        new_data = original_data
+        new_data['email'] = "new@mail.com"
+
+        # Create a form to apply the new_data to the user
+        form = AccountSettingsForm(data=new_data, instance=user)
+
+        # Check if the form is valid
+        self.assertTrue(form.is_valid())
+
+        # Apply form changes
+        form.save()
+
+        # Reload the user from the database to get updated values
+        user.refresh_from_db()
+
+        # Assert that the email has been changed to the new_data email
+        self.assertEqual(new_data['email'], user.email)
+
+    def test_form_change_password(self):
+
+        original_data = {
+            'username': 'original_name',
+            'email': 'original@mail.com',
+            'password': '@password123!'
+        }
+
+        # Create a new user with the original data
+        user = User.objects.create_user(**original_data)
+
+        # Verify that the password of the new user is currently the original_data password
+        self.assertTrue(user.check_password(original_data['password']))
+
+        # Copy the original_data to new_data and change the password
+        new_data = original_data
+        new_data['password1'] = "@newpassword123!"
+        new_data['password2'] = "@newpassword123!"
+
+        # Create a form to apply the new_data to the user
+        form = AccountSettingsForm(data=new_data, instance=user)
+
+        # Check if the form is valid
+        self.assertTrue(form.is_valid())
+
+        # Apply form changes
+        form.save()
+
+        # Reload the user from the database to get updated values
+        user.refresh_from_db()
+
+        # Assert that the password has been changed to the new_data password
+        self.assertTrue(user.check_password(new_data['password1']))
