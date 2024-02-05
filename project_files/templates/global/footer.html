@@ -1,10 +1,12 @@
-<div class="p-3 border-top d-flex justify-content-between">
-    <div>
+<div class="p-3 border-top d-flex row container-fluid m-0">
+    <div class="col-12 col-md-6 order-2 order-md-1 text-center text-md-start mt-3 mt-md-0">
         <span class="text-muted">© 2024</span> UniFeed
     </div>
-    <div>
-        <a href="{% url 'home' %}" class="text-decoration-none text-dark ms-2">QuickLink1</a>
-        <a href="{% url 'home' %}" class="text-decoration-none text-dark ms-2">QuickLink2</a>
-        <a href="{% url 'home' %}" class="text-decoration-none text-dark ms-2">QuickLink3</a>
+    <div class="col-12 col-md-6 order-1 order-md-2">
+        <nav class="d-flex justify-content-center justify-content-md-end">
+            <a href="{% url 'home' %}" class="text-decoration-none text-dark ms-2">QuickLink1</a>
+            <a href="{% url 'home' %}" class="text-decoration-none text-dark ms-2">QuickLink2</a>
+            <a href="{% url 'home' %}" class="text-decoration-none text-dark ms-2">QuickLink3</a>
+        </nav>
     </div>
 </div>

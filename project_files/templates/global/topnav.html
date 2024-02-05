@@ -1,8 +1,14 @@
 <nav class="navbar container-fluid">
     <div class="container row mx-auto p-0">
         {% if user.is_authenticated %}
+            <!-- Unifeed Brand (for mobile only)-->
+            <div class="col-2 d-block d-md-none p-0 m-0">
+                <a href="{% url "home" %}" class="p-0 fw-bold text-success">
+                    <i class="my-auto fs-1 bi bi-rss-fill"></i>
+                </a>
+            </div>
             <!-- Search Bar -->
-            <div class="d-flex justify-content-apart col-10">
+            <div class="col-8 col-md-10 m-auto">
                 <div class="input-group">
                     <input class="form-control"
                            type="search"
@@ -13,6 +19,15 @@
                             <i class="bi bi-search"></i>
                         </button>
                     </div>
+                </div>
+            </div>
+            <!-- 'Hamburger' toggle, shown on mobile to toggle the sidebar open/closed-->
+            <div class="col-2 d-flex d-md-none p-0">
+                <div id="menu-toggle"
+                     class="p-0 ms-auto fw-bold text-dark closed"
+                     onclick="toggleSidebar()">
+                    <i class="my-auto fs-1 ms-auto bi bi-list"></i>
+                    <i class="my-auto fs-1 ms-auto bi bi-x-lg"></i>
                 </div>
             </div>
         {% else %}
@@ -32,13 +47,4 @@
             </div>
         {% endif %}
     </div>
-    {% if user.is_authenticated %}
-        <!-- 'Hamburger' toggle, shown on mobile to toggle the sidebar open/closed-->
-        <div id="menu-toggle"
-             class="d-block d-md-none closed fs-2 text-dark"
-             onclick="toggleSidebar()">
-            <i class="bi bi-list"></i>
-            <i class="bi bi-x-lg"></i>
-        </div>
-    {% endif %}
 </nav>
