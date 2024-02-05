@@ -1,4 +1,6 @@
+#folder_system/view.py
 from django.shortcuts import render, redirect
+
 from .models import Folder
 from .forms import FolderForm
 
@@ -16,3 +18,5 @@ def create_folder(request):
         form = FolderForm()
 
     return render(request, 'folder_system/create_folder.html', {'form': form})
+
+

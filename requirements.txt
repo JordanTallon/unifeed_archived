@@ -1,6 +1,6 @@
 Django==5.0.1
 psycopg2==2.9.9
-uWSGI==2.0.23
+#uWSGI==2.0.23
 djangorestframework==3.14.0
 django-factory_boy==1.0.0
 requests==2.31.0
@@ -9,3 +9,5 @@ feedparser==6.0.11
 sgmllib3k==1.0.0
 # Beautiful Soup
 bs4==0.0.2
+django-crispy-forms  # Make sure to replace with the latest version
+crispy_bootstrap5==2023.10

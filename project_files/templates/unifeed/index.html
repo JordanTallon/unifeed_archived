@@ -17,6 +17,7 @@
         <a href="{% url 'feed-list' %}">Rss Feed</a>
         <a href="{% url 'scrape' %}">Scraper</a>
         <a href="{% url 'create_folder' %}">Create Folder</a>
+        <a href="{% url 'folder_list' %}">Folders</a>
     {% else %}
         <p>You are not logged in</p>
         <a href="{% url 'login' %}">Login</a>

@@ -1,21 +1,56 @@
-<!-- rss_app/templates/rss_app/index.html -->
+<!-- rss_app/templates/rss_app/feed_list.html -->
+{% extends 'rss_app/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}RSS Feed List{% if folder %} for Folder: {{ folder.name }}{% endif %}{% endblock %}
+
+
+{% block content %}
+    <!-- rss_app/templates/rss_app/index.html -->
+<style>
+    .feed-container {
+        list-style: none;
+        padding: 0;
+    }
+
+    .feed-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+    }
+
+    .delete-button {
+        margin-left: 10px;
+    }
+
+    .clear-all-button {
+        text-align: right;
+        margin-bottom: 10px;
+    }
+</style>
+
 <form method="post" action="">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Fetch RSS</button>
 </form>
 
-<ul>
+<div class="clear-all-button">
+    <a href="{% url 'clear_all_feeds' %}">Clear All</a>
+</div>
+
+<ul class="feed-container">
     {% for item in feed_items %}
-        <li>
-            <strong>{{ item.title|striptags }}</strong><br>
-            {{ item.description|striptags }}<br>
-            <a href="{{ item.link }}" target="_blank">{{ item.link }}</a>
-            {% if item.folder %}
-                (Folder: {{ item.folder.name }})
-            {% endif %}
-            <a href="{% url 'delete_feed' feed_id=item.id %}">Delete</a>
+        <li class="feed-item">
+            <div>
+                <strong>{{ item.title|striptags }}</strong><br>
+                {{ item.description|striptags }}<br>
+                <a href="{{ item.link }}" target="_blank">{{ item.link }}</a>
+            </div>
+            <div class="delete-button">
+                <a href="{% url 'delete_feed' feed_id=item.id %}">Delete</a>
+            </div>
         </li>
     {% endfor %}
 </ul>
-
+{% endblock %}

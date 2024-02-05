@@ -1,26 +1,29 @@
+<!-- rss_app/templates/rss_app/base.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}My RSS Reader{% endblock %}</title>
-    <!-- Add your stylesheets, scripts, or other head elements here -->
+    <title>{% block title %}Base Title{% endblock %}</title>
+    <style>
+        /* Add some basic styling for the buttons */
+        .folder-button {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
 
-    <header>
-        <h1>{% block header %}My RSS Reader{% endblock %}</h1>
-        <!-- Add any header elements, navigation, etc. here -->
-    </header>
-
-    <main>
+    <div id="content">
         {% block content %}{% endblock %}
-        <!-- This is where the content of specific pages will be inserted -->
-    </main>
-
-    <footer>
-        <!-- Add footer content here -->
-    </footer>
+    </div>
 
 </body>
 </html>
