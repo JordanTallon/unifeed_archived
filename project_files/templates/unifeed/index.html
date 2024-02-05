@@ -1,27 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>HTML 5 Boilerplate</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <h1>Home page</h1>
-    {% if user.is_authenticated %}
-        <p>You are logged in as {{ user.username }}</p>
-        <a href="{% url 'logout' %}">Logout</a>
-        <!-- Link to the user's profile -->
-        <a href="{% url 'profile' %}">View Profile</a>
-        <a href="{% url 'feed-list' %}">Rss Feed</a>
-        <a href="{% url 'scrape' %}">Scraper</a>
-        <a href="{% url 'create_folder' %}">Create Folder</a>
-        <a href="{% url 'folder_list' %}">Folders</a>
-    {% else %}
-        <p>You are not logged in</p>
-        <a href="{% url 'login' %}">Login</a>
-    {% endif %}
-    <script src="index.js"></script>
-</body>
-</html>
+{% extends "global/base.html" %}
+{% block title %}
+  Page Title
+{% endblock title %}
+{% block content %}
+  <div class="container">
+    <h1>Index.html</h1>
+    <p>This is a paragraph injected from the index.html file</p>
+  </div>
+{% endblock content %}

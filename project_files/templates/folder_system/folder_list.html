@@ -1,7 +1,7 @@
-<h2>Folders</h2>
-<ul>
-    {% for folder in folders %}
-        <li>{{ folder.name }}</li>
-    {% endfor %}
-</ul>
-
+{% extends "global/base.html" %}
+{% block content %}
+    <h2>Folders</h2>
+    <ul>
+        {% for folder in folders %}<li>{{ folder.name }}</li>{% endfor %}
+    </ul>
+{% endblock content %}

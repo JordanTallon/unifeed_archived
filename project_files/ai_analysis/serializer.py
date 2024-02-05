@@ -6,4 +6,4 @@ class PoliticalBiasAnalysisSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PoliticalBiasAnalysis
-        fields = ('article_url', 'article_text_md5', 'political_bias')
+        fields = ('article_url', 'article_text_md5', 'biased_sentences')

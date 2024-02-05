@@ -1,0 +1,109 @@
+* {
+  font-family: "Nunito", sans-serif;
+}
+html {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-areas: "sidebar content";
+  grid-template-columns: fit-content(350px) 1fr;
+}
+
+/* Header */
+header {
+  grid-area: header;
+}
+
+main {
+  margin-top: 0;
+  grid-area: main;
+}
+
+footer {
+  grid-area: footer;
+}
+
+#left-sidebar {
+  grid-area: sidebar;
+}
+
+#menu-toggle {
+  z-index: 9999;
+}
+
+#menu-toggle .bi-list {
+  display: none;
+}
+#menu-toggle .bi-x-lg {
+  display: block;
+}
+
+#menu-toggle.closed .bi-list {
+  display: block;
+}
+
+#menu-toggle.closed .bi-x-lg {
+  display: none;
+}
+
+.content-container {
+  grid-area: content;
+  min-height: 100vh;
+  display: grid;
+  grid-template-areas:
+    "header header header header header header header"
+    "main main main main main main main"
+    "footer footer footer footer footer footer footer";
+  grid-template-rows: auto 1fr auto;
+  gap: 10px;
+}
+
+.active {
+  font-weight: bold;
+}
+
+/* For reference:
+xs: 0,
+sm: 576px,
+md: 768px,
+lg: 992px,
+xl: 1200px,
+xxl: 1400px */
+
+/* This is Bootstrap's 'md' breakpoint */
+@media (max-width: 767px) {
+  #left-sidebar {
+    transition: transform 0.5s;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    z-index: 9999;
+  }
+
+  #left-sidebar.hidden {
+    transform: translateX(-100%);
+  }
+
+  #overlay {
+    transition: opacity 0.5s;
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: black;
+    opacity: 0.33;
+    z-index: 9000;
+  }
+
+  #overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+}

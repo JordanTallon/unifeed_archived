@@ -1,15 +1,15 @@
-{% extends 'rss_app/base.html' %}
-
+{% extends "global/base.html" %}
 {% block content %}
   <h2>Feeds in {{ folder.name }}</h2>
-
   <ul>
     {% for item in feed_items %}
       <li>
-        <strong>{{ item.title|striptags }}</strong><br>
-        {{ item.description|striptags }}<br>
+        <strong>{{ item.title|striptags }}</strong>
+        <br>
+        {{ item.description|striptags }}
+        <br>
         <a href="{{ item.link }}" target="_blank">{{ item.link }}</a>
       </li>
     {% endfor %}
   </ul>
-{% endblock %}
+{% endblock content %}

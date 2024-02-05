@@ -1,20 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>HTML 5 Boilerplate</title>
-    <link rel="stylesheet" href="style.css">
-  </head>
-  <body>
-    
-    <form action ="" method="post">
-      {% csrf_token %}
-      {{form}}
-      <input type="submit" value="Login">
-    </form>
-    <a href = "{% url 'registration' %}">Register new account</a>
-	<script src="index.js"></script>
-  </body>
-</html>
+{% extends "global/base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+  <div class="container d-flex flex-column h-75">
+    <div class="my-auto pt-4">
+      <div class="row text-center">
+        <h1>
+          Welcome back to <span class="text-success">UniFeed</span>
+        </h1>
+      </div>
+      <hr class="w-75 mx-auto" />
+      <div class="row pt-0 mt-0 pt-md-4 mt-md-4 mx-auto w-75">
+        <div class="col-6 d-none d-lg-block p-4 d-flex flex-column justify-content-end">
+          <img src="{% static 'images/login.svg' %}"
+               class="img-fluid"
+               alt="Man entering a door"
+               width="auto"
+               height="auto">
+        </div>
+        <div class="col-12 col-lg-6 p-4 d-flex flex-column">
+          <div class="mx-auto h-100 d-flex flex-column">
+            <h2 class="text-muted h3 mb-4">
+              <span class="text-dark fw-bold">Login</span> to your account
+            </h2>
+            <form action="" method="post">
+              {% csrf_token %}
+              {{ form | crispy }}
+              <button type="submit" class="btn btn-success my-2">
+                Login <i class="bi bi-door-open ms-2"></i>
+              </button>
+            </form>
+            <div class="mt-auto">
+              <a href="{% url 'register' %}"
+                 class="text-decoration-none d-block text-muted">
+                Don't have a UniFeed account?
+                <span class="fw-bold text-dark">Sign up</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}

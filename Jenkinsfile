@@ -12,6 +12,19 @@ pipeline {
     }
 
     stages {
+
+        stage('Preparation') {
+            steps {
+                script {
+                    echo 'Preparing environment...'
+                    // Tell docker-compose to stop and remove containers, networks, volumes, and images created by 'up'
+                    // Sometimes on a failed or interrupted pipeline, it doesn't hit the command after testing to shut it down
+                    sh "docker-compose down || true"
+                    sh "docker stop \$(docker ps -q) || true"
+                }
+            }
+        }
+
         stage('Build') {
             steps {
                 echo "${env.BRANCH_NAME}"
@@ -25,17 +38,38 @@ pipeline {
             }
         }
 
+        stage('Linting Templates') {
+            steps {
+                script {
+                    updateGitlabCommitStatus name: 'lint', state: 'running'
+                    
+                    // Start the Unifeed container
+                    sh "docker-compose up -d"
+                    
+                    echo 'Linting Django templates...'
+                    
+                    def lintOutput = sh(script: 'docker-compose exec -T app djlint ./templates/ --profile=django', returnStdout: true)
+                    echo lintOutput
+
+                    // Check lint results
+                    if (lintOutput.contains("errors") && !lintOutput.contains("0 errors")){
+                        updateGitlabCommitStatus name: 'lint', state: 'failed'
+                        error "Linting failed, see output above"
+                    } else {
+                        updateGitlabCommitStatus name: 'lint', state: 'success'
+                    }
+                }
+            }
+        }
+
         stage('Test') {
             steps {
                 script {
                     updateGitlabCommitStatus name: 'test', state: 'running'
                     echo 'Testing the application..'
 
-                    // Start container
-                    sh "docker-compose up -d"
+                    // Print the test output    
                     def testOutput = sh(script: 'docker-compose exec -T app python manage.py test -v 3', returnStdout: true).trim()
-
-                    // Print the test output                    
                     echo testOutput
 
                     // Check for test failures in the output

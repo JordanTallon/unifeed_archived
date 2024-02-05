@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 import os
+import sys
 from pathlib import Path
 
 # HuggingFace API settings
@@ -38,6 +39,8 @@ ALLOWED_HOSTS.extend(
     )
 )
 
+# Set to true when the app is launched for unit testing
+TESTING = 'test' in sys.argv
 
 # Application definition
 
@@ -49,15 +52,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'accounts.apps.AccountsConfig',
-    'profiles.apps.ProfilesConfig',
     'unifeed',
     'rest_framework',
+    'crispy_forms',
+    'crispy_bootstrap5',
     'ai_analysis.apps.AiAnalysisConfig',
     'rss_app.apps.RssAppConfig',
     'scraper.apps.ScraperConfig',
     'folder_system.apps.FolderSystemConfig',
-    'crispy_forms',
-    'crispy_bootstrap5',
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
@@ -73,6 +75,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'unifeed.middleware.RequireLoginMiddleware',
 ]
 
 ROOT_URLCONF = 'unifeed.urls'
@@ -92,6 +95,11 @@ TEMPLATES = [
         },
     },
 ]
+
+# django-crispy-forms settings
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+
 
 WSGI_APPLICATION = 'unifeed.wsgi.application'
 
@@ -117,6 +125,7 @@ DATABASES = {
 
 AUTH_USER_MODEL = 'accounts.User'
 
+LOGIN_URL = 'login'
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
