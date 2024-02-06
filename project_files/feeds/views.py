@@ -6,9 +6,17 @@ from .utils import *
 from .serializers import *
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
+from django.contrib.auth import get_user_model
 
 
 def import_rss_feed(url):
+
+    # Verify that the 'url' param contained a genuine URL
+    validate = URLValidator()
+    try:
+        validate(url)
+    except:
+        raise ValueError("Invalid URL.")
 
     # Check if the feed already exists, return it if so.
     existing_feed = Feed.objects.filter(url=url).first()
@@ -61,14 +69,50 @@ def import_new_feed(request):
     if not url:
         return Response({"error": "URL is required."}, status=status.HTTP_400_BAD_REQUEST)
 
-    # Verify that the 'url' param contained a genuine URL
-    validate = URLValidator()
     try:
-        validate(url)
         feed = import_rss_feed(url)
         serialized_feed = FeedSerializer(feed).data
         return Response({"message": "RSS Feed imported successfully.", "Imported Feed": serialized_feed}, status=status.HTTP_201_CREATED)
-    except ValidationError:
-        return Response({"error": "Invalid URL."}, status=status.HTTP_400_BAD_REQUEST)
     except ValueError as e:
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+def import_user_feed(request):
+
+    data = request.data
+
+    # Make sure that both a url and user were provided in the data
+    url = data.get('url')
+    user = data.get('user')
+
+    if not url:
+        return Response({"error": "URL is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+    if not user:
+        return Response({"error": "A User is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Check if the given user exists
+    User = get_user_model()
+
+    try:
+        user = User.objects.get(pk=user)
+    except User.DoesNotExist:
+        return Response({"error": "User not found."}, status=status.HTTP_404_NOT_FOUND)
+
+    feed = None
+
+    try:
+        feed = import_rss_feed(url)
+    except ValueError as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Check if the UserFeed already exists, return it if so.
+    existing_feed = UserFeed.objects.filter(feed=feed, user=user).first()
+    if existing_feed:
+        serialized_feed = UserFeedSerializer(existing_feed).data
+        return Response({"message": "Existing UserFeed found.", "UserFeed": serialized_feed})
+
+    user_feed = UserFeed.objects.create(feed=feed, user=user)
+    serialized_feed = UserFeedSerializer(user_feed).data
+    return Response({"message": "RSS Feed assigned to user successfully.", "Userfeed": serialized_feed}, status=status.HTTP_201_CREATED)
