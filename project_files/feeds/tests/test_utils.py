@@ -1,6 +1,6 @@
 from django.test import TestCase
-from ..models import *
-from ..utils import *
+from ..models import FeedFolder, Feed, UserFeed, Article
+from ..utils import read_rss_feed, clean_rss_entries
 import json
 
 
