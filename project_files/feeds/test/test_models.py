@@ -117,4 +117,26 @@ class UserFeedModelTest(TestCase):
 
 
 class ArticleModelTest(TestCase):
-    pass
+    def setUp(self):
+        self.feed = Feed.objects.create(
+            url='http://rss.cnn.com/rss/edition.rss', name='DCU')
+
+        self.article = Article.objects.create(
+            title='DCU News',
+            link='http://example.com/dcu-news',
+            feed=self.feed,
+            publish_date=timezone.now().date()
+        )
+
+    def test_article_creation(self):
+        # Assert expected values for the article
+        self.assertEqual(self.article.title, 'DCU News')
+        self.assertEqual(self.article.link, 'http://example.com/dcu-news')
+        self.assertEqual(self.article.feed, self.feed)
+
+        # Check if the publish timestamp was correctly applied
+        now_timestamp = timezone.now().timestamp()
+        article_timestamp = self.article.publish_date
+
+        # delta=1 means there's a 1 second tolerance for comparing the two timestamps
+        self.assertAlmostEqual(now_timestamp, article_timestamp, delta=1)

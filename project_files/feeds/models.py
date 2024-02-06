@@ -46,7 +46,8 @@ class Feed(models.Model):
 
 class UserFeed(models.Model):
 
-    # 'UserFeed' to implement a custom name/description
+    # UserFeed contains its own name and description, but defaults to the values from the feed
+    # This is so that UserFeed can implement a custom name/description to user preference
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True)
 
@@ -70,7 +71,37 @@ class UserFeed(models.Model):
         null=True, blank=True
     )
 
+    def save(self, *args, **kwargs):
+        # If the user did not provide a custom name or description, default to the feed values
+        if not self.name:
+            self.name = self.feed.name
+
+        if not self.description:
+            self.description = self.feed.description
+        super().save(*args, **kwargs)
+
     class Meta:
         # FLAG: i assume this is the desired behaviour, but i could be wrong (will revisit if theres a problem).
         # Prevent the user from importing the same feed more than once
         unique_together = ('user', 'feed')
+
+
+class Article(models.Model):
+
+    # Required
+    title = models.CharField(max_length=255)
+    link = models.URLField()
+
+    # Optional (but really nice to have for visual purposes)
+    description = models.TextField(blank=True, null=True)
+    image_url = models.URLField(blank=True, null=True)
+    author = models.CharField(max_length=255, blank=True, null=True)
+    publish_date = models.DateField()
+    # Publisher would be nice to display. can be read from the title of the 'owning' rss feed?
+    publisher = models.CharField(max_length=255, blank=True, null=True)
+
+    # Delete 'Article' if the RSS it was pulled from is deleted
+    feed = models.ForeignKey(
+        Feed,
+        on_delete=models.CASCADE
+    )
