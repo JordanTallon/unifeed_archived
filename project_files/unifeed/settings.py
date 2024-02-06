@@ -57,10 +57,13 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_bootstrap5',
     'ai_analysis.apps.AiAnalysisConfig',
-    'rss_app.apps.RssAppConfig',
     'scraper.apps.ScraperConfig',
-    'folder_system.apps.FolderSystemConfig',
+    'feeds.apps.FeedsSystemConfig',
 ]
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 
 MIDDLEWARE = [

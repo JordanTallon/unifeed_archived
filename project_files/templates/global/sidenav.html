@@ -12,19 +12,19 @@
                 <span class="navbar-text">My UniFeed</span>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-dark active" href="{% url 'feed-list' %}">
+                <a class="nav-link text-dark active" href="{% url "home" %}">
                     <i class="me-3 bi bi-book"></i>
                     <span>Reading List</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-dark" href="{% url 'feed-list' %}">
+                <a class="nav-link text-dark" href="{% url "home" %}">
                     <i class="me-3 bi bi-clock-history"></i>
                     <span>Recently Read</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-dark" href="{% url 'feed-list' %}">
+                <a class="nav-link text-dark" href="{% url "home" %}">
                     <i class="me-3 bi bi-star"></i>
                     <span>Saved</span>
                 </a>
@@ -33,20 +33,20 @@
                 <span class="navbar-text">My Feeds</span>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-dark" href="{% url 'feed-list' %}">
+                <a class="nav-link text-dark" href="{% url  "home" %}">
                     <i class="me-3 bi bi-list-task"></i>
                     <span>All</span>
                 </a>
             </li>
             {% comment %}     List user folders here {% endcomment %}
             <li class="nav-item">
-                <a class="nav-link text-dark" href="{% url 'create_folder' %}">
+                <a class="nav-link text-dark" href="{% url  "home" %}">
                     <i class="me-3 bi bi-folder2"></i>
                     <span>Space</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-dark" href="{% url 'create_folder' %}">
+                <a class="nav-link text-dark" href="{% url  "home" %}">
                     <i class="me-3 bi bi-plus-circle"></i>
                     <span>Add New Feed</span>
                 </a>
