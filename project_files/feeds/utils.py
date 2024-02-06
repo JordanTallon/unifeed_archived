@@ -8,6 +8,22 @@ def read_rss_feed(rss_url):
     return rss_object
 
 
+# Extracts and returns 'meta data' from the feed
+def read_rss_channel_elements(rss):
+    feed = rss.feed
+
+    channel_elements = {
+        'title': feed.get('title', ''),
+        'description': feed.get('subtitle', ''),
+        'link': feed.get('link', ''),
+        'image_url': feed.get('image', {}).get('href', '') if feed.get('image') else '',
+        'last_updated': feed.get('updated', ''),
+        'ttl': feed.get('ttl', ''),
+    }
+
+    return channel_elements
+
+
 # Extracts and returns only relevant data from the entries
 def clean_rss_entries(rss_entries):
     clean_entries = []

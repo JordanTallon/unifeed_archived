@@ -28,6 +28,9 @@ class FeedFolder(models.Model):
 # Whenever an update request is made for the feed, it updates for all users using the shared url.
 # We can also add a search where users can find and import from feeds that other users have already brought into the platform
 class Feed(models.Model):
+    # A feed may have a link pointing to the website that owns the feed (not the RSS url)
+    link = models.URLField(blank=True)
+
     url = models.URLField(unique=True)
 
     # These will be the "true" name/description of the feed
@@ -35,13 +38,17 @@ class Feed(models.Model):
     # Sometimes the information isn't great, so the user can override this in "UserFeed"
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True)
-
+    # Some feeds have images, may be useful for styling purposes
+    image_url = models.CharField(max_length=255, blank=True)
     # Private toggle to exclude this from the potential 'search' function
     private = models.BooleanField(default=False)
 
     # To keep track of when the feed was last updated.
     # feeds should be updated regularly but we don't want to update it if for example: it was already updated 5 seconds ago.
     last_updated = models.DateTimeField(default=timezone.now)
+
+    # How often the feed should be updated (in minutes)
+    ttl = models.IntegerField(default=10)
 
 
 class UserFeed(models.Model):
