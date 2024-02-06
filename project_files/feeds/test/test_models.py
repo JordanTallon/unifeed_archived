@@ -134,9 +134,9 @@ class ArticleModelTest(TestCase):
         self.assertEqual(self.article.link, 'http://example.com/dcu-news')
         self.assertEqual(self.article.feed, self.feed)
 
-        # Check if the publish timestamp was correctly applied
-        now_timestamp = timezone.now().timestamp()
-        article_timestamp = self.article.publish_date
+        # Check if the current date was correctly applied to the publish date
+        now_date = timezone.now().date()
+        article_date = self.article.publish_date
 
-        # delta=1 means there's a 1 second tolerance for comparing the two timestamps
-        self.assertAlmostEqual(now_timestamp, article_timestamp, delta=1)
+        self.assertEqual(now_date, article_date,
+                         "The publish date is not the same as today's date")
