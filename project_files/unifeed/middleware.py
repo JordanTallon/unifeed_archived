@@ -22,6 +22,7 @@ def RequireLoginMiddleware(get_response):
             reverse('register'),
             '/admin/login/',
             '/admin/',
+            '/api/',
         ]
 
         only_public_paths = [
