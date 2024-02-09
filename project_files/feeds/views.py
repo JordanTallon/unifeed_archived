@@ -62,8 +62,8 @@ def import_rss_feed(url):
 
     feed.save()
 
-    print("Sending Signal")
-    rss_feed_imported.send(sender=import_rss_feed, rss_entries=rss.entries)
+    clean_entries = clean_rss_entries(rss.entries)
+    rss_feed_imported.send(sender=import_rss_feed, rss_entries=clean_entries)
 
     return feed
 
