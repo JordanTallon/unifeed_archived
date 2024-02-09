@@ -24,35 +24,41 @@ def read_rss_channel_elements(rss):
         'title': feed.get('title', ''),
         'description': feed.get('subtitle', ''),
         'link': feed.get('link', ''),
-        'image_url': feed.get('image', {}).get('href', '') if feed.get('image') else '',
+        'image_url': feed.get('image', ''),
         'last_updated': feed.get('updated', ''),
         'ttl': feed.get('ttl', '10'),
     }
+
+    retrieved_image_url = channel_elements['image_url']
+    if isinstance(retrieved_image_url, dict):
+        channel_elements['image_url'] = retrieved_image_url.get('href', '')
 
     return channel_elements
 
 
 # Extracts and returns only relevant data from the entries
-def clean_rss_entries(rss_entries):
+def clean_rss_entries(rss_entries, rss_header):
     # debug_examine_rss_feed(rss_entries)
     clean_entries = []
     for entry in rss_entries:
         clean_entry = {
-            # Note: I have seen alternative field names for essentially the same thing
-            # This is why fields like description have a "daisy chain" of entry gets
+            # Note: These entries are already normalized by feedparser.
+            # But since we are handling lots of different feeds, the entries can vary heavily.
             'title': entry.get('title', 'Failed to load title.'),
             'link': entry.get('link', 'Failed to load link.'),
-            'description': entry.get('description', entry.get('summary', '')),
+            'description': entry.get('summary', ''),
             'author': entry.get('author', ''),
+            'image_url': entry.get('media_content', ''),
         }
 
-        # Try read an image_url from the first element of 'media_content'
-        # I will track different rss feeds and see if the naming convention deviates from media_content
-        # If so, I will handle the other conventional names too
-        image_url = ''
-        if 'media_content' in entry and len(entry['media_content']) > 0:
-            image_url = entry['media_content'][0].get('url', '')
-        clean_entry['image_url'] = image_url
+        # If the media_content is a dictionary of different images, just use the first image.
+        if isinstance(clean_entry['image_url'], dict):
+            clean_entry['image_url'] = clean_entry['image_url'][0].get(
+                'url')
+
+        # If no image was found, default to using the rss feed's image
+        if clean_entry['image_url'] == '':
+            clean_entry['image_url'] = rss_header['image_url']
 
         parsed_datetime = None
 
