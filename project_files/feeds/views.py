@@ -9,6 +9,7 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseForbidden
+from django.contrib.auth.decorators import login_required
 
 
 def import_rss_feed(url):
@@ -80,27 +81,18 @@ def import_new_feed(request):
 
 
 @api_view(['POST'])
+@login_required
 def import_user_feed(request):
 
     data = request.data
 
     # Make sure that both a url and user were provided in the data
     url = data.get('url')
-    user = data.get('user')
 
     if not url:
         return Response({"error": "URL is required."}, status=status.HTTP_400_BAD_REQUEST)
 
-    if not user:
-        return Response({"error": "A User is required."}, status=status.HTTP_400_BAD_REQUEST)
-
-    # Check if the given user exists
-    User = get_user_model()
-
-    try:
-        user = User.objects.get(pk=user)
-    except User.DoesNotExist:
-        return Response({"error": "User not found."}, status=status.HTTP_404_NOT_FOUND)
+    user = request.user
 
     # Check if the feed is valid or already in the database (can reuse it from another user)
     feed = None
