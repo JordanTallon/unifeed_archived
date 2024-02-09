@@ -26,7 +26,10 @@ def import_rss_feed(url):
     if existing_feed:
         return existing_feed
 
-    rss = read_rss_feed(url)
+    try:
+        rss = read_rss_feed(url)
+    except ValueError as e:
+        raise ValueError(f"Error fetching RSS feed: {e}")
 
     if not rss:
         raise ValueError("Unable to import an RSS feed for the given URL")

@@ -4,7 +4,12 @@ import feedparser
 def read_rss_feed(rss_url):
     # Use feedparser to parse the RSS feed
     rss_object = feedparser.parse(rss_url)
-    # Return just the RSS_Object for now
+
+    # Check if feedparser had a problem fetching the feed
+    if hasattr(rss_object, 'status') and rss_object.status != 200:
+        raise ValueError(
+            f"Failed to fetch {rss_url}. HTTP status code: {rss_object.status}")
+
     return rss_object
 
 
