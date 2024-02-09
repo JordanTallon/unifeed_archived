@@ -7,6 +7,7 @@ from .serializers import *
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model
+from django.shortcuts import render, get_object_or_404
 
 
 def import_rss_feed(url):
@@ -100,8 +101,8 @@ def import_user_feed(request):
     except User.DoesNotExist:
         return Response({"error": "User not found."}, status=status.HTTP_404_NOT_FOUND)
 
+    # Check if the feed is valid or already in the database (can reuse it from another user)
     feed = None
-
     try:
         feed = import_rss_feed(url)
     except ValueError as e:
@@ -113,6 +114,17 @@ def import_user_feed(request):
         serialized_feed = UserFeedSerializer(existing_feed).data
         return Response({"message": "Existing UserFeed found.", "UserFeed": serialized_feed})
 
+    # Create and return the new user feed
     user_feed = UserFeed.objects.create(feed=feed, user=user)
     serialized_feed = UserFeedSerializer(user_feed).data
     return Response({"message": "RSS Feed assigned to user successfully.", "Userfeed": serialized_feed}, status=status.HTTP_201_CREATED)
+
+
+def view_folder(request, user_id, folder_id):
+    User = get_user_model()
+
+    folder = get_object_or_404(FeedFolder, pk=folder_id)
+    user = get_object_or_404(User, pk=user_id)
+    feeds = UserFeed.objects.filter(user=user, folder=folder)
+
+    return render(request, 'feeds/view_feed.html', {'folder': folder, 'feeds': feeds})
