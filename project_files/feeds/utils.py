@@ -36,10 +36,10 @@ def clean_rss_entries(rss_entries):
         clean_entry = {
             # Note: I have seen alternative field names for essentially the same thing
             # This is why fields like description have a "daisy chain" of entry gets
-            'title': entry.get('title', ''),
-            'link': entry.get('link', ''),
+            'title': entry.get('title', 'Failed to load title.'),
+            'link': entry.get('link', 'Failed to load link.'),
             'description': entry.get('description', entry.get('summary', '')),
-            'image_url': entry.get('media_content', {})[0],
+            'image_url': entry.get('media_content', {})[0]['url'],
             'author': entry.get('author', ''),
             'published': entry.get('published', ''),
         }
