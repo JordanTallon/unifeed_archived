@@ -6,25 +6,24 @@ from .models import Article
 @receiver(rss_feed_imported)
 def import_articles_from_feed(sender, **kwargs):
 
-    print("Signal received")
-
     rss_entries = kwargs.get('rss_entries')
     feed = kwargs.get('feed')
 
     for entry in rss_entries:
-        new_article = Article.objects.create(
-            title=entry['title'], link=entry['link'], feed=feed)
+        # Check if an article with this link already exists
+        # The pre-existing condition is that the article url and title are the exact same as the 'new' one
+        article, created = Article.objects.get_or_create(
+            link=entry['link'],
+            title=entry['title'],
+        )
 
-        if entry['description'] != '':
-            new_article.description = entry['description']
-
-        if entry['image_url'] != '':
-            new_article.image_url = entry['image_url']
-
-        if entry['author'] != '':
-            new_article.author = entry['author']
-
-        if entry['publish_datetime'] != '':
-            new_article.publish_datetime = entry['publish_datetime']
-
-        new_article.save()
+        # If the article is new, set its values
+        if created:
+            article.description = entry.get('description', '')
+            article.image_url = entry.get('image_url', '')
+            article.author = entry.get('author', '')
+            article.publish_datetime = entry.get('publish_datetime', None)
+            article.save()
+        else:
+            # Add the current feed to the existing article's potentially many feeds
+            article.feeds.add(feed)

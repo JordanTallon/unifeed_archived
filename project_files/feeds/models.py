@@ -2,11 +2,13 @@ from django.db import models
 from django.urls import reverse
 from django.conf import settings
 from django.utils import timezone
-
+from django.apps import apps
 
 # A feed folder allows for users to 'group' their feeds into different folders
 # This is to allow the user to 1. organize their feeds, improving the user experience
 # and 2. the user can click into their folder to see an aggregate feed containing all feeds in the folder
+
+
 class FeedFolder(models.Model):
     name = models.CharField(max_length=400)
 

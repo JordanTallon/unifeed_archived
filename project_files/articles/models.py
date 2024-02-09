@@ -16,8 +16,7 @@ class Article(models.Model):
     # Publisher would be nice to display. can be read from the title of the 'owning' rss feed?
     publisher = models.CharField(max_length=255, blank=True, default='')
 
-    # Delete 'Article' if the RSS it was pulled from is deleted
-    feed = models.ForeignKey(
-        Feed,
-        on_delete=models.CASCADE
-    )
+    # Many feeds can use the same article. For example, Fox news may have a Breaking News feed, and a Politics feed.
+    # These feeds may present the same article, in that case we want both feeds to share the same database object for reusability.
+    # This allows for a better use of system resources and storage.
+    feeds = models.ManyToManyField(Feed)
