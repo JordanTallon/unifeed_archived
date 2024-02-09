@@ -20,10 +20,15 @@ def RequireLoginMiddleware(get_response):
         public_paths = [
             reverse('login'),
             reverse('register'),
-            '/admin/login/',
-            '/admin/',
         ]
 
+        # List of 'public/whitelisted' prefixes (attempt at implementing * wildcard.)
+        public_path_prefixes = [
+            '/admin',
+            '/api',
+        ]
+
+        # These are paths only available to logged out users
         only_public_paths = [
             reverse('login'),
             reverse('register')
@@ -33,8 +38,17 @@ def RequireLoginMiddleware(get_response):
         if not request.user.is_authenticated:
             # And the path they are trying to view isn't in the 'public_paths' list
             if request.path not in public_paths:
-                # Redirect them to the login page
-                return redirect(settings.LOGIN_URL)
+                # And if the path does not begin with a public prefix
+                prefix_path = False
+                for prefix in public_path_prefixes:
+                    if request.path.startswith(prefix):
+                        prefix_path = True
+                        break
+
+                if not prefix_path:
+                    print(request.path)
+                    # Redirect them to the login page
+                    return redirect(settings.LOGIN_URL)
         # If instead, the user is authenticated
         else:
             # And they are trying to view a 'only_public' path

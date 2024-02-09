@@ -1,0 +1,11 @@
+{% extends "global/base.html" %}
+{% block content %}
+    <h2>Feeds in {{ folder.name }}</h2>
+    <ul>
+        {% for feed in feeds %}
+            <li>{{ feed.name }} - {{ feed.url }}</li>
+        {% empty %}
+            <li>No feeds found in this folder.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

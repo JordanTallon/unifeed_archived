@@ -4,8 +4,29 @@ import feedparser
 def read_rss_feed(rss_url):
     # Use feedparser to parse the RSS feed
     rss_object = feedparser.parse(rss_url)
-    # Return just the RSS_Object for now
+
+    # Check if feedparser had a problem fetching the feed
+    if hasattr(rss_object, 'status') and rss_object.status != 200:
+        raise ValueError(
+            f"Failed to fetch {rss_url}. HTTP status code: {rss_object.status}")
+
     return rss_object
+
+
+# Extracts and returns 'meta data' from the feed
+def read_rss_channel_elements(rss):
+    feed = rss.feed
+
+    channel_elements = {
+        'title': feed.get('title', ''),
+        'description': feed.get('subtitle', ''),
+        'link': feed.get('link', ''),
+        'image_url': feed.get('image', {}).get('href', '') if feed.get('image') else '',
+        'last_updated': feed.get('updated', ''),
+        'ttl': feed.get('ttl', ''),
+    }
+
+    return channel_elements
 
 
 # Extracts and returns only relevant data from the entries
