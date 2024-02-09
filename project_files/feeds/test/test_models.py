@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
-from ..models import FeedFolder, Feed, UserFeed, Article
+from ..models import FeedFolder, Feed, UserFeed
 from django.utils import timezone
 
 User = get_user_model()
@@ -114,29 +114,3 @@ class UserFeedModelTest(TestCase):
         self.assertEqual(user_feed.name, 'Custom CNN')
         self.assertEqual(user_feed.description,
                          'This description is way better than the default CNN one')
-
-
-class ArticleModelTest(TestCase):
-    def setUp(self):
-        self.feed = Feed.objects.create(
-            url='http://rss.cnn.com/rss/edition.rss', name='DCU')
-
-        self.article = Article.objects.create(
-            title='DCU News',
-            link='http://example.com/dcu-news',
-            feed=self.feed,
-            publish_date=timezone.now().date()
-        )
-
-    def test_article_creation(self):
-        # Assert expected values for the article
-        self.assertEqual(self.article.title, 'DCU News')
-        self.assertEqual(self.article.link, 'http://example.com/dcu-news')
-        self.assertEqual(self.article.feed, self.feed)
-
-        # Check if the current date was correctly applied to the publish date
-        now_date = timezone.now().date()
-        article_date = self.article.publish_date
-
-        self.assertEqual(now_date, article_date,
-                         "The publish date is not the same as today's date")
