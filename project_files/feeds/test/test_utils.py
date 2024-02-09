@@ -1,7 +1,5 @@
 from django.test import TestCase
-from ..models import FeedFolder, Feed, UserFeed, Article
 from ..utils import read_rss_feed, clean_rss_entries
-import json
 
 
 class RssFeedImportTest(TestCase):
@@ -40,5 +38,5 @@ class RssFeedImportTest(TestCase):
                           "Description not in cleaned entry")
             self.assertIn('image_url', entry, "Image URL not in cleaned entry")
             self.assertIn('author', entry, "Author not in cleaned entry")
-            self.assertIn('published', entry,
-                          "Published date not in cleaned entry")
+            self.assertIn('publish_datetime', entry,
+                          "Published datetime not in cleaned entry")

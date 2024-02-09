@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'ai_analysis.apps.AiAnalysisConfig',
     'scraper.apps.ScraperConfig',
     'feeds.apps.FeedsSystemConfig',
+    'articles.apps.ArticlesConfig',
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"

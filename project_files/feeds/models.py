@@ -2,11 +2,13 @@ from django.db import models
 from django.urls import reverse
 from django.conf import settings
 from django.utils import timezone
-
+from django.apps import apps
 
 # A feed folder allows for users to 'group' their feeds into different folders
 # This is to allow the user to 1. organize their feeds, improving the user experience
 # and 2. the user can click into their folder to see an aggregate feed containing all feeds in the folder
+
+
 class FeedFolder(models.Model):
     name = models.CharField(max_length=400)
 
@@ -91,24 +93,3 @@ class UserFeed(models.Model):
         # FLAG: i assume this is the desired behaviour, but i could be wrong (will revisit if theres a problem).
         # Prevent the user from importing the same feed more than once
         unique_together = ('user', 'feed')
-
-
-class Article(models.Model):
-
-    # Required
-    title = models.CharField(max_length=255)
-    link = models.URLField()
-
-    # Optional (but really nice to have for visual purposes)
-    description = models.TextField(blank=True, null=True)
-    image_url = models.URLField(blank=True, null=True)
-    author = models.CharField(max_length=255, blank=True, null=True)
-    publish_date = models.DateField()
-    # Publisher would be nice to display. can be read from the title of the 'owning' rss feed?
-    publisher = models.CharField(max_length=255, blank=True, null=True)
-
-    # Delete 'Article' if the RSS it was pulled from is deleted
-    feed = models.ForeignKey(
-        Feed,
-        on_delete=models.CASCADE
-    )
