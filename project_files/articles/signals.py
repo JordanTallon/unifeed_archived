@@ -24,7 +24,7 @@ def import_articles_from_feed(sender, **kwargs):
         if entry['author'] != '':
             new_article.author = entry['author']
 
-        if entry['published'] != '':
-            new_article.published = entry['published']
+        if entry['publish_datetime'] != '':
+            new_article.publish_datetime = entry['publish_datetime']
 
         new_article.save()
