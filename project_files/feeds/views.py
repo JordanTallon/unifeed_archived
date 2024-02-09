@@ -1,15 +1,16 @@
-from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from .models import *
-from .utils import *
-from .serializers import *
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
+from .models import *
+from .utils import *
+from .serializers import *
+from .signals import rss_feed_imported
 
 
 def import_rss_feed(url):
@@ -56,10 +57,13 @@ def import_rss_feed(url):
             'image_url', '') != '' else None,
 
         ttl=rss_channel_data.get('ttl') if rss_channel_data.get(
-            'ttl', '') != '' else None,
+            'ttl', '') != '' else 10,
     )
 
     feed.save()
+
+    print("Sending Signal")
+    rss_feed_imported.send(sender=import_rss_feed, rss_entries=rss.entries)
 
     return feed
 
