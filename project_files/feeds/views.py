@@ -65,6 +65,7 @@ def import_rss_feed(url):
 
 
 @api_view(['POST'])
+@login_required
 def import_new_feed(request):
 
     data = request.data
