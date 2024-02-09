@@ -5,4 +5,3 @@ from .models import *
 admin.site.register(FeedFolder)
 admin.site.register(Feed)
 admin.site.register(UserFeed)
-admin.site.register(Article)
