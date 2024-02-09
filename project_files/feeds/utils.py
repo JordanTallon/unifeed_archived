@@ -26,7 +26,7 @@ def read_rss_channel_elements(rss):
         'link': feed.get('link', ''),
         'image_url': feed.get('image', {}).get('href', '') if feed.get('image') else '',
         'last_updated': feed.get('updated', ''),
-        'ttl': feed.get('ttl', ''),
+        'ttl': feed.get('ttl', '10'),
     }
 
     return channel_elements

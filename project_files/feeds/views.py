@@ -50,14 +50,9 @@ def import_rss_feed(url):
         url=url,
         link=rss_channel_data.get('link'),
         name=rss_channel_data.get('title'),
-        description=rss_channel_data.get('description') if rss_channel_data.get(
-            'description', '') != '' else None,
-
-        image_url=rss_channel_data.get('image_url') if rss_channel_data.get(
-            'image_url', '') != '' else None,
-
-        ttl=rss_channel_data.get('ttl') if rss_channel_data.get(
-            'ttl', '') != '' else 10,
+        description=rss_channel_data.get('description'),
+        image_url=rss_channel_data.get('image_url'),
+        ttl=rss_channel_data.get('ttl'),
     )
 
     feed.save()
