@@ -8,6 +8,7 @@ from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model
 from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponseForbidden
 
 
 def import_rss_feed(url):
@@ -120,11 +121,15 @@ def import_user_feed(request):
     return Response({"message": "RSS Feed assigned to user successfully.", "Userfeed": serialized_feed}, status=status.HTTP_201_CREATED)
 
 
+@login_required
 def view_folder(request, user_id, folder_id):
     User = get_user_model()
 
     folder = get_object_or_404(FeedFolder, pk=folder_id)
     user = get_object_or_404(User, pk=user_id)
     feeds = UserFeed.objects.filter(user=user, folder=folder)
+
+    if request.user != user:
+        return HttpResponseForbidden("You are not authorized to view this folder.")
 
     return render(request, 'feeds/view_feed.html', {'folder': folder, 'feeds': feeds})
