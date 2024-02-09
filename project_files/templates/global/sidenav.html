@@ -38,13 +38,15 @@
                     <span>All</span>
                 </a>
             </li>
-            {% comment %}     List user folders here {% endcomment %}
-            <li class="nav-item">
-                <a class="nav-link text-dark" href="{% url "home" %}">
-                    <i class="me-3 bi bi-folder2"></i>
-                    <span>Space</span>
-                </a>
-            </li>
+            {% for folder in sidebar_data.user_folders %}
+                <li class="nav-item">
+                    <a class="nav-link text-dark"
+                       href="{% url 'view_folder' user.id folder.id %}">
+                        <i class="me-3 bi bi-folder2"></i>
+                        <span>{{ folder.name }}</span>
+                    </a>
+                </li>
+            {% endfor %}
             <li class="nav-item">
                 <a class="nav-link text-dark" href="{% url "home" %}">
                     <i class="me-3 bi bi-plus-circle"></i>
