@@ -1,11 +1,42 @@
 {% extends "global/base.html" %}
+{% load static %}
 {% block content %}
-    <h2>Feeds in {{ folder.name }}</h2>
-    <ul>
-        {% for feed in feeds %}
-            <li>{{ feed.name }} - {{ feed.url }}</li>
-        {% empty %}
-            <li>No feeds found in this folder.</li>
-        {% endfor %}
-    </ul>
+    <div class="d-flex">
+        <div class="list-group feed-list">
+            {% for userfeed in userfeeds %}
+                <a href="#" class="list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h6 class="fw-bold col-9">{{ userfeed.name }}</h6>
+                        <small class="col-3 text-end">3 days ago</small>
+                    </div>
+                    {% comment %} <p class="my-2 text-truncate">{{ userfeed.description }}</p> {% endcomment %}
+                    <div class="d-flex w-100 justify-content-between">
+                        <small class="col-9">And some small print.</small>
+                        {% if userfeed.feed.image_url != '' %}
+                            <img src="{{ userfeed.feed.image_url }}"
+                                 height="auto"
+                                 width="auto"
+                                 class="feed-img col-3"
+                                 alt="{{ userfeed.feed.name }} Icon">
+                        {% endif %}
+                    </div>
+                </a>
+                {% comment %}
+                <div class="list-group-item border-start-0 d-flex align-items-center">
+                    <div class="me-4 col-2">
+
+                    </div>
+                    <div class="col-9">
+                        <p class="m-0 fw-bold">{{ userfeed.name }}</p>
+                        <p class="m-0 text-truncate">{{ userfeed.description }}</p>
+                    </div>
+                </div> {% endcomment %}
+            {% empty %}
+                <li>No feeds found in this folder.</li>
+            {% endfor %}
+        </div>
+        <div class="container">
+            <h2>Content</h2>
+        </div>
+    </div>
 {% endblock content %}

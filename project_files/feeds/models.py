@@ -57,7 +57,7 @@ class UserFeed(models.Model):
 
     # UserFeed contains its own name and description, but defaults to the values from the feed
     # This is so that UserFeed can implement a custom name/description to user preference
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, blank=True)
     description = models.TextField(blank=True)
 
     # Delete 'UserFeed' if the user who created them is deleted
@@ -82,11 +82,15 @@ class UserFeed(models.Model):
 
     def save(self, *args, **kwargs):
         # If the user did not provide a custom name or description, default to the feed values
-        if not self.name:
+        if not self.name or self.name == '':
             self.name = self.feed.name
 
         if not self.description:
             self.description = self.feed.description
+
+        if self.name == '':
+            self.name = 'Unnamed Feed'
+
         super().save(*args, **kwargs)
 
     class Meta:

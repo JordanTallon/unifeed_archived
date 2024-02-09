@@ -67,6 +67,19 @@ footer {
   font-weight: bold;
 }
 
+.feed-img {
+  width: 50px;
+  object-fit: contain;
+}
+
+.feed-list {
+  width: 33%;
+  max-width: 350px;
+  height: 85vh;
+  overflow-y: scroll;
+  margin: 0;
+}
+
 /* For reference:
 xs: 0,
 sm: 576px,

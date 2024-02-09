@@ -123,9 +123,9 @@ def view_folder(request, user_id, folder_id):
 
     folder = get_object_or_404(FeedFolder, pk=folder_id)
     user = get_object_or_404(User, pk=user_id)
-    feeds = UserFeed.objects.filter(user=user, folder=folder)
+    userfeeds = UserFeed.objects.filter(user=user, folder=folder)
 
     if request.user != user:
         return HttpResponseForbidden("You are not authorized to view this folder.")
 
-    return render(request, 'feeds/view_feed.html', {'folder': folder, 'feeds': feeds})
+    return render(request, 'feeds/view_feed.html', {'folder': folder, 'userfeeds': userfeeds})
