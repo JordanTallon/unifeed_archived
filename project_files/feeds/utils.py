@@ -1,6 +1,7 @@
 import feedparser
 import email.utils
 import datetime
+from django.utils import timezone
 
 
 def read_rss_feed(rss_url):
@@ -54,6 +55,7 @@ def clean_rss_entries(rss_entries):
         clean_entry['image_url'] = image_url
 
         parsed_datetime = None
+
         # Check if feedparser was able to parse a datetime automatically, if not, parse our own.
         if entry.get('published_parsed'):
             entry_time = entry.get('published_parsed')
@@ -72,6 +74,11 @@ def clean_rss_entries(rss_entries):
             if entry.get('published'):
                 parsed_datetime = rfc882_date_to_python_datetime(
                     entry.get('published'))
+
+        # Make the parsed datetime timezone aware
+        if parsed_datetime and not timezone.is_aware(parsed_datetime):
+            parsed_datetime = timezone.make_aware(
+                parsed_datetime, timezone=timezone.get_current_timezone())
 
         clean_entry['publish_datetime'] = parsed_datetime
 
