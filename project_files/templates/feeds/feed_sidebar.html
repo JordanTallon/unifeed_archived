@@ -6,7 +6,8 @@
         <p>userfeed_articles: {{ userfeed_articles }}</p>
     </div>
     {% for folder_feed in folder_userfeeds %}
-        <a href="#" class="list-group-item list-group-item-action">
+        <a href="{% url 'view_userfeed' user.id folder.id folder_feed.id %}"
+           class="list-group-item list-group-item-action">
             <div class="d-flex w-100 justify-content-between">
                 <h6 class="fw-bold col-9">{{ folder_feed.name }}</h6>
                 <small class="col text-end">3 days ago</small>

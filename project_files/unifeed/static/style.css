@@ -1,5 +1,6 @@
 * {
   font-family: "Nunito", sans-serif;
+  box-sizing: border-box;
 }
 html {
   padding: 0;
@@ -60,7 +61,7 @@ footer {
     "header header header header header header header"
     "main main main main main main main"
     "footer footer footer footer footer footer footer";
-  grid-template-rows: auto 87vh auto;
+  grid-template-rows: auto 85vh auto;
   gap: 10px;
 }
 
@@ -79,7 +80,7 @@ footer {
   left: 0;
   overflow-y: auto;
   width: 350px;
-  height: 87vh;
+  height: 85vh;
   margin: 0;
 }
 
@@ -87,7 +88,7 @@ footer {
   overflow: auto;
   overflow-x: hidden;
   color: green;
-  height: 87vh;
+  height: 85vh;
 }
 
 /* For reference:
@@ -100,6 +101,14 @@ xxl: 1400px */
 
 /* This is Bootstrap's 'md' breakpoint */
 @media (max-width: 767px) {
+  .content-container {
+    grid-template-rows: auto 77vh auto;
+  }
+
+  .content,
+  .feed-list {
+    height: 77vh;
+  }
   #left-sidebar {
     transition: transform 0.5s;
     position: fixed;
