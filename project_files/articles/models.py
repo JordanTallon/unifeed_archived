@@ -23,4 +23,9 @@ class Article(models.Model):
 
     # A shorter version of the description for displaying in HTML for an article preview
     def preview_description(self):
-        return self.description[:90].strip() + '...' if len(self.description) > 90 else self.description
+        word_limit = 15
+        words = self.description.split()
+        if len(words) > word_limit:
+            return ' '.join(words[:word_limit]) + '...'
+        else:
+            return self.description
