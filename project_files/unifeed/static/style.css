@@ -69,6 +69,10 @@ footer {
   font-weight: bold;
 }
 
+.letter-spaced {
+  letter-spacing: 0.2rem;
+}
+
 .feed-img {
   width: 50px;
   object-fit: contain;
@@ -87,7 +91,6 @@ footer {
 .content {
   overflow: auto;
   overflow-x: hidden;
-  color: green;
   height: 100%;
 }
 

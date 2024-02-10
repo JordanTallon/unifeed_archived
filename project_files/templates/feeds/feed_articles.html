@@ -11,7 +11,6 @@ publish_datetime = models.DateTimeField(blank=True, null=True)
 publisher = models.CharField(max_length=255, blank=True, default='')
 {% endcomment %}
 <div class="row mx-auto gx-5">
-    <h1>Test</h1>
     {% for article in userfeed_articles %}
         <div class="col-4 p-2 text-dark">
             <div class="h-100 w-100 p-4 d-flex flex-column">

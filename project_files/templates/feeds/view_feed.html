@@ -2,10 +2,17 @@
 {% load static %}
 {% block content %}
     {% include "feeds/feed_sidebar.html" %}
-    <div class="container-fluid content">
-        <div class="w-100 container mx-auto">
-            <h2>Content</h2>
-            {% include "feeds/feed_articles.html" %}
+    <div class="sticky-top bg-white border-bottom">
+        <div class="container d-flex justify-content-between align-items-start ">
+            <h1>{{ folder.name }} Folder</h1>
+            <button class="btn text-uppercase fw-bold text-muted letter-spaced"
+                    type="button"
+                    data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasRight"
+                    aria-controls="offcanvasRight">View/Manage Feeds</button>
         </div>
+    </div>
+    <div class="container-fluid content">
+        <div class="w-100 container mx-auto">{% include "feeds/feed_articles.html" %}</div>
     </div>
 {% endblock content %}
