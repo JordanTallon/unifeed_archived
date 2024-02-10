@@ -1,10 +1,10 @@
-<div class="position-absolute p-0 list-group feed-list">
-    <div class="bg-primary p-4 m-4">
+<div class="position-absolute p-0 list-group feed-list bg-light shadow-lg hidden">
+    {% comment %}     <div class="bg-primary p-4 m-4">
         <p>folder: {{ folder }}</p>
         <p>folder_userfeeds: {{ folder_userfeeds }}</p>
         <p>userfeed: {{ userfeed }}</p>
         <p>userfeed_articles: {{ userfeed_articles }}</p>
-    </div>
+    </div> {% endcomment %}
     {% for folder_feed in folder_userfeeds %}
         <a href="{% url 'view_userfeed' user.id folder.id folder_feed.id %}"
            class="list-group-item list-group-item-action">
