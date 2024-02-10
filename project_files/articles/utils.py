@@ -1,10 +1,10 @@
 import email.utils
 import datetime
 from django.utils import timezone
+from .models import Article
+
 
 # Extracts and returns only relevant article data from the entries
-
-
 def clean_rss_entries(rss_entries, rss_header):
 
     clean_entries = []
@@ -62,6 +62,29 @@ def clean_rss_entries(rss_entries, rss_header):
                 parsed_datetime, timezone=timezone.get_current_timezone())
 
         clean_entry['publish_datetime'] = parsed_datetime
+
+        # Handle database limitations
+        # Get max lengths for CharFields in Article model
+        title_max_length = Article._meta.get_field('title').max_length
+        author_max_length = Article._meta.get_field('author').max_length
+        link_max_length = Article._meta.get_field('link').max_length
+        # publisher_max_length = Article._meta.get_field('publisher').max_length
+
+        if len(clean_entry['link']) > link_max_length:
+            # Sadly a link cannot be truncated without losing the validity of the url.
+            # For now, just skip this entry due to technical limitations.
+            # In the future, I will research alternative procedures, top of my head:
+            # 1. Implementing a URL shortener / redirector
+            # 2. Futhering investigation into pushing the character limits of Djangos URLField.
+            continue
+
+        # Truncate any fields above their max length.
+        if len(clean_entry['title']) > title_max_length:
+            # Truncate the title at max_length -3 characters (to make room for 3 ellipsis for styling)
+            clean_entry['title'] = clean_entry['title'][:title_max_length-3] + '...'
+        clean_entry['author'] = clean_entry['author'][:author_max_length]
+        # clean_entry['publisher'] = clean_entry['publisher'][:publisher_max_length]
+
         clean_entries.append(clean_entry)
 
     print("ALL DONE")
