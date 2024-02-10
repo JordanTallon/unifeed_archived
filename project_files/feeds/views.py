@@ -128,4 +128,5 @@ def view_folder(request, user_id, folder_id):
     if request.user != user:
         return HttpResponseForbidden("You are not authorized to view this folder.")
 
-    return render(request, 'feeds/view_feed.html', {'folder': folder, 'userfeeds': userfeeds})
+    repeat_times = range(3)
+    return render(request, 'feeds/view_feed.html', {'folder': folder, 'userfeeds': userfeeds, 'repeat': repeat_times})

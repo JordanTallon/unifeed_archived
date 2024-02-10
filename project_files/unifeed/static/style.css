@@ -22,6 +22,7 @@ header {
 main {
   margin-top: 0;
   grid-area: main;
+  overflow: hidden;
 }
 
 footer {
@@ -53,13 +54,13 @@ footer {
 
 .content-container {
   grid-area: content;
-  min-height: 100vh;
+  height: 100vh;
   display: grid;
   grid-template-areas:
     "header header header header header header header"
     "main main main main main main main"
     "footer footer footer footer footer footer footer";
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: auto 87vh auto;
   gap: 10px;
 }
 
@@ -73,11 +74,20 @@ footer {
 }
 
 .feed-list {
-  width: 33%;
-  max-width: 350px;
-  height: 85vh;
-  overflow-y: scroll;
+  grid-area: main;
+  top: 0;
+  left: 0;
+  overflow-y: auto;
+  width: 350px;
+  height: 87vh;
   margin: 0;
+}
+
+.content {
+  overflow: auto;
+  overflow-x: hidden;
+  color: green;
+  height: 87vh;
 }
 
 /* For reference:
