@@ -1,0 +1,6 @@
+# Rules ignored
+# H021 - no inline styling (generally good but there's some dynamic content where inline is ideal, such as setting the background image to a Django model variable)
+# H006 - Img tag should have height and width attributes.
+ignore:
+  - "H021"
+  - "H006"
