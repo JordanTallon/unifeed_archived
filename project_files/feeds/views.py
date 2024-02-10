@@ -8,6 +8,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
 from .models import *
+from articles.models import Article
 from .utils import *
 from .serializers import *
 from .signals import rss_feed_imported
@@ -130,3 +131,29 @@ def view_folder(request, user_id, folder_id):
 
     repeat_times = range(3)
     return render(request, 'feeds/view_feed.html', {'folder': folder, 'userfeeds': userfeeds, 'repeat': repeat_times})
+
+
+@login_required
+def view_userfeed(request, user_id, folder_id, userfeed_id):
+    User = get_user_model()
+
+    folder = get_object_or_404(FeedFolder, pk=folder_id)
+    user = get_object_or_404(User, pk=user_id)
+    folder_userfeeds = UserFeed.objects.filter(user=user, folder=folder)
+
+    if request.user != user:
+        return HttpResponseForbidden("You are not authorized to view this folder.")
+
+    try:
+        userfeed = folder_userfeeds.get(pk=userfeed_id)
+    except UserFeed.DoesNotExist:
+        return HttpResponseForbidden("Feed not found.")
+
+    userfeed_articles = Article.objects.filter(feeds__in=[userfeed.feed])
+
+    return render(request, 'feeds/view_feed.html', {
+        'folder': folder,
+        'folder_userfeeds': folder_userfeeds,
+        'userfeed': userfeed,
+        'userfeed_articles': userfeed_articles,
+    })
