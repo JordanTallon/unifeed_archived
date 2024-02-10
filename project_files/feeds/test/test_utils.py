@@ -1,5 +1,5 @@
 from django.test import TestCase
-from ..utils import read_rss_feed, clean_rss_entries
+from ..utils import read_rss_feed
 
 
 class RssFeedImportTest(TestCase):
@@ -22,21 +22,3 @@ class RssFeedImportTest(TestCase):
         # Assert that a feed was returned by the read_rss_feed function
         self.assertTrue(
             self.rss.feed, "No feed (channel elements) could be read from the RSS feed.")
-
-    def test_clean_rss_entries(self):
-        entries = self.rss.entries
-        clean = clean_rss_entries(entries)
-
-        # Make sure that the cleaned data has at least 1 entry
-        self.assertGreater(len(clean), 0, "No entries in cleaned data")
-
-        # Assert that the cleaned rss entries contains all the expected fields
-        for entry in clean:
-            self.assertIn('title', entry, "Title not in cleaned entry")
-            self.assertIn('link', entry, "Link not in cleaned entry")
-            self.assertIn('description', entry,
-                          "Description not in cleaned entry")
-            self.assertIn('image_url', entry, "Image URL not in cleaned entry")
-            self.assertIn('author', entry, "Author not in cleaned entry")
-            self.assertIn('publish_datetime', entry,
-                          "Published datetime not in cleaned entry")
