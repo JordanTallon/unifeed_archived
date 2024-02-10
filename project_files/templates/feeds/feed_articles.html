@@ -10,10 +10,10 @@ publish_datetime = models.DateTimeField(blank=True, null=True)
 # Publisher would be nice to display. can be read from the title of the 'owning' rss feed?
 publisher = models.CharField(max_length=255, blank=True, default='')
 {% endcomment %}
-<div class="row mx-auto gx-5">
+<div class="row mx-auto mt-4 g-0 gy-4 g-md-4 g-lg-5">
     {% for article in userfeed_articles %}
-        <div class="col-4 p-2 text-dark">
-            <div class="h-100 w-100 p-4 d-flex flex-column">
+        <div class="col-12 col-sm-6 col-lg-4 text-dark">
+            <div class="h-100 w-100 d-flex flex-column">
                 <div class="article-preview-image mb-4"
                      style="background-image: url('{{ article.image_url }}')"></div>
                 {% comment %}                      <div class="article-preview-image" style="background-image: url('https://placehold.co/800?text=Hello+World&font=roboto')"></div> {% endcomment %}

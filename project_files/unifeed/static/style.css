@@ -35,7 +35,7 @@ footer {
 }
 
 #menu-toggle {
-  z-index: 9999;
+  z-index: 9998;
 }
 
 #menu-toggle .bi-list {
@@ -94,6 +94,10 @@ footer {
   height: 100%;
 }
 
+.offcanvas {
+  z-index: 9999;
+}
+
 .article-preview-image {
   background-color: rgb(223, 223, 223);
   width: 100%;
@@ -136,7 +140,7 @@ xxl: 1400px */
     position: fixed;
     top: 0;
     bottom: 0;
-    z-index: 9999;
+    z-index: 9998;
   }
 
   #left-sidebar.hidden {
