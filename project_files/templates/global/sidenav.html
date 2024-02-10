@@ -41,7 +41,7 @@
             {% for folder in sidebar_data.user_folders %}
                 <li class="nav-item">
                     <a class="nav-link text-dark"
-                       href="{% url 'view_folder' user.id folder.id %}">
+                       href="{% url 'view_userfeed' user.id folder.id %}">
                         <i class="me-3 bi bi-folder2"></i>
                         <span>{{ folder.name }}</span>
                     </a>

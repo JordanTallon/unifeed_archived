@@ -76,7 +76,6 @@ footer {
 
 .feed-list {
   z-index: 8000;
-  grid-area: main;
   top: 0;
   bottom: 0;
   left: 0;

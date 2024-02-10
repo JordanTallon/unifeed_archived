@@ -129,19 +129,27 @@ def view_folder(request, user_id, folder_id):
 
 
 @login_required
-def view_userfeed(request, user_id, folder_id, userfeed_id):
+def view_userfeed(request, user_id, folder_id,  userfeed_id=None):
     User = get_user_model()
 
     folder = get_object_or_404(FeedFolder, pk=folder_id)
     user = get_object_or_404(User, pk=user_id)
     folder_userfeeds = UserFeed.objects.filter(user=user, folder=folder)
-    userfeed = get_object_or_404(
-        UserFeed, user=user, folder=folder, pk=userfeed_id)
 
     if request.user != user:
         return HttpResponseForbidden("You are not authorized to view this folder.")
 
-    userfeed_articles = Article.objects.filter(feeds__in=[userfeed.feed])
+    # If an ID was present
+    if userfeed_id:
+        # Find the userfeed associated with that ID and return the articles in it
+        userfeed = get_object_or_404(
+            UserFeed, user=user, folder=folder, pk=userfeed_id)
+        userfeed_articles = Article.objects.filter(feeds__in=[userfeed.feed])
+    else:
+        # If no userfeed ID was present, get all userfeeds within the folder, and return all their articles.
+        userfeed = None
+        userfeed_articles = Article.objects.filter(
+            feeds__in=folder_userfeeds.values_list('feed', flat=True))
 
     return render(request, 'feeds/view_feed.html', {
         'folder': folder,
