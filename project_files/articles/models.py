@@ -6,7 +6,7 @@ class Article(models.Model):
 
     # Required
     title = models.CharField(max_length=255)
-    link = models.URLField()
+    link = models.URLField(max_length=500)
 
     # Optional (but really nice to have for visual purposes)
     description = models.TextField(blank=True, null=True)

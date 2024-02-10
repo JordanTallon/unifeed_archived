@@ -8,6 +8,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
 from .models import *
+from articles.models import Article
 from .utils import *
 from .serializers import *
 from .signals import rss_feed_imported
@@ -42,29 +43,19 @@ def import_rss_feed(url):
     # Parse out relevant information within the 'feed' of the parsed RSS.
     rss_channel_data = read_rss_channel_elements(rss)
 
-    # At minimum, the channel data should have a title and url.
-    if 'title' not in rss_channel_data or 'link' not in rss_channel_data:
-        raise ValueError("No title or link in RSS feed")
-
     feed = Feed.objects.create(
         url=url,
         link=rss_channel_data.get('link'),
         name=rss_channel_data.get('title'),
-        description=rss_channel_data.get('description') if rss_channel_data.get(
-            'description', '') != '' else None,
-
-        image_url=rss_channel_data.get('image_url') if rss_channel_data.get(
-            'image_url', '') != '' else None,
-
-        ttl=rss_channel_data.get('ttl') if rss_channel_data.get(
-            'ttl', '') != '' else 10,
+        description=rss_channel_data.get('description'),
+        image_url=rss_channel_data.get('image_url'),
+        ttl=rss_channel_data.get('ttl'),
     )
 
     feed.save()
 
-    clean_entries = clean_rss_entries(rss.entries)
     rss_feed_imported.send(sender=import_rss_feed,
-                           rss_entries=clean_entries, feed=feed)
+                           rss=rss, rss_channel_data=rss_channel_data, feed=feed)
 
     return feed
 
@@ -128,9 +119,33 @@ def view_folder(request, user_id, folder_id):
 
     folder = get_object_or_404(FeedFolder, pk=folder_id)
     user = get_object_or_404(User, pk=user_id)
-    feeds = UserFeed.objects.filter(user=user, folder=folder)
+    userfeeds = UserFeed.objects.filter(user=user, folder=folder)
 
     if request.user != user:
         return HttpResponseForbidden("You are not authorized to view this folder.")
 
-    return render(request, 'feeds/view_feed.html', {'folder': folder, 'feeds': feeds})
+    repeat_times = range(3)
+    return render(request, 'feeds/view_feed.html', {'folder': folder, 'userfeeds': userfeeds, 'repeat': repeat_times})
+
+
+@login_required
+def view_userfeed(request, user_id, folder_id, userfeed_id):
+    User = get_user_model()
+
+    folder = get_object_or_404(FeedFolder, pk=folder_id)
+    user = get_object_or_404(User, pk=user_id)
+    folder_userfeeds = UserFeed.objects.filter(user=user, folder=folder)
+    userfeed = get_object_or_404(
+        UserFeed, user=user, folder=folder, pk=userfeed_id)
+
+    if request.user != user:
+        return HttpResponseForbidden("You are not authorized to view this folder.")
+
+    userfeed_articles = Article.objects.filter(feeds__in=[userfeed.feed])
+
+    return render(request, 'feeds/view_feed.html', {
+        'folder': folder,
+        'folder_userfeeds': folder_userfeeds,
+        'userfeed': userfeed,
+        'userfeed_articles': userfeed_articles,
+    })
