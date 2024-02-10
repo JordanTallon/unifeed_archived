@@ -2,9 +2,16 @@ import email.utils
 import datetime
 from django.utils import timezone
 from .models import Article
+from bs4 import BeautifulSoup
 
+
+def strip_html(content):
+    soup = BeautifulSoup(content, "html.parser")
+    return soup.get_text()
 
 # Extracts and returns only relevant article data from the entries
+
+
 def clean_rss_entries(rss_entries, rss_header):
 
     clean_entries = []
@@ -84,6 +91,8 @@ def clean_rss_entries(rss_entries, rss_header):
             clean_entry['title'] = clean_entry['title'][:title_max_length-3] + '...'
         clean_entry['author'] = clean_entry['author'][:author_max_length]
         # clean_entry['publisher'] = clean_entry['publisher'][:publisher_max_length]
+
+        # Strip out any HTML found in the description or title (some RSS feeds provide HTML, which we don't want)
 
         clean_entries.append(clean_entry)
 
