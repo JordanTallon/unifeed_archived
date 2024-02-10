@@ -43,10 +43,6 @@ def import_rss_feed(url):
     # Parse out relevant information within the 'feed' of the parsed RSS.
     rss_channel_data = read_rss_channel_elements(rss)
 
-    # At minimum, the channel data should have a title and url.
-    if 'title' not in rss_channel_data or 'link' not in rss_channel_data:
-        raise ValueError("No title or link in RSS feed")
-
     feed = Feed.objects.create(
         url=url,
         link=rss_channel_data.get('link'),
@@ -58,9 +54,8 @@ def import_rss_feed(url):
 
     feed.save()
 
-    clean_entries = clean_rss_entries(rss.entries, rss_channel_data)
     rss_feed_imported.send(sender=import_rss_feed,
-                           rss_entries=clean_entries, feed=feed)
+                           rss=rss, rss_channel_data=rss_channel_data, feed=feed)
 
     return feed
 
@@ -140,14 +135,11 @@ def view_userfeed(request, user_id, folder_id, userfeed_id):
     folder = get_object_or_404(FeedFolder, pk=folder_id)
     user = get_object_or_404(User, pk=user_id)
     folder_userfeeds = UserFeed.objects.filter(user=user, folder=folder)
+    userfeed = get_object_or_404(
+        UserFeed, user=user, folder=folder, pk=userfeed_id)
 
     if request.user != user:
         return HttpResponseForbidden("You are not authorized to view this folder.")
-
-    try:
-        userfeed = folder_userfeeds.get(pk=userfeed_id)
-    except UserFeed.DoesNotExist:
-        return HttpResponseForbidden("Feed not found.")
 
     userfeed_articles = Article.objects.filter(feeds__in=[userfeed.feed])
 
