@@ -20,3 +20,12 @@ class Article(models.Model):
     # These feeds may present the same article, in that case we want both feeds to share the same database object for reusability.
     # This allows for a better use of system resources and storage.
     feeds = models.ManyToManyField(Feed)
+
+    # A shorter version of the description for displaying in HTML for an article preview
+    def preview_description(self):
+        word_limit = 15
+        words = self.description.split()
+        if len(words) > word_limit:
+            return ' '.join(words[:word_limit]) + '...'
+        else:
+            return self.description
