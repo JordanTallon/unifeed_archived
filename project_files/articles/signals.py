@@ -25,7 +25,7 @@ def import_articles_from_feed(sender, **kwargs):
             article.description = entry['description']
             article.image_url = entry['image_url']
             article.author = entry['author']
-            article.publish_datetime = ['publish_datetime']
+            article.publish_datetime = entry['publish_datetime']
             article.save()
             article.feeds.add(feed)
         else:

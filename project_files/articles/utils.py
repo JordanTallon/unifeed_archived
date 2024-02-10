@@ -9,6 +9,13 @@ def clean_rss_entries(rss_entries, rss_header):
 
     clean_entries = []
     for entry in rss_entries:
+        # If the media_content is present, check if its a list of different images
+        # if so, just use the first image.
+        if 'media_content' in entry:
+            if isinstance(entry['media_content'], list):
+                entry['media_content'] = entry['media_content'][0].get(
+                    'url')
+
         clean_entry = {
             # Note: These entries are already normalized by feedparser.
             # But since we are handling lots of different feeds, the entries can heavily vary.
@@ -19,12 +26,7 @@ def clean_rss_entries(rss_entries, rss_header):
             'image_url': entry.get('media_content', ''),
         }
 
-        # If the media_content is a dictionary of different images, just use the first image.
-        if isinstance(clean_entry['image_url'], dict):
-            clean_entry['image_url'] = clean_entry['image_url'][0].get(
-                'url')
-
-        # If no image was found, default to using the rss feed's image
+        # If no image was found, default to using the rss feed's image (may also be none)
         if clean_entry['image_url'] == '':
             clean_entry['image_url'] = rss_header['image_url']
 
@@ -32,22 +34,27 @@ def clean_rss_entries(rss_entries, rss_header):
 
         # Check if feedparser was able to parse a datetime automatically, if not, parse our own.
         if entry.get('published_parsed'):
-            entry_time = entry.get('published_parsed')
-            parsed_datetime = datetime.datetime(
-                year=entry_time.tm_year,
-                month=entry_time.tm_mon,
-                day=entry_time.tm_mday,
-                hour=entry_time.tm_hour,
-                minute=entry_time.tm_min,
-                second=entry_time.tm_sec
-            )
-        else:
-            # No parsed published was found, parse the published datetime if it exists instead
-            # its safe to assume it's an rfc882 datetime.
-            # See rfc882_date_to_python_datetime comments for more information
-            if entry.get('published'):
+            try:
+                entry_time = entry.get('published_parsed')
+                parsed_datetime = datetime.datetime(
+                    year=entry_time.tm_year,
+                    month=entry_time.tm_mon,
+                    day=entry_time.tm_mday,
+                    hour=entry_time.tm_hour,
+                    minute=entry_time.tm_min,
+                    second=entry_time.tm_sec
+                )
+            except Exception as e:
+                print(f"Error parsing 'published_parsed': {e}")
+        # No parsed published was found, parse the published datetime if it exists instead
+        # its safe to assume it's an rfc882 datetime.
+        # See rfc882_date_to_python_datetime comments for more information
+        elif entry.get('published'):
+            try:
                 parsed_datetime = rfc882_date_to_python_datetime(
                     entry.get('published'))
+            except Exception as e:
+                print(f"Error parsing 'published': {e}")
 
         # Make the parsed datetime timezone aware
         if parsed_datetime and not timezone.is_aware(parsed_datetime):
@@ -55,8 +62,9 @@ def clean_rss_entries(rss_entries, rss_header):
                 parsed_datetime, timezone=timezone.get_current_timezone())
 
         clean_entry['publish_datetime'] = parsed_datetime
-
         clean_entries.append(clean_entry)
+
+    print("ALL DONE")
     return clean_entries
 
 
