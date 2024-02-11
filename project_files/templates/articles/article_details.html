@@ -19,36 +19,43 @@
                                data-bs-container="body"
                                data-bs-placement="top"
                                data-bs-content="Add to Reading List">
-                                <i class="me-3 bi bi-book"></i>
-                            </a>
+                                <i class="bi bi-book"></i></a>
                             <a href="#"
-                               class="text-muted"
+                               class="text-muted ms-3"
                                data-bs-toggle="popover"
                                data-bs-trigger="hover"
                                data-bs-container="body"
                                data-bs-placement="top"
                                data-bs-content="Save Article">
-                                <i class="me-3 bi bi-star"></i>
-                            </a>
+                                <i class="bi bi-star"></i></a>
                         </div>
                     </div>
                     <hr>
                     <h1 class="mt-4 fw-bold">{{ article.title }}</h1>
-                    <p class="text-muted">
-                        <small class="me-1"><i class="bi bi-clock"></i></small>
-                        Published {{ article.publish_datetime }}
-                    </p>
-                    <img src="{{ article.image_url }}"
-                         class="img-fluid my-4"
-                         width="auto"
-                         height="auto"
-                         alt="News Photograph for {{ article.title }}">
-                    <p>{{ article.link }}</p>
-                    <p>{{ article.description }}</p>
-                    <p>{{ article.author }}</p>
+                    {% if article.publish_datetime != None %}
+                        <p class="text-muted">
+                            <small class="me-1"><i class="bi bi-clock"></i></small>
+                            Published {{ article.publish_datetime }}
+                        </p>
+                    {% endif %}
+                    {% if article.image_url != "" %}
+                        <img src="{{ article.image_url }}"
+                             class="img-fluid my-4"
+                             width="auto"
+                             height="auto"
+                             alt="News Photograph for {{ article.title }}">
+                    {% endif %}
+                    {% if article.author != "" %}
+                        <h3 class="h5 fw-bold">By {{ article.author }}</h3>
+                        <hr>
+                    {% endif %}
+                    {% if article.description != "" %}
+                        <h4 class="h5 fw-bold">Description</h4>
+                        <p>{{ article.description }}</p>
+                    {% endif %}
                     <p>{{ article.publisher }}</p>
                     <div class="d-grid gap-2">
-                        <button class="btn btn-outline-success">View Article</button>
+                        <a class="btn btn-outline-success" href="{{ article.link }}">Read Full Article</a>
                     </div>
                 </div>
                 <div class="col">
