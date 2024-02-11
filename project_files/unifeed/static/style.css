@@ -70,7 +70,7 @@ footer {
 }
 
 .letter-spaced {
-  letter-spacing: 0.2rem;
+  letter-spacing: 0.133rem;
 }
 
 .feed-img {
@@ -99,7 +99,7 @@ footer {
 }
 
 .article-preview-image {
-  background-color: rgb(223, 223, 223);
+  background-color: #dfdfdf;
   width: 100%;
   padding-bottom: 50%;
   background-size: cover;
@@ -121,7 +121,8 @@ footer {
   opacity: 0.15;
 }
 
-.article-preview-image:hover::after {
+/* triggers when the grandparent 'article' element is hovered */
+.article:hover .article-preview-image:after {
   opacity: 0.6;
   background: #202020;
 }

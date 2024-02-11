@@ -1,3 +1,4 @@
+// Used for toggling the side menu on mobile.
 function toggleSidebar() {
   var leftSidebar = document.getElementById("left-sidebar");
   leftSidebar.classList.toggle("hidden");

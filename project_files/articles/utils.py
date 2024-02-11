@@ -98,7 +98,6 @@ def clean_rss_entries(rss_entries, rss_header):
 
         clean_entries.append(clean_entry)
 
-    print("ALL DONE")
     return clean_entries
 
 
