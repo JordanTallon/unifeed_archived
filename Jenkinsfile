@@ -20,7 +20,7 @@ pipeline {
                     // Tell docker-compose to stop and remove containers, networks, volumes, and images created by 'up'
                     // Sometimes on a failed or interrupted pipeline, it doesn't hit the command after testing to shut it down
                     sh "docker-compose down"
-                    sh "docker stop \$(docker ps -q)"
+                    sh "docker ps -q | xargs -r docker stop"
                 }
             }
         }
