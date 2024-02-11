@@ -1,6 +1,7 @@
 <div class="row mx-auto mt-4 g-0 gy-4 g-md-4 g-lg-5">
     {% for article in userfeed_articles %}
-        <div class="col-12 col-sm-6 col-lg-4 text-dark">
+        <a class="article col-12 col-sm-6 col-lg-4 text-dark text-decoration-none"
+           href="{% url 'article_details' article.id %}">
             <div class="h-100 w-100 d-flex flex-column">
                 {% if article.image_url == '' %}
                     <!--
@@ -8,7 +9,7 @@
                     some dynamic content here where inline is ideal - setting the background image to a Django model variable) 
                     -->
                     <!-- djlint:off --><div class="article-preview-image mb-4"
-                    style="background-image: url('https://placehold.co/600x400/dfdfdf/FFF?text=Unifeed&font=roboto')"> <!-- djlint:on -->
+                    style="background-image: url('https://placehold.co/600x400/dfdfdf/FFF?text={{ userfeed.name }}&font=roboto')"> <!-- djlint:on -->
                 </div>
             {% else %}
                 <div class="article-preview-image mb-4"
@@ -22,6 +23,6 @@
                 <div>{{ article.publish_datetime }}</div>
             </small>
         </div>
-    </div>
+    </a>
 {% endfor %}
 </div>
