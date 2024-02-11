@@ -4,9 +4,9 @@
     <div class="container-fluid content">
         <div class="container pt-4">
             <div class="row gx-5">
-                <div class="col-9">
+                <div class="col-8  p-4">
                     <div id="article-actions" class="d-flex justify-content-between">
-                        <a class="text-muted fw-bold letter-spaced text-decoration-none text-uppercase"
+                        <a class="text-dark letter-spaced text-decoration-none text-uppercase"
                            href="#"
                            onclick="goBack()">
                             <i class="text-dark bi bi-arrow-left"></i>
@@ -58,8 +58,30 @@
                         <a class="btn btn-outline-success" href="{{ article.link }}">Read Full Article</a>
                     </div>
                 </div>
-                <div class="col">
-                    {% for feed in article.feeds.all %}<small class="text-uppercase fw-bold">More from Your UniFeed</small>{% endfor %}
+                <div class="col p-4 d-flex flex-column">
+                    <small class="text-uppercase fw-bold mx-auto mb-4">More from Your UniFeed</small>
+                    <div class="mx-auto row gy-5 w-75">
+                        {% for article in related_articles %}
+                            <a class="text-decoration-none text-dark"
+                               href="{% url 'article_details' article.id %}">
+                                <div class="card border-0">
+                                    {% if article.image_url != "" %}
+                                        <div class="card-img-top article-preview-image"
+                                             style="background-image: url('{{ article.image_url }}"></div>
+                                    {% endif %}
+                                    <div class="card-body mt-2 p-0">
+                                        <h5 class="card-title fw-bold">
+                                            <small>{{ article.title }}</small>
+                                        </h5>
+                                        {% if article.description != "" %}<p class="card-text">{{ article.preview_description }}</p>{% endif %}
+                                        <p class="card-text">
+                                            <small class="text-muted">Last updated 3 mins ago</small>
+                                        </p>
+                                    </div>
+                                </div>
+                            </a>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
         </div>
