@@ -1,1 +1,38 @@
-<h1>Hello Articles World</h1>
+{% extends "global/base.html" %}
+{% load static %}
+{% block content %}
+    <div class="container-fluid content">
+        <div class="row">
+            <div class="col-8 container pt-4">
+                <div class="row gx-5">
+                    <div class="col-9">
+                        <a class="text-muted fw-bold letter-spaced text-decoration-none text-uppercase">
+                            <i class="text-dark bi bi-arrow-left"></i>
+                            <small>Go Back</small>
+                        </a>
+                        <h1 class="my-4 fw-bold">{{ article.title }}</h1>
+                        <p class="text-muted">
+                            <small class="me-1"><i class="bi bi-clock"></i></small>
+                            Published {{ article.publish_datetime }}
+                        </p>
+                        <img src="{{ article.image_url }}"
+                             class="img-fluid"
+                             width="auto"
+                             height="auto"
+                             alt="News Photograph for {{ article.title }}">
+                        <p>{{ article.link }}</p>
+                        <p>{{ article.description }}</p>
+                        <p>{{ article.author }}</p>
+                        <p>{{ article.publisher }}</p>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-outline-success">View Article</button>
+                        </div>
+                    </div>
+                    <div class="col">
+                        {% for feed in article.feeds.all %}<small class="text-uppercase fw-bold">More from Your UniFeed</small>{% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
