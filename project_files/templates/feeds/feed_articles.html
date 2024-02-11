@@ -1,6 +1,6 @@
 <div class="row mx-auto mt-4 g-0 gy-4 g-md-4 g-lg-5">
     {% for article in userfeed_articles %}
-        <a class="article col-12 col-sm-6 col-lg-4 text-dark text-decoration-none"
+        <a class="article col-12 col-md-6 col-lg-4 text-dark text-decoration-none"
            href="{% url 'article_details' article.id %}">
             <div class="h-100 w-100 d-flex flex-column">
                 {% if article.image_url == '' %}

@@ -4,7 +4,7 @@
     <div class="container-fluid content">
         <div class="container pt-4">
             <div class="row gx-5">
-                <div class="col-8  p-4">
+                <div class="col-12 col-lg-8 p-4">
                     <div id="article-actions" class="d-flex justify-content-between">
                         <a class="text-dark letter-spaced text-decoration-none text-uppercase"
                            href="#"
@@ -58,9 +58,9 @@
                         <a class="btn btn-outline-success" href="{{ article.link }}">Read Full Article</a>
                     </div>
                 </div>
-                <div class="col p-4 d-flex flex-column">
-                    <small class="text-uppercase fw-bold mx-auto mb-4">More from Your UniFeed</small>
-                    <div class="mx-auto row gy-5 w-75">
+                <div class="col-12 col-lg-3 ms-auto p-4 d-flex flex-column">
+                    <small class="text-uppercase text-center fw-bold mb-4">More from Your UniFeed</small>
+                    <div class="row gy-5">
                         {% for article in related_articles %}
                             <a class="text-decoration-none text-dark"
                                href="{% url 'article_details' article.id %}">
