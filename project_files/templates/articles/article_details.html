@@ -77,7 +77,7 @@
                                         </h5>
                                         {% if article.description != "" %}<p class="card-text">{{ article.preview_description }}</p>{% endif %}
                                         <p class="card-text">
-                                            <small class="text-muted">Last updated 3 mins ago</small>
+                                            {% if article.publish_datetime != None %}<small class="text-muted">{{ article.time_since }}</small>{% endif %}
                                         </p>
                                     </div>
                                 </div>
