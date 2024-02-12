@@ -36,5 +36,12 @@ services:
       - POSTGRES_USER=devuser
       - POSTGRES_PASSWORD=changeme
 
+  redis:
+    image: redis:7.2.4-alpine
+    volumes:
+      - redis-data:/data
+
 volumes:
   postgres-data:
+  redis-data:
+
