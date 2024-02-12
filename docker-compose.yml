@@ -36,5 +36,26 @@ services:
       - POSTGRES_USER=devuser
       - POSTGRES_PASSWORD=changeme
 
+  redis:
+    image: redis:7.2.4-alpine
+    volumes:
+      - redis-data:/data
+
+  celery:
+    build:
+      context: .
+    command: celery -A unifeed worker --loglevel=info
+    volumes:
+      - ./project_files:/app
+      - ./data/web:/vol/web
+    environment:
+      - DB_HOST=db
+      - DB_NAME=devdb
+    depends_on:
+      - db
+      - redis
+
 volumes:
   postgres-data:
+  redis-data:
+
