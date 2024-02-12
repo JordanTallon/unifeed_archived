@@ -24,7 +24,7 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('account/', include('accounts.urls')),
-    path('detect-political-bias/', include('ai_analysis.urls')),
+    path('analyse-political-bias/', include('ai_analysis.urls')),
     path('feeds/', include('feeds.urls')),
     path('articles/', include('articles.urls')),
     path('', views.home_page, name="home")

@@ -13,20 +13,28 @@ def text_to_md5_hash(text):
     return md5_hash_result.hexdigest()
 
 
-def analyze_political_bias(article_text):
-    # TODO: I will find 'ideal' sentences from an article
+def extract_ideal_sentences(article_text):
+    # TODO: I will find 'ideal' sentences from an article, for now split and get the first 5
+    # Cleaning should be done here too (removing sentences that are too short, empty, etc)
     sentences = article_text.split('.')
 
     # Restrict to 5 sentences per article (5 is arbitrary for testing, i'm not sure what a good limit is yet)
     if (len(sentences) >= 5):
         sentences = sentences[:5]
 
+    return sentences
+
+
+def analyse_sentences_for_bias(sentences):
+
     def query(payload):
         response = requests.post(settings.HUGGINGFACE_API_URL,
                                  headers=settings.HUGGINGFACE_API_HEADERS, json=payload)
+
         return response.json()
 
     # Query for all sentences and gather the results in a 'results' array
+    # TODO: lots of error handling, bad returns, sleeping server etc
     results = []
     for sentence in sentences:
         output = query({"inputs": sentence})

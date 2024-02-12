@@ -1,24 +1,15 @@
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
-from .models import PoliticalBiasAnalysis
-from .serializer import PoliticalBiasAnalysisSerializer
+from .models import ArticleAnalysisResults, BiasAnalysis
+from .tasks import scrape
+from .serializer import BiasAnalysisSerializer, ArticleAnalysisResultsSerializer
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
 
 
-@api_view(['GET'])
-def getPoliticalBiasAnalysis(request):
-    # Get all PoliticalBiasAnalysis objects
-    biases = PoliticalBiasAnalysis.objects.all()
-    # Apply the serializer to the entire array
-    serializer = PoliticalBiasAnalysisSerializer(biases, many=True)
-    # Return serialized data
-    return Response(serializer.data)
-
-
 @api_view(['POST'])
-def postPoliticalBiasAnalysis(request):
+def analyse_article_bias(request):
 
     data = request.data
 
@@ -35,6 +26,50 @@ def postPoliticalBiasAnalysis(request):
     except ValidationError:
         return Response({"error": "Invalid URL."}, status=status.HTTP_400_BAD_REQUEST)
 
+    bias_analysis = BiasAnalysis.objects.create(url=url, status='processing')
+
+    # Start the asynchronous process
+    scrape.delay(url, bias_analysis.id)
+
+    # Instantly return the BiasAnalysis so that client may track the status of the asynchronous tasks
+    return Response({'analysis_id': bias_analysis.id}, status=202)
+
+
+    # TODO:
+"""     # TODO: a bunch of error handling
+
+    # Asynchronous (scraping the website)
+    article_text = scrape.delay(url)
+    # Synchronous (just local logic to find the best sentences in the scraped content)
+    sentences = extract_ideal_sentences(article_text)
+    # Asynchronous (passing the ideal sentences to the external HuggingFace hosted AI and waiting for results)
+    results = analyse_sentences.delay(sentences)
+
+    # TODO: serialize the results, create a model entry in the database
+
+    return results
+ """
+
+"""         analyze.delay(url)
+        
+        # Try scrape article content from the given url
+        try:
+            article_text = scrape_data(article_url)
+        except ValueError as e:
+            # No political bias analysis can be created from a broken url But it is not a 'critical failure'
+            # if this happens, so returning a None object is safe here
+            # Conditional logic can be applied, like if the creation of this model returns none, display a failure message to the user.
+            return None
+
+        article_text_md5 = text_to_md5_hash(article_text)
+
+        biased_sentences = analyze_political_bias(article_text)
+
+        return cls(article_url=article_url, article_text_md5=article_text_md5, biased_sentences=biased_sentences) """
+
+
+""" 
+
     bias = PoliticalBiasAnalysis().create(url)
 
     # If the returned bias object is non, return a bad request.
@@ -47,3 +82,4 @@ def postPoliticalBiasAnalysis(request):
     serialized_bias = PoliticalBiasAnalysisSerializer(bias).data
 
     return Response({"message": "Political bias analysis created successfully.", "analysis_results": serialized_bias}, status=status.HTTP_201_CREATED)
+ """
