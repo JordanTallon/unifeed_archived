@@ -1,4 +1,23 @@
 <div id="final-analysis-results">
-    <h5>Analysis Complete</h5>
-    {{ bias_analysis }}
+    <h5>Analysis Results</h5>
+    {% if bias_analysis.status == "failed" %}
+        <div id="analysis-alert" class="alert alert-danger" role="alert">
+            UniFeed is unable to process the analysis for the requested article. Please note that this issue has been logged for further review. We apologize for any inconvenience.
+        </div>
+    {% endif %}
+    {% if bias_analysis.status == "completed" %}
+        <ul id="analysis-result-list">
+            {% for sentence, analysis in bias_analysis.sentence_results.items %}
+                <li>
+                    <strong>Sentence:</strong> {{ sentence }}
+                    <strong>Bias:</strong> {{ analysis.conclusion }} ({{ analysis.conclusion_strength }})
+                    {% comment %}
+                    Left Bias: {{ analysis.left_bias|floatformat:2 }}%,
+                    Center Bias: {{ analysis.center_bias|floatformat:2 }}%,
+                    Right Bias: {{ analysis.right_bias|floatformat:2 }}% 
+                    {% endcomment %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 </div>

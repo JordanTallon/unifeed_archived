@@ -42,7 +42,27 @@ def analyse_sentences_for_bias(sentences):
 
     # Associate each result with the sentence text. For displaying to the user later on.
     result_dict = {}
-    for i in range(5):
-        result_dict[sentences[i]] = results[i]
+    for i, output in enumerate(results):
+
+        # remap HuggingFace dictionary to streamline returned object
+        scores = {'left': 0, 'center': 0, 'right': 0}
+        for item in output[0]:
+            scores[item['label']] = item['score']
+
+        # find the label with the highest score
+        highest_score_label = max(output[0], key=lambda x: x['score'])
+
+        # final label settled on 'left', 'right', or 'center'
+        conclusion = highest_score_label['label']
+        # express the conclusion with a 2 decimal place percentage. i.e 98.20%
+        conclusion_strength = f"{highest_score_label['score'] * 100:.2f}%"
+
+        result_dict[sentences[i]] = {
+            'left_bias': scores['left'],
+            'center_bias': scores['center'],
+            'right_bias': scores['right'],
+            'conclusion': conclusion,
+            'conclusion_strength': conclusion_strength,
+        }
 
     return result_dict

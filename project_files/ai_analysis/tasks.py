@@ -33,15 +33,15 @@ def scrape(url, analysis_id):
 def analyse_sentences(self, analysis_id, sentences, article_text_md5):
     try:
         # Perform analysis on the sentences
-        results = analyse_sentences_for_bias(sentences)
+        bias_results = analyse_sentences_for_bias(sentences)
 
         # Check if the HuggingFace inference api is sleeping (it does if it wasn't called for a few minutes)
-        if any('error' in result and 'currently loading' in result['error'] for result in results.values()):
+        if any('error' in result and 'currently loading' in result['error'] for result in bias_results.values()):
             # If the model is loading, raise an exception to retry the task
             raise ValueError("Model is currently loading")
 
         # Store the analysis results
-        analysis_complete(analysis_id, results, article_text_md5)
+        analysis_complete(analysis_id, bias_results, article_text_md5)
 
     except ValueError as exc:
         # If an error occurs, retry the task up to 3 times

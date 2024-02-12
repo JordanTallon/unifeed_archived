@@ -2,12 +2,7 @@
      hx-trigger="every 2s"
      hx-swap="outerHTML"
      id="polling-status">
-  <div>Waiting for analysis results...</div>
+  <div class="spinner-border text-success" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
 </div>
-{% comment %} <div id="analysis-display" class="d-none">
-  <div id="analysis-alert" class="alert alert-danger" role="alert">*insert alignment* Leaning Bias Detected</div>
-  <h5>Analysis Results</h5>
-  <ul id="analysis-result-list">
-  </ul>
-</div>
-{% endcomment %}
