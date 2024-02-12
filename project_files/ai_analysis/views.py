@@ -6,6 +6,7 @@ from .tasks import scrape
 from .serializer import BiasAnalysisSerializer, ArticleAnalysisResultsSerializer
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
+from django.shortcuts import render
 
 
 @api_view(['POST'])
@@ -32,7 +33,11 @@ def analyse_article_bias(request):
     scrape.delay(url, bias_analysis.id)
 
     # Instantly return the BiasAnalysis so that client may track the status of the asynchronous tasks
-    return Response({'analysis_id': bias_analysis.id}, status=202)
+    if request.content_type == 'application/json':
+        return Response({'analysis_id': bias_analysis.id}, status=202)
+    else:
+        # if htmx posted the route, return html
+        return render(request, 'ai_analysis/waiting_results.html', {'analysis_id': bias_analysis.id})
 
 
     # TODO:
