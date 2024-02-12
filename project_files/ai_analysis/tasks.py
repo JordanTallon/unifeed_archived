@@ -21,15 +21,28 @@ def scrape(url, analysis_id):
     analyse_sentences.delay(sentences, analysis_id)
 
 
-@shared_task
-def analyse_sentences(sentences, analysis_id):
-    results = analyse_sentences_for_bias(sentences)
+# retry 3 times in 20 second intervals
+@shared_task(bind=True, max_retries=3, default_retry_delay=20)
+def analyse_sentences(self, sentences, analysis_id):
+    try:
+        results = analyse_sentences_for_bias(sentences)
 
-    print("analysis results", results)
+        print("analysis results", results)
 
-    analysis = BiasAnalysis.objects.get(id=analysis_id)
-    analysis.status = 'completed'
-    analysis.save()
+        # Check if the HuggingFace inference api is sleeping (it does if it wasn't called for a few minutes)
+        if any('error' in result and 'currently loading' in result['error'] for result in results.values()):
+            raise ValueError("Model is currently loading")
+
+        analysis = BiasAnalysis.objects.get(id=analysis_id)
+        analysis.status = 'completed'
+        analysis.save()
+    except ValueError as exc:
+        if self.request.retries < self.max_retries:
+            # Retry the analysis
+            self.retry(exc=exc)
+        else:
+            # Already tried 3 times, mark as failed
+            analysis_failed(analysis_id)
 
 
 def analysis_failed(analysis_id):
