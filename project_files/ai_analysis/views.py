@@ -2,15 +2,14 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
 from .models import ArticleAnalysisResults, BiasAnalysis
-from .tasks import scrape, analyse_sentences
-from .utils import extract_ideal_sentences
+from .tasks import scrape
 from .serializer import BiasAnalysisSerializer, ArticleAnalysisResultsSerializer
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
 
 
 @api_view(['POST'])
-def analyze_article_bias(request):
+def analyse_article_bias(request):
 
     data = request.data
 
@@ -27,10 +26,14 @@ def analyze_article_bias(request):
     except ValidationError:
         return Response({"error": "Invalid URL."}, status=status.HTTP_400_BAD_REQUEST)
 
-    # Instantly return a BiasAnalysis so that client may track the status of the asynchronous tasks
     bias_analysis = BiasAnalysis.objects.create(url=url, status='processing')
 
+    # Start the asynchronous process
+    scrape.delay(url, bias_analysis.id)
+
+    # Instantly return the BiasAnalysis so that client may track the status of the asynchronous tasks
     return Response({'analysis_id': bias_analysis.id}, status=202)
+
 
     # TODO:
 """     # TODO: a bunch of error handling
