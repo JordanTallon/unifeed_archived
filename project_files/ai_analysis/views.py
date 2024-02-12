@@ -1,9 +1,9 @@
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
-from .models import ArticleAnalysisResults, BiasAnalysis
+from .models import ArticleAnalysisResults
 from .tasks import scrape
-from .serializer import BiasAnalysisSerializer, ArticleAnalysisResultsSerializer
+from .serializer import ArticleAnalysisResultsSerializer
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
 from django.shortcuts import render
@@ -11,14 +11,16 @@ from django.shortcuts import render
 
 @api_view(['GET'])
 def check_analysis_status(request, analysis_id):
-    analysis = BiasAnalysis.objects.get(id=analysis_id)
-    print("current progress", analysis.status)
-    if analysis.status == 'waiting':
-        # Return a 'waiting' template to indicate that the results aren't ready
-        return render(request, 'ai_analysis/waiting_results.html', {'analysis_id': analysis_id})
+    bias_analysis = ArticleAnalysisResults.objects.get(id=analysis_id)
+    bias_analysis_serialized = ArticleAnalysisResultsSerializer(
+        bias_analysis).data
 
-    # Return a template with the final analysis results
-    return render(request, 'ai_analysis/final_analysis_results.html', {'analysis': analysis})
+    if bias_analysis.status == 'processing':
+        # Return a 'waiting' template to indicate that the results aren't ready
+        return render(request, 'ai_analysis/waiting_results.html', {'analysis_id': bias_analysis.id})
+    else:
+        # Return a template with the final analysis results (success or fail, to be indicated in html)
+        return render(request, 'ai_analysis/final_analysis_results.html', {'bias_analysis': bias_analysis_serialized})
 
 
 @api_view(['POST'])
@@ -39,7 +41,8 @@ def analyse_article_bias(request):
     except ValidationError:
         return Response({"error": "Invalid URL."}, status=status.HTTP_400_BAD_REQUEST)
 
-    bias_analysis = BiasAnalysis.objects.create(url=url, status='processing')
+    bias_analysis = ArticleAnalysisResults.objects.create(
+        url=url)
 
     # Start the asynchronous process
     scrape.delay(url, bias_analysis.id)
@@ -50,6 +53,7 @@ def analyse_article_bias(request):
     else:
         # if htmx posted the route, return html
         return render(request, 'ai_analysis/waiting_results.html', {'analysis_id': bias_analysis.id})
+
 
     # TODO:
 """     # TODO: a bunch of error handling

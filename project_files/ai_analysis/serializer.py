@@ -1,16 +1,9 @@
 from rest_framework import serializers
-from .models import ArticleAnalysisResults, BiasAnalysis
+from .models import ArticleAnalysisResults
 
 
 class ArticleAnalysisResultsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ArticleAnalysisResults
-        fields = ('url', 'article_text_md5', 'sentence_results')
-
-
-class BiasAnalysisSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = BiasAnalysis
-        fields = ('url', 'status')
+        fields = ('url', 'article_text_md5', 'status', 'sentence_results')
