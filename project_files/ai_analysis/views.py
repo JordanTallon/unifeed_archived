@@ -2,7 +2,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
 from .models import PoliticalBiasAnalysis
-from .tasks import scrape, analyse
+from .tasks import scrape, analyse_sentences
+from .utils import extract_ideal_sentences
 from .serializer import PoliticalBiasAnalysisSerializer
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
@@ -26,9 +27,19 @@ def postPoliticalBiasAnalysis(request):
     except ValidationError:
         return Response({"error": "Invalid URL."}, status=status.HTTP_400_BAD_REQUEST)
 
-    article_text = scrape.delay(url)
+    # TODO: return instantly a message to let the user know that the request is being processed?
+    # TODO: a bunch of error handling
 
-    return None
+    # Asynchronous (scraping the website)
+    article_text = scrape.delay(url)
+    # Synchronous (just local logic to find the best sentences in the scraped content)
+    sentences = extract_ideal_sentences(article_text)
+    # Asynchronous (passing the ideal sentences to the external HuggingFace hosted AI and waiting for results)
+    results = analyse_sentences.delay(sentences)
+
+    # TODO: serialize the results, create a model entry in the database
+
+    return results
 
 
 """         analyze.delay(url)

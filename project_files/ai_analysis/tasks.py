@@ -12,5 +12,5 @@ def scrape(url):
 
 
 @shared_task
-def analyse(url):
+def analyse_sentences(url):
     analyse_sentences_for_bias(url)
