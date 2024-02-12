@@ -1,16 +1,16 @@
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
-from .models import PoliticalBiasAnalysis
+from .models import ArticleAnalysisResults, BiasAnalysis
 from .tasks import scrape, analyse_sentences
 from .utils import extract_ideal_sentences
-from .serializer import PoliticalBiasAnalysisSerializer
+from .serializer import BiasAnalysisSerializer, ArticleAnalysisResultsSerializer
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
 
 
 @api_view(['POST'])
-def postPoliticalBiasAnalysis(request):
+def analyze_article_bias(request):
 
     data = request.data
 
@@ -27,8 +27,13 @@ def postPoliticalBiasAnalysis(request):
     except ValidationError:
         return Response({"error": "Invalid URL."}, status=status.HTTP_400_BAD_REQUEST)
 
-    # TODO: return instantly a message to let the user know that the request is being processed?
-    # TODO: a bunch of error handling
+    # Instantly return a BiasAnalysis so that client may track the status of the asynchronous tasks
+    bias_analysis = BiasAnalysis.objects.create(url=url, status='processing')
+
+    return Response({'analysis_id': bias_analysis.id}, status=202)
+
+    # TODO:
+"""     # TODO: a bunch of error handling
 
     # Asynchronous (scraping the website)
     article_text = scrape.delay(url)
@@ -40,7 +45,7 @@ def postPoliticalBiasAnalysis(request):
     # TODO: serialize the results, create a model entry in the database
 
     return results
-
+ """
 
 """         analyze.delay(url)
         
