@@ -9,6 +9,18 @@ from django.core.exceptions import ValidationError
 from django.shortcuts import render
 
 
+@api_view(['GET'])
+def check_analysis_status(request, analysis_id):
+    analysis = BiasAnalysis.objects.get(id=analysis_id)
+    print("current progress", analysis.status)
+    if analysis.status == 'waiting':
+        # Return a 'waiting' template to indicate that the results aren't ready
+        return render(request, 'ai_analysis/waiting_results.html', {'analysis_id': analysis_id})
+
+    # Return a template with the final analysis results
+    return render(request, 'ai_analysis/final_analysis_results.html', {'analysis': analysis})
+
+
 @api_view(['POST'])
 def analyse_article_bias(request):
 
@@ -38,7 +50,6 @@ def analyse_article_bias(request):
     else:
         # if htmx posted the route, return html
         return render(request, 'ai_analysis/waiting_results.html', {'analysis_id': bias_analysis.id})
-
 
     # TODO:
 """     # TODO: a bunch of error handling
