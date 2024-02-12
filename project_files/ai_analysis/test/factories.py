@@ -1,18 +1,18 @@
 import factory
 from faker import Faker
-from ..models import PoliticalBiasAnalysis
+from ..models import ArticleAnalysisResults
 import random
 
 fake = Faker()
 
 
-class PoliticalBiasAnalysisFactory(factory.django.DjangoModelFactory):
+class ArticleAnalysisResultsFactory(factory.django.DjangoModelFactory):
     class Meta:
-        model = PoliticalBiasAnalysis
+        model = ArticleAnalysisResults
 
     article_url = factory.LazyFunction(lambda: fake.url())
     article_text_md5 = factory.LazyFunction(lambda: fake.md5())
-    biased_sentences = factory.LazyFunction(
+    sentence_results = factory.LazyFunction(
         lambda: [
             {
                 "text": fake.sentence(),

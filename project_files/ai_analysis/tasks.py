@@ -10,7 +10,14 @@ from .models import BiasAnalysis
 @shared_task
 def scrape(url, analysis_id):
     print("starting scrape")
-    article_text = scrape_data(url)
+    try:
+        article_text = scrape_data(url)
+
+    except (ValueError):
+        print("An error occured when scraping from:", url)
+        analysis_failed(analysis_id)
+        return
+
     sentences = extract_ideal_sentences(article_text)
     print("scrape results", sentences)
     analyse_sentences.delay(sentences, analysis_id)
@@ -25,4 +32,10 @@ def analyse_sentences(sentences, analysis_id):
 
     analysis = BiasAnalysis.objects.get(id=analysis_id)
     analysis.status = 'completed'
+    analysis.save()
+
+
+def analysis_failed(analysis_id):
+    analysis = BiasAnalysis.objects.get(id=analysis_id)
+    analysis.status = 'failed'
     analysis.save()

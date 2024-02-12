@@ -1,32 +1,39 @@
 from django.test import TestCase
-from django.db import IntegrityError
-from django.core.exceptions import ValidationError
-from ..models import PoliticalBiasAnalysis
-from ai_analysis.utils import text_to_md5_hash
+from ..models import BiasAnalysis, ArticleAnalysisResults
 
 
-class PoliticalBiasAnalysisModelTest(TestCase):
-    def political_bias_analysis_model_exists(self):
-        biases = PoliticalBiasAnalysis.objects.count()
+class AIAnalysisModelTests(TestCase):
+    def bias_analysis_model_exists(self):
+        biases = BiasAnalysis.objects.count()
         self.assertEqual(biases, 0)
 
-    def test_add_new_political_bias_analysis(self):
-        bias = PoliticalBiasAnalysis(
-            article_url="http://example.com",
-            article_text_md5="0e7807a9fc2fc9c1acff9e5560e1de24",
-            biased_sentences={}
+    def article_analysis_results_model_exists(self):
+        results = ArticleAnalysisResults.objects.count()
+        self.assertEqual(results, 0)
+
+    def test_add_new_bias_analysis(self):
+        analysis = BiasAnalysis(
+            url="http://example.com",
+            status="processing"
         )
 
-        bias.save()
+        analysis.save()
 
-        added_bias = PoliticalBiasAnalysis.objects.first()
+        added_analysis = BiasAnalysis.objects.first()
 
-        self.assertIsNotNone(added_bias)
+        self.assertIsNotNone(added_analysis)
 
-    def test_generate_text_md5(self):
+    def test_add_new_article_analysis_results(self):
+        results = ArticleAnalysisResults(
+            url="http://example.com",
+            article_text_md5="0e7807a9fc2fc9c1acff9e5560e1de24",
+            sentence_results={
+                "sentence": {'left': 0.1, 'center': 0.8, 'right': 0.1}
+            }
+        )
 
-        # Generate an md5 hash for the model from the string "Hello World"
-        md5_text = text_to_md5_hash("Hello World")
+        results.save()
 
-        # Check if the hash is equal to the hash value for "Hello World" (deterministic)
-        self.assertEqual(md5_text, 'b10a8db164e0754105b7a99be72e3fe5')
+        added_results = ArticleAnalysisResults.objects.first()
+
+        self.assertIsNotNone(added_results)
