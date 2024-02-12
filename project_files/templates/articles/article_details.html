@@ -56,8 +56,18 @@
                     <p>{{ article.publisher }}</p>
                     <div class="d-grid gap-2">
                         <a class="btn btn-outline-success" href="{{ article.link }}">Read Full Article</a>
-                        <button class="btn btn-outline-secondary position-relative"
-                                href="{{ article.link }}">Analyze Political Bias</button>
+                        <div>
+                            {% csrf_token %}
+                            <button class="btn btn-outline-secondary"
+                                    hx-post="{% url 'analyse_article_bias' %}"
+                                    hx-vals='{"url": "{{ article.link }}"}'
+                                    hx-target="#analysis-result-container"
+                                    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                    hx-swap="outerHTML">Analyze Political Bias</button>
+                        </div>
+                    </div>
+                    <div id="analysis-result-container">
+                        <!-- HTMX will place the returned results in here -->
                     </div>
                 </div>
                 <div class="col-12 col-lg-3 ms-auto p-4 d-flex flex-column">
