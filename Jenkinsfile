@@ -93,7 +93,8 @@ pipeline {
                 script {
                     updateGitlabCommitStatus name: 'deploy', state: 'running'
                     echo 'Deploying the application..'
-                                    sh '''
+                    
+                    def sshOutput = sh(script: '''
                     ssh root@206.189.22.163 <<EOF
                     
                         echo "Entering project directory"
@@ -113,8 +114,15 @@ pipeline {
                         docker-compose -f docker-compose-deploy.yml build
                         docker-compose -f docker-compose-deploy.yml up -d
                         << EOF
-                        '''
-                    updateGitlabCommitStatus name: 'deploy', state: 'success'
+                        ''', returnStdout: true).trim()
+
+                    // check for any text indicating an error in the SSH output
+                    if (sshOutput.contains("error") || sshOutput.contains("failed")) {
+                        updateGitlabCommitStatus name: 'deploy', state: 'failed'
+                        error "Deployment failed, see output above: ${sshOutput}"
+                    } else {
+                        updateGitlabCommitStatus name: 'deploy', state: 'success'
+                    }
                 }
             }
         }
