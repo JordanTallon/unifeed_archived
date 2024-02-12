@@ -17,6 +17,7 @@ services:
       - SECRET_KEY=${SECRET_KEY}
       - ALLOWED_HOSTS=${ALLOWED_HOSTS}
       - HUGGINGFACE_API_KEY=${HUGGINGFACE_API_KEY}
+  
   proxy:
     build:
       context: ./proxy
@@ -27,6 +28,25 @@ services:
       - 80:8000
     volumes:
       - static-data:/vol/static
+  
+  redis:
+    image: redis:7.2.4-alpine
+    volumes:
+      - redis-data:/data
+  
+  celery:
+    build:
+      context: .
+    command: celery -A unifeed worker --loglevel=info
+    volumes:
+      - ./project_files:/app
+      - ./data/web:/vol/web
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_NAME=${DB_NAME}
+    depends_on:
+      - redis
 
 volumes:
   static-data:
+  redis-data:
