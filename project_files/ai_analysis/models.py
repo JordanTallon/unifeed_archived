@@ -1,6 +1,5 @@
 from django.db import models
 from jsonfield import JSONField
-from ai_analysis.utils import text_to_md5_hash, analyze_political_bias
 
 
 class PoliticalBiasAnalysis(models.Model):
