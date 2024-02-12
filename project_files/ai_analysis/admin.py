@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import PoliticalBiasAnalysis
+from .models import ArticleAnalysisResults, BiasAnalysis
 
 # Register your models here.
-admin.site.register(PoliticalBiasAnalysis)
+admin.site.register(ArticleAnalysisResults)
+admin.site.register(BiasAnalysis)
