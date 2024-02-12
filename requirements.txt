@@ -28,5 +28,6 @@ crispy-bootstrap5==2023.10
 djlint==1.34.1
 # For generating Unit Test coverage maps
 coverage==7.4.1
-# For asynchronous api tasks (uses redis)
+# For asynchronous api tasks
 celery==5.3.6
+redis==5.0.1
