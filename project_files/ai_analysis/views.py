@@ -7,16 +7,6 @@ from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
 
 
-@api_view(['GET'])
-def getPoliticalBiasAnalysis(request):
-    # Get all PoliticalBiasAnalysis objects
-    biases = PoliticalBiasAnalysis.objects.all()
-    # Apply the serializer to the entire array
-    serializer = PoliticalBiasAnalysisSerializer(biases, many=True)
-    # Return serialized data
-    return Response(serializer.data)
-
-
 @api_view(['POST'])
 def postPoliticalBiasAnalysis(request):
 
