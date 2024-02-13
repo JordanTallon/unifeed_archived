@@ -88,6 +88,20 @@ footer {
   margin: 0;
 }
 
+/* Override crispy_form classes */
+.form-label {
+  font-weight: bold;
+}
+.asteriskField {
+  font-size: 0;
+}
+.asteriskField::after {
+  content: "Required";
+  opacity: 0.75 !important;
+  font-size: 0.8rem;
+  margin-left: 0.75rem;
+  font-weight: normal;
+}
 .content {
   overflow: auto;
   overflow-x: hidden;
