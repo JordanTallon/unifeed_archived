@@ -53,6 +53,14 @@ footer {
   display: none;
 }
 
+.shadow-top {
+  box-shadow: 0 -5px 12px -5px #cacaca40;
+}
+
+.shadow-bottom {
+  box-shadow: 0 5px 12px -5px #cacaca40;
+}
+
 .content-container {
   grid-area: content;
   height: 100svh;
