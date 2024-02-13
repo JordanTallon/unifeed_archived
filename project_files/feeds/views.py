@@ -173,7 +173,6 @@ def add_new_folder(request):
             new_folder.user = request.user
             try:
                 new_folder.save()
-                messages.success(request, 'New Folder Successfully Added.')
                 return redirect('view_userfeed', user_id=request.user.id, folder_id=new_folder.id)
             except IntegrityError:
                 messages.error(
@@ -184,3 +183,24 @@ def add_new_folder(request):
         form = FeedFolderForm()
 
     return render(request, 'feeds/add_new_folder.html', {'form': form})
+
+
+@login_required
+def edit_existing_folder(request, folder_id):
+    folder = get_object_or_404(FeedFolder, id=folder_id, user=request.user)
+
+    if request.method == 'POST':
+        form = FeedFolderForm(request.POST, instance=folder)
+        if form.is_valid():
+            try:
+                form.save()
+                return redirect('view_userfeed', user_id=request.user.id, folder_id=folder.id)
+            except IntegrityError:
+                messages.error(
+                    request, 'A folder with that name already exists.')
+        else:
+            messages.error(request, 'Failed to update folder.')
+    else:
+        form = FeedFolderForm(instance=folder)
+
+    return render(request, 'feeds/edit_existing_folder.html', {'form': form, 'folder_name': folder.name, 'folder_id': folder_id})

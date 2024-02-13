@@ -9,31 +9,30 @@
         {% endif %}
     </nav>
     <div class="d-flex">
-        <a class="btn"
-           type="button"
-           data-bs-toggle="offcanvas"
-           data-bs-target="#offcanvasRight"
-           aria-controls="offcanvasRight">
-            Edit Feeds
-            <small>
-                <i class="bi bi-three-dots-vertical"></i>
-            </small>
-        </a>
         <div class="dropdown">
             <button class="btn  dropdown-toggle"
                     type="button"
                     id="manageFolderDropdown"
                     data-bs-toggle="dropdown"
-                    aria-expanded="false">Settings</button>
+                    aria-expanded="false">Manage Folder</button>
             <ul class="dropdown-menu" aria-labelledby="manageFolderDropdown">
                 <li>
-                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="btn"
+                       type="button"
+                       data-bs-toggle="offcanvas"
+                       data-bs-target="#offcanvasRight"
+                       aria-controls="offcanvasRight">View/Manage Feeds</a>
                 </li>
                 <li>
-                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Add New Feed</a>
                 </li>
                 <li>
-                    <a class="dropdown-item" href="#">Something else here</a>
+                    <a class="dropdown-item"
+                       href="{% url 'edit_existing_folder' folder.id %}">Edit Folder</a>
+                </li>
+                <hr>
+                <li>
+                    <a class="dropdown-item" href="#">Delete Folder</a>
                 </li>
             </ul>
         </div>

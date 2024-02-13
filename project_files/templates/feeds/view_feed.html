@@ -5,44 +5,6 @@
 {% endblock topnav %}
 {% block content %}
     {% include "feeds/feed_sidebar.html" %}
-    {% comment %} <div class="sticky-top bg-white border-bottom d-flex">
-        <div class="container mx-auto d-flex justify-content-between align-items-center">
-            <h1 class="h5">
-                <a class="fw-bold text-decoration-none text-dark" href="{% url 'view_userfeed' user.id folder.id %}">{{ folder.name }} \</a>
-                {% if userfeed != None %}
-                    {{ userfeed.name }}
-                {% else %}
-                    All
-                {% endif %}
-            </h1>
-            <div class="d-flex">
-                <div data-bs-toggle="popover" data-bs-trigger="hover" data-bs-container="body" data-bs-placement="top" data-bs-content="Manage Folder's Feeds">
-                    <a class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-                        Edit Feeds
-                        <small>
-                            <i class="bi bi-three-dots-vertical"></i>
-                        </small>
-                    </a>
-                </div>
-                <div class="ms-4" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-container="body" data-bs-placement="top" data-bs-content="Change Folder Settings">
-                    <div class="dropdown">
-                        <button class="btn  dropdown-toggle" type="button" id="manageFolderDropdown" data-bs-toggle="dropdown" aria-expanded="false">Settings</button>
-                        <ul class="dropdown-menu" aria-labelledby="manageFolderDropdown">
-                            <li>
-                                <a class="dropdown-item" href="#">Action</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="#">Another action</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="#">Something else here</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> {% endcomment %}
     <div class="container-fluid content">
         <div class="w-100 container mx-auto">{% include "feeds/feed_articles.html" %}</div>
     </div>
