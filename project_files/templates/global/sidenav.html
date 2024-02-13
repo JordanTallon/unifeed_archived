@@ -31,7 +31,7 @@
                 </a>
             </li>
             <li class="nav-item mt-4 mb-2">
-                <span class="navbar-text">My Feeds</span>
+                <span class="navbar-text">My Folders</span>
             </li>
             <li class="nav-item">
                 <a class="nav-link text-dark" href="{% url "home" %}">
@@ -44,15 +44,15 @@
                     {% url 'view_userfeed' user.id folder.id as folder_url %}
                     <a class="nav-link text-dark {% if folder_url in request.path %}active{% endif %}"
                        href="{{ folder_url }}">
-                        <i class="me-3 bi bi-folder2"></i>
+                        <i class="me-3 bi bi-folder"></i>
                         <span>{{ folder.name }}</span>
                     </a>
                 </li>
             {% endfor %}
             <li class="nav-item">
-                <a class="nav-link text-dark" href="{% url "home" %}">
-                    <i class="me-3 bi bi-plus-circle"></i>
-                    <span>Add New Feed</span>
+                <a class="nav-link text-dark" href="{% url "add_new_folder" %}">
+                    <i class="me-3 bi bi-folder-plus"></i>
+                    <span>Add New Folder</span>
                 </a>
             </li>
             <li class="dropup mt-auto">
