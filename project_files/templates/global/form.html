@@ -1,0 +1,34 @@
+{% extends "global/base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+    <div class="container content d-flex flex-column">
+        <div class="row mt-4">
+            <div class="col-sm-12 col-md-6 mx-auto pt-4">
+                <div class="mb-4">
+                    <h1 class="fw-bold">
+                        {% block form_title %}
+                        {% endblock form_title %}
+                    </h1>
+                    <h2 class="h5 text-muted">
+                        {% block form_subtitle %}
+                        {% endblock form_subtitle %}
+                    </h2>
+                </div>
+                <div class="mt-2">
+                    {% if messages %}
+                        {% for message in messages %}<div class="alert alert-success" role="alert">{{ message }}</div>{% endfor %}
+                    {% endif %}
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        {{ form | crispy }}
+                        <div class="mt-4">
+                            {% block form_buttons %}
+                            {% endblock form_buttons%}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
