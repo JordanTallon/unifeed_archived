@@ -5,7 +5,30 @@
 {% endblock topnav %}
 {% block content %}
     {% include "feeds/feed_sidebar.html" %}
-    <div class="container-fluid content">
+    {% if userfeed_articles|length > 0 %}
         <div class="w-100 container mx-auto">{% include "feeds/feed_articles.html" %}</div>
-    </div>
+    {% else %}
+        <div class="d-flex flex-column justify-content-center row">
+            <div class="mx-auto col-11 col-lg-6">
+                <div class="row">
+                    <img src="{% static 'images/no_feeds.svg' %}"
+                         class="col-8 col-lg-7 mx-auto"
+                         alt="Two people standing next to a question mark."
+                         width="auto"
+                         height="auto">
+                </div>
+                <div class="text-center mt-4">
+                    <h1 class="fw-bold">Looks like you haven't added any RSS feeds to this folder yet.</h1>
+                    <p class="my-3 fs-5 text-muted">
+                        Get started by adding your first RSS feed. Stay updated with the latest content from your favorite websites and blogs, all in one place.
+                    </p>
+                    <div class="mt-4">
+                        <a class="btn btn-success"
+                           href="{% url 'add_user_feed_to_folder' folder.name %}">Add New Feed</a>
+                        <a class="btn btn-outline-secondary" href="{% url 'add_new_folder' %}">Add New Folder</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 {% endblock content %}
