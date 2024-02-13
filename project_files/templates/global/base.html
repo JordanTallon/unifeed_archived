@@ -37,7 +37,9 @@
     </aside>
     <div class="content-container">
       <header>
-        {% include "global/topnav.html" %}
+        {% block topnav %}
+          {% include "global/topnav.html" %}
+        {% endblock topnav %}
       </header>
       <main class="position-relative">
         {% block content %}
