@@ -1,7 +1,7 @@
 from django.test import TestCase, Client
 from django.urls import reverse
 from .factories import ArticleAnalysisResultsFactory
-from ..models import BiasAnalysis, ArticleAnalysisResults
+from ..models import ArticleAnalysisResults
 import json
 
 
@@ -30,31 +30,33 @@ import json
  """
 
 
-class test_political_bias_analysis_data_creation(TestCase):
-    def test_detect_political_bias_api_post_exists(self):
+class test_political_bias_analysis_post_json(TestCase):
+    def test_analyse_political_bias_api_post_exists(self):
         # Check if POST request is allowed.
-        response = self.client.options(reverse('analyse-political-bias'))
+        response = self.client.options(reverse('analyse_article_bias'))
         self.assertIn('POST', response['Allow'])
 
-    def test_detect_political_bias_api_post_new_data(self):
+    def test_analyse_political_bias_api_post_new_data(self):
         # Get the count of analysis request objects before new addition
-        length = len(BiasAnalysis.objects.all())
+        length = len(ArticleAnalysisResults.objects.all())
 
         # Data for the new model
         data = {
             'url': 'http://www.example.com',
-            'status': 'processing'
         }
 
         # Post the data to the url
         response = self.client.post(
-            reverse('analyse-political-bias'), data=data)
+            reverse('analyse_article_bias'),
+            data=data,
+            content_type='application/json'
+        )
 
         # 202 = accepted
         self.assertEqual(response.status_code, 202)
 
         # Check if the objects contain the newly posted object (length + 1)
-        new_length = len(BiasAnalysis.objects.all())
+        new_length = len(ArticleAnalysisResults.objects.all())
         self.assertEqual(new_length, length + 1)
 
         # Check if the request returned an analysis id
@@ -63,18 +65,18 @@ class test_political_bias_analysis_data_creation(TestCase):
 
     def test_detect_political_bias_api_post_invalid_url(self):
         # Get the count of objects before new addition
-        length = len(BiasAnalysis.objects.all())
+        length = len(ArticleAnalysisResults.objects.all())
 
         # Post the data to the url
         response = self.client.post(
-            reverse('analyse-political-bias'), data={'url': '123'})
+            reverse('analyse_article_bias'), data={'url': '123'})
 
         # 400 = HTTP bad request error
         self.assertEqual(response.status_code, 400)
 
         # Ensure no new BiasAnalysis object was added
-        new_length = len(BiasAnalysis.objects.all())
+        new_length = len(ArticleAnalysisResults.objects.all())
         self.assertEqual(new_length, length)
 
         # Assert that the object wasn't created
-        self.assertFalse(BiasAnalysis.objects.exists())
+        self.assertFalse(ArticleAnalysisResults.objects.exists())

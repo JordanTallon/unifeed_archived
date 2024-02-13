@@ -52,7 +52,7 @@ def analyse_article_bias(request):
         return Response({'analysis_id': bias_analysis.id}, status=202)
     else:
         # if htmx posted the route, return html
-        return render(request, 'ai_analysis/waiting_results.html', {'analysis_id': bias_analysis.id})
+        return render(request, 'ai_analysis/waiting_results.html', {'analysis_id': bias_analysis.id}, status=202)
 
 
     # TODO:

@@ -1,25 +1,21 @@
 from django.test import TestCase
-from ..models import BiasAnalysis, ArticleAnalysisResults
+from ..models import ArticleAnalysisResults
 
 
 class AIAnalysisModelTests(TestCase):
-    def bias_analysis_model_exists(self):
-        biases = BiasAnalysis.objects.count()
-        self.assertEqual(biases, 0)
 
     def article_analysis_results_model_exists(self):
         results = ArticleAnalysisResults.objects.count()
         self.assertEqual(results, 0)
 
-    def test_add_new_bias_analysis(self):
-        analysis = BiasAnalysis(
+    def test_add_new_article_analysis_results(self):
+        analysis = ArticleAnalysisResults(
             url="http://example.com",
-            status="processing"
         )
 
         analysis.save()
 
-        added_analysis = BiasAnalysis.objects.first()
+        added_analysis = ArticleAnalysisResults.objects.first()
 
         self.assertIsNotNone(added_analysis)
 
