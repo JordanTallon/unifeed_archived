@@ -24,7 +24,8 @@
                        aria-controls="offcanvasRight">View/Manage Feeds</a>
                 </li>
                 <li>
-                    <a class="dropdown-item" href="#">Add New Feed</a>
+                    <a class="dropdown-item"
+                       href="{% url 'add_user_feed_to_folder' folder.name %}">Add New Feed</a>
                 </li>
                 <li>
                     <a class="dropdown-item"

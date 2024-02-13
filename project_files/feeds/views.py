@@ -10,7 +10,7 @@ from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
 from articles.models import Article
 from .models import *
-from .forms import FeedFolderForm
+from .forms import FeedFolderForm, UserFeedForm
 from .utils import *
 from .serializers import *
 from .signals import rss_feed_imported
@@ -85,37 +85,56 @@ def import_new_feed(request):
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['POST'])
 @login_required
-def import_user_feed(request):
+def add_user_feed_to_folder(request, folder_name):
 
-    data = request.data
+    if request.method == "POST":
+        form = UserFeedForm(request.POST)
 
-    # Make sure that both a url and user were provided in the data
-    url = data.get('url')
+        if form.is_valid():
 
-    if not url:
-        return Response({"error": "URL is required."}, status=status.HTTP_400_BAD_REQUEST)
+            feed = form.cleaned_data.get('feed')
 
-    user = request.user
+            # If there's no feed, there but me be a url
+            if not feed:
+                try:
+                    url = form.cleaned_data.get('url')
+                    # Check if the feed is valid or already in the database (can reuse it from another user).
+                    # If not, the function creates it.
+                    feed = import_rss_feed(url)
+                except ValueError as e:
+                    messages.error(request, str(e))
+                    return render(request, 'feeds/add_new_feed.html', {'form': form})
 
-    # Check if the feed is valid or already in the database (can reuse it from another user)
-    feed = None
-    try:
-        feed = import_rss_feed(url)
-    except ValueError as e:
-        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            user = request.user
+            folder = get_object_or_404(FeedFolder, name=folder_name)
 
-    # Check if the UserFeed already exists, return it if so.
-    existing_feed = UserFeed.objects.filter(feed=feed, user=user).first()
-    if existing_feed:
-        serialized_feed = UserFeedSerializer(existing_feed).data
-        return Response({"message": "Existing UserFeed found.", "UserFeed": serialized_feed})
+            if UserFeed.objects.filter(folder=folder, feed=feed).exists():
+                messages.error(
+                    request, f"The {folder.name} folder already contains this feed.")
+                return render(request, 'feeds/add_new_feed.html', {'form': form})
 
-    # Create and return the new user feed
-    user_feed = UserFeed.objects.create(feed=feed, user=user)
-    serialized_feed = UserFeedSerializer(user_feed).data
-    return Response({"message": "RSS Feed assigned to user successfully.", "Userfeed": serialized_feed}, status=status.HTTP_201_CREATED)
+            try:
+                new_user_feed = form.save(commit=False)
+                new_user_feed.feed = feed
+                new_user_feed.user = user
+                new_user_feed.folder = folder
+                new_user_feed.save()
+
+                messages.success(request, 'New feed successfully imported.')
+                return redirect('view_userfeed', user_id=request.user.id, folder_id=folder.id, userfeed_id=new_user_feed.id)
+
+            except ValueError as e:
+                messages.error(request, str(e))
+                return render(request, 'feeds/add_new_feed.html', {'form': form})
+        else:
+            messages.error(request, 'Failed to import Feed.')
+            return render(request, 'feeds/add_new_feed.html', {'form': form})
+
+    else:  # Not a POST request
+        form = UserFeedForm()
+
+    return render(request, 'feeds/add_new_feed.html', {'form': form})
 
 
 @login_required
