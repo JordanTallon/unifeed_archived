@@ -62,7 +62,6 @@ footer {
     "main main main main main main main"
     "footer footer footer footer footer footer footer";
   grid-template-rows: auto 1fr auto;
-  gap: 10px;
 }
 
 .active {
@@ -102,6 +101,7 @@ footer {
   margin-left: 0.75rem;
   font-weight: normal;
 }
+
 .content {
   overflow: auto;
   overflow-x: hidden;
