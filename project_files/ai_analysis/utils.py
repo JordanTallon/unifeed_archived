@@ -38,6 +38,12 @@ def analyse_sentences_for_bias(sentences):
     results = []
     for sentence in sentences:
         output = query({"inputs": sentence})
+
+        # Check if the HuggingFace inference api is sleeping (it does if it wasn't called for a few minutes)
+        if 'error' in output and 'currently loading' in output['error']:
+            # If the model is still loading, raise an error
+            raise ValueError("Model is currently loading")
+
         results.append(output)
 
     # Associate each result with the sentence text. For displaying to the user later on.
