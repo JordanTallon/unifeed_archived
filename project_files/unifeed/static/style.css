@@ -98,18 +98,6 @@ footer {
   z-index: 9999;
 }
 
-.left-highlight {
-  background-color: blue;
-}
-
-.center-highlight {
-  background-color: purple;
-}
-
-.right-highlight {
-  background-color: red;
-}
-
 .article-preview-image {
   background-color: #dfdfdf;
   width: 100%;

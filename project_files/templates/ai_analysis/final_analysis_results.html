@@ -1,23 +1,75 @@
-<div id="final-analysis-results">
-    <h5>Analysis Results</h5>
+<div id="final-analysis-results text-center">
+    <h5 class="fw-bold">Analysis Results</h5>
     {% if bias_analysis.status == "failed" %}
         <div id="analysis-alert" class="alert alert-danger" role="alert">
             UniFeed is unable to process the analysis for the requested article. Please note that this issue has been logged for further review. We apologize for any inconvenience.
         </div>
     {% endif %}
     {% if bias_analysis.status == "completed" %}
-        <ul id="analysis-result-list">
-            {% for sentence, analysis in bias_analysis.sentence_results.items %}
-                <li>
-                    <strong>Sentence:</strong> {{ sentence }}
-                    <strong>Bias:</strong> {{ analysis.conclusion }} ({{ analysis.conclusion_strength }})
-                    {% comment %}
+        <!-- Button trigger modal -->
+        <button type="button"
+                class="btn btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#breakdownModal">View Breakdown</button>
+        <!-- Modal -->
+        <div class="modal fade"
+             id="breakdownModal"
+             tabindex="-1"
+             aria-labelledby="breakdownModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="breakdownModalLabel">Analysis Breakdown</h5>
+                        <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table">
+                            <thead id="analysis-result-list">
+                                <tr>
+                                    <th scope="col">Bias</th>
+                                    <th scope="col">Sentence</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for sentence, analysis in bias_analysis.sentence_results.items %}
+                                    <tr>
+                                        <th scope="row">
+                                            <span>{{ analysis.conclusion }}</span>
+                                        </th>
+                                        <td>{{ sentence }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% comment %} these confidence levels are based on the model's training and algorithms and might not always perfectly represent the true political bias of the content. {% endcomment %}
+{% comment %}
+                <div class="list-group-item list-group-item-action mb-2 {% if analysis.conclusion == 'left' %} list-group-item-primary {% elif analysis.conclusion == 'right' %} list-group-item-danger {% elif analysis.conclusion == 'center' %} list-group-item-success {% endif %}">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1 ">{{ sentence }}</h5>
+                        <small class="text-muted ">?</small>
+                    </div>
+                    <small class="text-secondary text-capitalize">
+                        {{ analysis.conclusion_strength }}
+                        <span class="fw-bold">{{ analysis.conclusion }}</span> Bias
+                    </small>
+                    <hr>
+                    <small class="text-muted">Is this analysis accurate?
+                        <i class="bi bi-hand-thumbs-up"></i>
+                        <i class="bi bi-hand-thumbs-down"></i>
+                    </small>
+</div> {% endcomment %}
+{% comment %}
                     Left Bias: {{ analysis.left_bias|floatformat:2 }}%,
                     Center Bias: {{ analysis.center_bias|floatformat:2 }}%,
                     Right Bias: {{ analysis.right_bias|floatformat:2 }}% 
-                    {% endcomment %}
-                </li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-</div>
+{% endcomment %}
