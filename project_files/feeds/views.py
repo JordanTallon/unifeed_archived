@@ -3,15 +3,20 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
+from django.db import IntegrityError
 from django.contrib.auth import get_user_model
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
-from .models import *
 from articles.models import Article
+from .models import *
+from .forms import FeedFolderForm
 from .utils import *
 from .serializers import *
 from .signals import rss_feed_imported
+from django.urls import reverse
+from django.shortcuts import render, redirect
+from django.contrib import messages
 
 
 def import_rss_feed(url):
@@ -157,3 +162,25 @@ def view_userfeed(request, user_id, folder_id,  userfeed_id=None):
         'userfeed': userfeed,
         'userfeed_articles': userfeed_articles,
     })
+
+
+@login_required
+def add_new_folder(request):
+    if request.method == 'POST':
+        form = FeedFolderForm(request.POST)
+        if form.is_valid():
+            new_folder = form.save(commit=False)
+            new_folder.user = request.user
+            try:
+                new_folder.save()
+                messages.success(request, 'New Folder Successfully Added.')
+                return redirect('view_userfeed', user_id=request.user.id, folder_id=new_folder.id)
+            except IntegrityError:
+                messages.error(
+                    request, 'A folder with that name already exists.')
+        else:
+            messages.error(request, 'Failed to add new folder,')
+    else:
+        form = FeedFolderForm()
+
+    return render(request, 'feeds/add_new_folder.html', {'form': form})
