@@ -4,7 +4,7 @@
 {% block content %}
     <div class="container content d-flex flex-column">
         <div class="row mt-4">
-            <div class="col-sm-12 col-md-6 mx-auto pt-4">
+            <div class="col-sm-12 col-md-7 mx-auto pt-4">
                 <div class="mb-4 pb-2">
                     <h1 class="fw-bold">
                         {% block form_title %}
@@ -22,7 +22,7 @@
                     <form action="" method="post">
                         {% csrf_token %}
                         {{ form | crispy }}
-                        <div class="mt-4">
+                        <div class="mt-4 mx-auto">
                             {% block form_buttons %}
                             {% endblock form_buttons %}
                         </div>
