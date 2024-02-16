@@ -23,6 +23,8 @@ class UserFeedForm(forms.ModelForm):
             'feed': self.fields['feed'],
         }
 
+        # set 'feed' to not be required, since the user can use 'url' instead
+        self.fields['feed'].required = False
         self.fields['feed'].help_text = "OR Select from one of our many existing feeds"
 
     def clean(self):
