@@ -1,108 +1,100 @@
 {% extends "global/base.html" %}
 {% load static %}
+{% block topnav %}
+    {% with nav_middle="articles/article_details_header.html" %}{{ block.super }}{% endwith %}
+{% endblock topnav %}
 {% block content %}
-    <div class="container-fluid content">
-        <div class="container pt-4">
-            <div class="row gx-5">
-                <div class="col-12 col-lg-8 p-4 d-flex flex-column">
-                    <div id="article-actions" class="d-flex justify-content-between">
-                        <a class="text-secondary fw-bold letter-spaced text-decoration-none text-uppercase"
-                           href="#"
-                           onclick="goBack()">
-                            <i class="text-dark bi bi-arrow-left"></i>
-                            <small>Go Back</small>
-                        </a>
-                        <div>
-                            <a class="text-secondary"
-                               data-bs-toggle="popover"
-                               data-bs-trigger="hover"
-                               data-bs-container="body"
-                               data-bs-placement="top"
-                               data-bs-content="Add to Reading List">
-                                <i class="bi bi-book"></i></a>
-                            <a href="#"
-                               class="text-secondary ms-3"
-                               data-bs-toggle="popover"
-                               data-bs-trigger="hover"
-                               data-bs-container="body"
-                               data-bs-placement="top"
-                               data-bs-content="Save Article">
-                                <i class="bi bi-star"></i></a>
-                        </div>
-                    </div>
+    <div class="container my-0">
+        <div class="row gx-5">
+            <div class="col-12 col-lg-8 p-4 d-flex flex-column">
+                <div class="ms-auto">
+                    <a class="h5 text-secondary"
+                       data-bs-toggle="popover"
+                       data-bs-trigger="hover"
+                       data-bs-container="body"
+                       data-bs-placement="top"
+                       data-bs-content="Add to Reading List">
+                        <i class="bi bi-book"></i></a>
+                    <a href="#"
+                       class="h5 text-secondary ms-3"
+                       data-bs-toggle="popover"
+                       data-bs-trigger="hover"
+                       data-bs-container="body"
+                       data-bs-placement="top"
+                       data-bs-content="Save Article">
+                        <i class="bi bi-star"></i></a>
+                </div>
+                <h1 class="mt-4 fw-bold">{{ article.title }}</h1>
+                {% if article.publish_datetime != None %}
+                    <p class="text-muted">
+                        <small class="me-1"><i class="bi bi-clock"></i></small>
+                        Published {{ article.publish_datetime }}
+                    </p>
+                {% endif %}
+                {% if article.image_url != "" %}
+                    <img src="{{ article.image_url }}"
+                         class="mx-auto w-100 my-3"
+                         width="auto"
+                         height="auto"
+                         alt="News Photograph for {{ article.title }}">
+                {% endif %}
+                {% if article.author != "" %}
+                    <h3 class="h5 fw-bold">By {{ article.author }}</h3>
                     <hr>
-                    <h1 class="mt-4 fw-bold">{{ article.title }}</h1>
-                    {% if article.publish_datetime != None %}
-                        <p class="text-muted">
-                            <small class="me-1"><i class="bi bi-clock"></i></small>
-                            Published {{ article.publish_datetime }}
-                        </p>
-                    {% endif %}
-                    {% if article.image_url != "" %}
-                        <img src="{{ article.image_url }}"
-                             class="mx-auto w-100 my-3"
-                             width="auto"
-                             height="auto"
-                             alt="News Photograph for {{ article.title }}">
-                    {% endif %}
-                    {% if article.author != "" %}
-                        <h3 class="h5 fw-bold">By {{ article.author }}</h3>
-                        <hr>
-                    {% endif %}
-                    {% if article.description != "" %}
-                        <h4 class="h5 fw-bold">Description</h4>
-                        <p>{{ article.description }}</p>
-                    {% endif %}
-                    <p>{{ article.publisher }}</p>
-                    <div class="d-grid gap-2 mb-4">
-                        <a class="btn btn-outline-success" href="{{ article.link }}">Read Full Article</a>
+                {% endif %}
+                {% if article.description != "" %}
+                    <h4 class="h5 fw-bold">Description</h4>
+                    <p>{{ article.description }}</p>
+                {% endif %}
+                <p>{{ article.publisher }}</p>
+                <div class="d-grid gap-2 mb-4">
+                    <a class="btn btn-outline-success" href="{{ article.link }}">Read Full Article</a>
+                </div>
+            </div>
+            <!-- Side content (a.i tools, related articles, etc) -->
+            <div class="col-12 col-lg-3 ms-auto p-4 d-flex flex-column">
+                <!-- A.I tools -->
+                <div id="analysis-box" class="p-4 border">
+                    <!-- HTMX will replace the content here with its HTML -->
+                    <div id="analysis-result-container" class="d-flex flex-column h-100">
+                        <small class="text-uppercase text-center fw-bold mb-4">
+                            <i class="bi bi-lightning-charge"></i>
+                            A.I Tools
+                        </small>
+                        {% csrf_token %}
+                        <button class="btn btn-outline-secondary"
+                                hx-post="{% url 'analyse_article_bias' %}"
+                                hx-vals='{"url": "{{ article.link }}"}'
+                                hx-target="#analysis-result-container"
+                                hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                hx-swap="outerHTML">
+                            <span class="mx-2">Detect Political Bias</span>
+                            <span class="badge bg-primary">New</span>
+                        </button>
                     </div>
                 </div>
-                <!-- Side content (a.i tools, related articles, etc) -->
-                <div class="col-12 col-lg-3 ms-auto p-4 d-flex flex-column ">
-                    <!-- A.I tools -->
-                    <div id="analysis-box" class="p-4 border">
-                        <!-- HTMX will replace the content here with its HTML -->
-                        <div id="analysis-result-container" class="d-flex flex-column h-100">
-                            <small class="text-uppercase text-center fw-bold mb-4">
-                                <i class="bi bi-lightning-charge"></i>
-                                A.I Tools
-                            </small>
-                            {% csrf_token %}
-                            <button class="btn btn-outline-secondary"
-                                    hx-post="{% url 'analyse_article_bias' %}"
-                                    hx-vals='{"url": "{{ article.link }}"}'
-                                    hx-target="#analysis-result-container"
-                                    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
-                                    hx-swap="outerHTML">
-                                <span class="mx-2">Detect Political Bias</span>
-                                <span class="badge bg-primary">New</span>
-                            </button>
-                        </div>
-                    </div>
-                    <small class="text-uppercase text-center fw-bold my-4">More from Your UniFeed</small>
-                    <div class="row gy-5">
-                        {% for article in related_articles %}
-                            <a class="text-decoration-none text-dark"
-                               href="{% url 'article_details' article.id %}">
-                                <div class="card border-0">
-                                    {% if article.image_url != "" %}
-                                        <div class="card-img-top article-preview-image"
-                                             style="background-image: url('{{ article.image_url }}"></div>
-                                    {% endif %}
-                                    <div class="card-body mt-2 p-0">
-                                        <h5 class="card-title fw-bold">
-                                            <small>{{ article.title }}</small>
-                                        </h5>
-                                        {% if article.description != "" %}<p class="card-text">{{ article.preview_description }}</p>{% endif %}
-                                        <p class="card-text">
-                                            {% if article.publish_datetime != None %}<small class="text-muted">{{ article.time_since }}</small>{% endif %}
-                                        </p>
-                                    </div>
+                <small class="text-uppercase text-center fw-bold my-4">More from Your UniFeed</small>
+                <div class="row gy-5">
+                    {% for article in related_articles %}
+                        <a class="text-decoration-none text-dark"
+                           href="{% url 'article_details' article.id %}">
+                            <div class="card border-0">
+                                {% if article.image_url != "" %}
+                                    <div class="card-img-top article-preview-image"
+                                         style="background-image: url('{{ article.image_url }}"></div>
+                                {% endif %}
+                                <div class="card-body mt-2 p-0">
+                                    <h5 class="card-title fw-bold">
+                                        <small>{{ article.title }}</small>
+                                    </h5>
+                                    {% if article.description != "" %}<p class="card-text">{{ article.preview_description }}</p>{% endif %}
+                                    <p class="card-text">
+                                        {% if article.publish_datetime != None %}<small class="text-muted">{{ article.time_since }}</small>{% endif %}
+                                    </p>
                                 </div>
-                            </a>
-                        {% endfor %}
-                    </div>
+                            </div>
+                        </a>
+                    {% endfor %}
                 </div>
             </div>
         </div>

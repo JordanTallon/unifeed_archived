@@ -19,15 +19,10 @@ def article_details(request, article_id):
 
     # Get "related" articles to the current article being viewed
     # Just a random selection for now
-    user_feeds = UserFeed.objects.filter(
-        user=request.user).values_list('feed', flat=True)
     related_articles_queryset = Article.objects.filter(
-        feeds__in=user_feeds
-    ).exclude(
-        image_url=""
-    ).distinct()
-    # Up to 10 articles
+        feed=article.feed).exclude(image_url="").distinct()
+    # Up to 5 articles
     related_articles = random.sample(
-        list(related_articles_queryset), min(len(related_articles_queryset), 10))
+        list(related_articles_queryset), min(len(related_articles_queryset), 5))
 
     return render(request, 'articles/article_details.html', {'article': article, 'related_articles': related_articles, })
