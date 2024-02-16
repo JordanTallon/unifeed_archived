@@ -73,11 +73,10 @@ class UserFeed(models.Model):
         null=True, blank=True
     )
 
-    # Do not delete the 'UserFeed' if the linked feed is deleted. (gives the user a chance to update the url)
+    # Delete the userfeed if the original feed is deleted. In the future, check ways to preserve the userfeed and notify the user to update the url.
     feed = models.ForeignKey(
         Feed,
-        on_delete=models.SET_NULL,
-        null=True, blank=True
+        on_delete=models.CASCADE
     )
 
     def save(self, *args, **kwargs):
