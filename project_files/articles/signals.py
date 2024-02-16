@@ -18,6 +18,7 @@ def import_articles_from_feed(sender, **kwargs):
         article, created = Article.objects.get_or_create(
             link=entry['link'],
             title=entry['title'],
+            feed=feed
         )
 
         # If the article is new, set its values
@@ -27,7 +28,3 @@ def import_articles_from_feed(sender, **kwargs):
             article.author = entry['author']
             article.publish_datetime = entry['publish_datetime']
             article.save()
-            article.feeds.add(feed)
-        else:
-            if not article.feeds.filter(id=feed.id).exists():
-                article.feeds.add(feed)

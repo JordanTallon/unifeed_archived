@@ -168,12 +168,12 @@ def view_userfeed(request, user_id, folder_id,  userfeed_id=None):
         # Find the userfeed associated with that ID and return the articles in it
         userfeed = get_object_or_404(
             UserFeed, user=user, folder=folder, pk=userfeed_id)
-        userfeed_articles = Article.objects.filter(feeds__in=[userfeed.feed])
+        userfeed_articles = Article.objects.filter(feed=userfeed.feed)
     else:
         # If no userfeed ID was present, get all userfeeds within the folder, and return all their articles.
         userfeed = None
         userfeed_articles = Article.objects.filter(
-            feeds__in=folder_userfeeds.values_list('feed', flat=True))
+            feed__in=folder_userfeeds.values_list('feed', flat=True))
 
     return render(request, 'feeds/view_feed.html', {
         'folder': folder,
