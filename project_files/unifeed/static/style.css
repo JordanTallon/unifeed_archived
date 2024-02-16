@@ -80,11 +80,6 @@ footer {
   letter-spacing: 0.133rem;
 }
 
-.feed-img {
-  width: 50px;
-  object-fit: contain;
-}
-
 .feed-list {
   z-index: 8000;
   top: 0;
@@ -93,6 +88,11 @@ footer {
   overflow-y: auto;
   width: 350px;
   margin: 0;
+}
+
+.feed-img {
+  background-color: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(129, 129, 129, 1);
 }
 
 /* Override crispy_form classes */
