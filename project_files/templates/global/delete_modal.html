@@ -1,5 +1,5 @@
 <div class="modal fade"
-     id="deleteModal"
+     id="{% block delete_modal_id %}{% endblock delete_modal_id %}"
      data-bs-backdrop="static"
      data-bs-keyboard="false"
      tabindex="-1"
@@ -22,7 +22,7 @@
                 <div class="d-grid gap-2 p-4">
                     <a type="button"
                        class="btn btn-danger"
-                       href="{% url 'delete_folder' folder.id %}">
+                       href="{% block delete_url %}{% endblock delete_url %}">
                         {% block delete_button_text %}
                         {% endblock delete_button_text %}
                     </a>

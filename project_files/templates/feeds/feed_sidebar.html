@@ -35,7 +35,9 @@
                             <i class="bi bi-eye me-2"></i>View</a>
                         <div class="ms-auto">
                             <a class="btn btn-outline-secondary"><i class="bi bi-pencil me-2">Edit</i></a>
-                            <a class="btn btn-outline-danger"><i class="bi bi-trash me-2"></i>Delete</a>
+                            <a class="btn btn-outline-danger"
+                               data-bs-toggle="modal"
+                               data-bs-target="#deleteFeedModal"><i class="bi bi-trash me-2"></i>Delete</a>
                         </div>
                     </div>
                 </div>
@@ -45,3 +47,4 @@
         {% endfor %}
     </div>
 </div>
+{% include "feeds/delete_feed_modal.html" %}

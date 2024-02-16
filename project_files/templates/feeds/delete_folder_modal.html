@@ -1,7 +1,13 @@
 {% extends 'global/delete_modal.html' %}
+{# djlint:off #}
+{% block delete_modal_id %}deleteFolderModal{% endblock delete_modal_id %}
+{# djlint:on #}
 {% block delete_text %}
     This action cannot be undone. All data associated with this folder will be lost.
 {% endblock delete_text %}
 {% block delete_button_text %}
     Delete {{ folder.name }} Folder
 {% endblock delete_button_text %}
+{# djlint:off #}
+{% block delete_url %}{% url 'delete_folder' folder.id %}{% endblock delete_url %}
+{# djlint:on #}

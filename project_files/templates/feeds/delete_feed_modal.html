@@ -1,0 +1,13 @@
+{% extends 'global/delete_modal.html' %}
+{# djlint:off #}
+{% block delete_modal_id %}deleteFeedModal{% endblock delete_modal_id %}
+{# djlint:on #}
+{% block delete_text %}
+    This action cannot be undone. All data associated with this feed will be lost.
+{% endblock delete_text %}
+{% block delete_button_text %}
+    Delete Feed
+{% endblock delete_button_text %}
+{# djlint:off #}
+{% block delete_url %}{% url 'home' %}{% endblock delete_url %}
+{# djlint:on #}
