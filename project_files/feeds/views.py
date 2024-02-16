@@ -3,15 +3,20 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
+from django.db import IntegrityError
 from django.contrib.auth import get_user_model
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
-from .models import *
 from articles.models import Article
+from .models import *
+from .forms import FeedFolderForm, UserFeedForm, EditUserFeedForm
 from .utils import *
 from .serializers import *
 from .signals import rss_feed_imported
+from django.urls import reverse
+from django.shortcuts import render, redirect
+from django.contrib import messages
 
 
 def import_rss_feed(url):
@@ -80,37 +85,56 @@ def import_new_feed(request):
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['POST'])
 @login_required
-def import_user_feed(request):
+def add_user_feed_to_folder(request, folder_name):
 
-    data = request.data
+    if request.method == "POST":
+        form = UserFeedForm(request.POST)
 
-    # Make sure that both a url and user were provided in the data
-    url = data.get('url')
+        if form.is_valid():
 
-    if not url:
-        return Response({"error": "URL is required."}, status=status.HTTP_400_BAD_REQUEST)
+            feed = form.cleaned_data.get('feed')
 
-    user = request.user
+            # If there's no feed, there but me be a url
+            if not feed:
+                try:
+                    url = form.cleaned_data.get('url')
+                    # Check if the feed is valid or already in the database (can reuse it from another user).
+                    # If not, the function creates it.
+                    feed = import_rss_feed(url)
+                except ValueError as e:
+                    messages.error(request, str(e))
+                    return render(request, 'feeds/add_new_feed.html', {'form': form})
 
-    # Check if the feed is valid or already in the database (can reuse it from another user)
-    feed = None
-    try:
-        feed = import_rss_feed(url)
-    except ValueError as e:
-        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            user = request.user
+            folder = get_object_or_404(FeedFolder, name=folder_name)
 
-    # Check if the UserFeed already exists, return it if so.
-    existing_feed = UserFeed.objects.filter(feed=feed, user=user).first()
-    if existing_feed:
-        serialized_feed = UserFeedSerializer(existing_feed).data
-        return Response({"message": "Existing UserFeed found.", "UserFeed": serialized_feed})
+            if UserFeed.objects.filter(folder=folder, feed=feed).exists():
+                messages.error(
+                    request, f"The {folder.name} folder already contains this feed.")
+                return render(request, 'feeds/add_new_feed.html', {'form': form})
 
-    # Create and return the new user feed
-    user_feed = UserFeed.objects.create(feed=feed, user=user)
-    serialized_feed = UserFeedSerializer(user_feed).data
-    return Response({"message": "RSS Feed assigned to user successfully.", "Userfeed": serialized_feed}, status=status.HTTP_201_CREATED)
+            try:
+                new_user_feed = form.save(commit=False)
+                new_user_feed.feed = feed
+                new_user_feed.user = user
+                new_user_feed.folder = folder
+                new_user_feed.save()
+
+                messages.success(request, 'New feed successfully imported.')
+                return redirect('view_userfeed', user_id=request.user.id, folder_id=folder.id, userfeed_id=new_user_feed.id)
+
+            except ValueError as e:
+                messages.error(request, str(e))
+                return render(request, 'feeds/add_new_feed.html', {'form': form})
+        else:
+            messages.error(request, 'Failed to import Feed.')
+            return render(request, 'feeds/add_new_feed.html', {'form': form})
+
+    else:  # Not a POST request
+        form = UserFeedForm()
+
+    return render(request, 'feeds/add_new_feed.html', {'form': form})
 
 
 @login_required
@@ -157,3 +181,96 @@ def view_userfeed(request, user_id, folder_id,  userfeed_id=None):
         'userfeed': userfeed,
         'userfeed_articles': userfeed_articles,
     })
+
+
+@login_required
+def edit_userfeed(request, userfeed_id):
+    userfeed = get_object_or_404(UserFeed, id=userfeed_id, user=request.user)
+
+    if request.method == 'POST':
+        form = EditUserFeedForm(request.POST, instance=userfeed)
+        if form.is_valid():
+            try:
+                form.save()
+                messages.success(request, 'Feed successfully updated.')
+            except IntegrityError:
+                messages.error(request, 'Failed to update feed.')
+        else:
+            messages.error(request, 'Failed to update feed.')
+    else:
+        form = EditUserFeedForm(instance=userfeed)
+
+    return render(request, 'feeds/edit_userfeed.html', {'form': form, 'userfeed_name': userfeed.name})
+
+
+@login_required
+def add_new_folder(request):
+    if request.method == 'POST':
+        form = FeedFolderForm(request.POST)
+        if form.is_valid():
+            new_folder = form.save(commit=False)
+            new_folder.user = request.user
+            try:
+                new_folder.save()
+                return redirect('view_userfeed', user_id=request.user.id, folder_id=new_folder.id)
+            except IntegrityError:
+                messages.error(
+                    request, 'A folder with that name already exists.')
+        else:
+            messages.error(request, 'Failed to add new folder,')
+    else:
+        form = FeedFolderForm()
+
+    return render(request, 'feeds/add_new_folder.html', {'form': form})
+
+
+@login_required
+def edit_folder(request, folder_id):
+    folder = get_object_or_404(FeedFolder, id=folder_id, user=request.user)
+
+    if request.method == 'POST':
+        form = FeedFolderForm(request.POST, instance=folder)
+        if form.is_valid():
+            try:
+                form.save()
+                return redirect('view_userfeed', user_id=request.user.id, folder_id=folder.id)
+            except IntegrityError:
+                messages.error(
+                    request, 'A folder with that name already exists.')
+        else:
+            messages.error(request, 'Failed to update folder.')
+    else:
+        form = FeedFolderForm(instance=folder)
+
+    return render(request, 'feeds/edit_existing_folder.html', {'form': form, 'folder_name': folder.name, 'folder_id': folder_id})
+
+
+@login_required
+def delete_folder(request, folder_id):
+    """
+    Deletes a folder with the given folder_id (if it belongs to the current user).
+    Redirects to the home page and displays a deletion confirmation message.
+    """
+    folder = get_object_or_404(FeedFolder, id=folder_id, user=request.user)
+
+    folder_name = folder.name
+    folder.delete()
+    messages.success(request, 'The ' + folder_name +
+                     " folder was successfully deleted.")
+    return redirect('home')
+
+
+@login_required
+def delete_userfeed(request, userfeed_id):
+    """
+    Deletes a user feed with the given userfeed_id (if it belongs to the current user).
+    Redirects to the folder that contained the userfeed and displays a deletion confirmation message.
+    """
+    userfeed = get_object_or_404(UserFeed, id=userfeed_id, user=request.user)
+
+    feed_name = userfeed.name
+    feed_folder = userfeed.folder
+    userfeed.delete()
+    messages.success(request, 'The ' + feed_name +
+                     " feed was successfully deleted.")
+    return redirect('view_userfeed', user_id=request.user.id, folder_id=feed_folder.id)

@@ -22,6 +22,9 @@ class FeedFolder(models.Model):
         # To prevent the user from making multiple folders with the same name
         unique_together = ('user', 'name')
 
+    def __str__(self):
+        return self.name
+
 
 # Note: Feeds are centralized and do not depend on a coexistence with a user
 # For example, if a user deletes an account, the feed they imported should remain as a
@@ -52,6 +55,9 @@ class Feed(models.Model):
     # How often the feed should be updated (in minutes)
     ttl = models.IntegerField(default=10)
 
+    def __str__(self):
+        return self.name
+
 
 class UserFeed(models.Model):
 
@@ -73,11 +79,10 @@ class UserFeed(models.Model):
         null=True, blank=True
     )
 
-    # Do not delete the 'UserFeed' if the linked feed is deleted. (gives the user a chance to update the url)
+    # Delete the userfeed if the original feed is deleted. In the future, check ways to preserve the userfeed and notify the user to update the url.
     feed = models.ForeignKey(
         Feed,
-        on_delete=models.SET_NULL,
-        null=True, blank=True
+        on_delete=models.CASCADE
     )
 
     def save(self, *args, **kwargs):
@@ -94,6 +99,5 @@ class UserFeed(models.Model):
         super().save(*args, **kwargs)
 
     class Meta:
-        # FLAG: i assume this is the desired behaviour, but i could be wrong (will revisit if theres a problem).
-        # Prevent the user from importing the same feed more than once
-        unique_together = ('user', 'feed')
+        # Prevent the user from importing the same feed more than once into the same folder
+        unique_together = ('user', 'feed', 'folder')

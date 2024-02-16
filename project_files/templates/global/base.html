@@ -37,12 +37,22 @@
     </aside>
     <div class="content-container">
       <header>
-        {% include "global/topnav.html" %}
+        {% block topnav %}
+          {% include "global/topnav.html" %}
+        {% endblock topnav %}
       </header>
       <main class="position-relative">
-        {% block content %}
-          <!-- This is where children templates inject content -->
-        {% endblock content %}
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-{{ message.tags }}{% endif %} w-75 my-2 mx-auto"
+                 role="alert">{{ message }}</div>
+          {% endfor %}
+        {% endif %}
+        <div class="container-fluid content">
+          {% block content %}
+            <!-- This is where children templates inject content -->
+          {% endblock content %}
+        </div>
       </main>
       <footer>
         {% include "global/footer.html" %}

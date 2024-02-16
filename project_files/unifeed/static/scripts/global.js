@@ -10,3 +10,11 @@ var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
 function goBack() {
   window.history.back();
 }
+
+// For passing URL information to delete modals
+// This lets me inject the Django variable url without rendering the modal for every item
+function setDeleteUrl(url) {
+  var modal = document.getElementById("deleteFeedModal");
+  var deleteButton = modal.querySelector("#delete-button");
+  deleteButton.href = url;
+}

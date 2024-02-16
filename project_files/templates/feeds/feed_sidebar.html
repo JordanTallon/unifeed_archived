@@ -10,26 +10,43 @@
                 aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
-        {% for folder_feed in folder_userfeeds %}
-            <a href="{% url 'view_userfeed' user.id folder.id folder_feed.id %}"
-               class="list-group-item list-group-item-action">
-                <div class="d-flex w-100 justify-content-between">
-                    <h6 class="fw-bold col-9">{{ folder_feed.name }}</h6>
-                    <small class="col text-end">3 days ago</small>
+        {% for userfeed in folder_userfeeds %}
+            <div class="card mb-4">
+                <div class="card-header">
+                    <div class="row">
+                        <h5 class="col fw-bold">{{ userfeed.name }}</h5>
+                        {% if userfeed.feed.image_url != '' %}
+                            <div class="col-4">
+                                <img src="{{ userfeed.feed.image_url }}"
+                                     height="auto"
+                                     width="auto"
+                                     class="img-fluid feed-img"
+                                     alt="{{ userfeed.feed.name }} Icon">
+                            </div>
+                        {% endif %}
+                    </div>
                 </div>
-                <div class="d-flex w-100 justify-content-between">
-                    <small class="col-9">And some small print.</small>
-                    {% if folder_feed.feed.image_url != '' %}
-                        <img src="{{ folder_feed.feed.image_url }}"
-                             height="auto"
-                             width="auto"
-                             class="feed-img col-3"
-                             alt="{{ folder_feed.feed.name }} Icon">
-                    {% endif %}
+                <div class="card-body">
+                    <p class="card-text">{{ userfeed.description }}</p>
+                    <small class="col text-end my-2 text-muted">Lasted updated 3 days ago</small>
+                    <div class="px-0 card-footer bg-white mt-2 pt-4 d-flex">
+                        <a class="btn btn-outline-success"
+                           href="{% url 'view_userfeed' user.id folder.id userfeed.id %}">
+                            <i class="bi bi-eye me-2"></i>View</a>
+                        <div class="ms-auto">
+                            <a class="btn btn-outline-secondary"
+                               href="{% url 'edit_userfeed' userfeed.id %}"><i class="bi bi-pencil me-2"></i>Edit</a>
+                            <a class="btn btn-outline-danger"
+                               data-bs-toggle="modal"
+                               data-bs-target="#deleteFeedModal"
+                               onclick="setDeleteUrl('{% url 'delete_userfeed' userfeed.id %}');"><i class="bi bi-trash me-2"></i>Delete</a>
+                        </div>
+                    </div>
                 </div>
-            </a>
+            </div>
         {% empty %}
             <li>No feeds found in this folder.</li>
         {% endfor %}
     </div>
 </div>
+{% include "feeds/delete_feed_modal.html" %}

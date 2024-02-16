@@ -53,6 +53,14 @@ footer {
   display: none;
 }
 
+.shadow-top {
+  box-shadow: 0 -5px 12px -5px #cacaca40;
+}
+
+.shadow-bottom {
+  box-shadow: 0 5px 12px -5px #cacaca40;
+}
+
 .content-container {
   grid-area: content;
   height: 100svh;
@@ -62,7 +70,6 @@ footer {
     "main main main main main main main"
     "footer footer footer footer footer footer footer";
   grid-template-rows: auto 1fr auto;
-  gap: 10px;
 }
 
 .active {
@@ -71,11 +78,6 @@ footer {
 
 .letter-spaced {
   letter-spacing: 0.133rem;
-}
-
-.feed-img {
-  width: 50px;
-  object-fit: contain;
 }
 
 .feed-list {
@@ -88,9 +90,30 @@ footer {
   margin: 0;
 }
 
+.feed-img {
+  background-color: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(129, 129, 129, 1);
+}
+
+/* Override crispy_form classes */
+.form-label {
+  font-weight: bold;
+}
+.asteriskField {
+  font-size: 0;
+}
+.asteriskField::after {
+  content: "Required";
+  opacity: 0.75 !important;
+  font-size: 0.8rem;
+  margin-left: 0.75rem;
+  font-weight: normal;
+}
+
 .content {
   overflow: auto;
   overflow-x: hidden;
+  padding-top: 5svh;
   height: 100%;
 }
 

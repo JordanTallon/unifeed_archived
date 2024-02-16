@@ -1,0 +1,44 @@
+<div class="w-100 d-flex align-items-center justify-content-between">
+    <nav>
+        <a class="fw-bold text-decoration-none text-dark"
+           href="{% url 'view_userfeed' user.id folder.id %}">{{ folder.name }} \</a>
+        {% if userfeed != None %}
+            {{ userfeed.name }}
+        {% else %}
+            All
+        {% endif %}
+    </nav>
+    <div class="d-flex">
+        <div class="dropdown">
+            <button class="btn  dropdown-toggle"
+                    type="button"
+                    id="manageFolderDropdown"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false">Manage Folder</button>
+            <ul class="dropdown-menu" aria-labelledby="manageFolderDropdown">
+                <li>
+                    <a class="dropdown-item"
+                       type="button"
+                       data-bs-toggle="offcanvas"
+                       data-bs-target="#offcanvasRight"
+                       aria-controls="offcanvasRight">Manage Feeds</a>
+                </li>
+                <li>
+                    <a class="dropdown-item"
+                       href="{% url 'add_user_feed_to_folder' folder.name %}">Add New Feed</a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="{% url 'edit_folder' folder.id %}">Edit Folder</a>
+                </li>
+                <hr>
+                <li>
+                    <button type="button"
+                            class="dropdown-item text-danger"
+                            data-bs-toggle="modal"
+                            data-bs-target="#deleteFolderModal">Delete Folder</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% include "feeds/delete_folder_modal.html" %}
