@@ -223,3 +223,18 @@ def edit_existing_folder(request, folder_id):
         form = FeedFolderForm(instance=folder)
 
     return render(request, 'feeds/edit_existing_folder.html', {'form': form, 'folder_name': folder.name, 'folder_id': folder_id})
+
+
+@login_required
+def delete_folder(request, folder_id):
+    """
+    Deletes a folder with the given folder_id (if it belongs to the current user).
+    Redirects to the home page and displays a deletion confirmation message.
+    """
+    folder = get_object_or_404(FeedFolder, id=folder_id, user=request.user)
+
+    folder_name = folder.name
+    folder.delete()
+    messages.success(request, 'The ' + folder_name +
+                     " folder was successfully deleted.")
+    return redirect('home')

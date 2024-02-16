@@ -63,7 +63,9 @@
                 <h1 class="fw-bold h4 my-2">Are you sure?</h1>
                 <p class="text-muted my-2">This action cannot be undone. All data associated with this folder will be lost.</p>
                 <div class="d-grid gap-2 p-4">
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Delete Folder</button>
+                    <a type="button"
+                       class="btn btn-danger"
+                       href="{% url 'delete_folder' folder.id %}">Delete {{ folder.name }} Folder</a>
                     <button type="button"
                             class="btn btn-outline-secondary"
                             data-bs-dismiss="modal">Cancel</button>
