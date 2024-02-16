@@ -36,41 +36,10 @@
                     <button type="button"
                             class="dropdown-item text-danger"
                             data-bs-toggle="modal"
-                            data-bs-target="#deleteFolderModal">Delete Folder</button>
+                            data-bs-target="#deleteModal">Delete Folder</button>
                 </li>
             </ul>
         </div>
     </div>
 </div>
-<!-- Modal -->
-<div class="modal fade"
-     id="deleteFolderModal"
-     data-bs-backdrop="static"
-     data-bs-keyboard="false"
-     tabindex="-1"
-     aria-labelledby="deleteFolderModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog text-center">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button"
-                        class="btn-close"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <i class="h1 text-danger bi bi-exclamation-triangle"></i>
-                <h1 class="fw-bold h4 my-2">Are you sure?</h1>
-                <p class="text-muted my-2">This action cannot be undone. All data associated with this folder will be lost.</p>
-                <div class="d-grid gap-2 p-4">
-                    <a type="button"
-                       class="btn btn-danger"
-                       href="{% url 'delete_folder' folder.id %}">Delete {{ folder.name }} Folder</a>
-                    <button type="button"
-                            class="btn btn-outline-secondary"
-                            data-bs-dismiss="modal">Cancel</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+{% include "feeds/delete_folder_modal.html" %}
