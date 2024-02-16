@@ -19,7 +19,6 @@ def article_details(request, article_id):
 
     # Get "related" articles to the current article being viewed
     # Just a random selection for now
-
     related_articles_queryset = Article.objects.filter(
         feed=article.feed).exclude(image_url="").distinct()
     # Up to 5 articles
