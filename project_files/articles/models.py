@@ -87,3 +87,5 @@ class SavedArticle(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE
     )
+    # When the article was saved
+    saved_at = models.DateTimeField(auto_now_add=True)
