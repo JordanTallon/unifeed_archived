@@ -6,7 +6,7 @@ urlpatterns = [
     path('folder/delete/<int:folder_id>/',
          views.delete_folder, name='delete_folder'),
     path('folder/edit/<int:folder_id>/',
-         views.edit_existing_folder, name='edit_existing_folder'),
+         views.edit_folder, name='edit_folder'),
     # path('api/import/feed', views.import_new_feed, name='import_new_feed'),
     path('<str:folder_name>/add_feed',
          views.add_user_feed_to_folder, name='add_user_feed_to_folder'),
