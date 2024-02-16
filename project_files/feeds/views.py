@@ -10,7 +10,7 @@ from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
 from articles.models import Article
 from .models import *
-from .forms import FeedFolderForm, UserFeedForm
+from .forms import FeedFolderForm, UserFeedForm, EditUserFeedForm
 from .utils import *
 from .serializers import *
 from .signals import rss_feed_imported
@@ -184,6 +184,26 @@ def view_userfeed(request, user_id, folder_id,  userfeed_id=None):
 
 
 @login_required
+def edit_userfeed(request, userfeed_id):
+    userfeed = get_object_or_404(UserFeed, id=userfeed_id, user=request.user)
+
+    if request.method == 'POST':
+        form = EditUserFeedForm(request.POST, instance=userfeed)
+        if form.is_valid():
+            try:
+                form.save()
+                messages.success(request, 'Feed successfully updated.')
+            except IntegrityError:
+                messages.error(request, 'Failed to update feed.')
+        else:
+            messages.error(request, 'Failed to update feed.')
+    else:
+        form = EditUserFeedForm(instance=userfeed)
+
+    return render(request, 'feeds/edit_userfeed.html', {'form': form, 'userfeed_name': userfeed.name})
+
+
+@login_required
 def add_new_folder(request):
     if request.method == 'POST':
         form = FeedFolderForm(request.POST)
@@ -222,7 +242,7 @@ def edit_folder(request, folder_id):
     else:
         form = FeedFolderForm(instance=folder)
 
-    return render(request, 'feeds/edit_folder.html', {'form': form, 'folder_name': folder.name, 'folder_id': folder_id})
+    return render(request, 'feeds/edit_existing_folder.html', {'form': form, 'folder_name': folder.name, 'folder_id': folder_id})
 
 
 @login_required

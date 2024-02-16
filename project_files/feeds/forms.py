@@ -48,6 +48,12 @@ class UserFeedForm(forms.ModelForm):
         return user_feed
 
 
+class EditUserFeedForm(forms.ModelForm):
+    class Meta:
+        model = UserFeed
+        fields = ["name", "description", "folder"]
+
+
 class FeedFolderForm(ModelForm):
     class Meta:
         model = FeedFolder
