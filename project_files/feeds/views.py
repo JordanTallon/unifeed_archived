@@ -238,3 +238,19 @@ def delete_folder(request, folder_id):
     messages.success(request, 'The ' + folder_name +
                      " folder was successfully deleted.")
     return redirect('home')
+
+
+@login_required
+def delete_userfeed(request, userfeed_id):
+    """
+    Deletes a user feed with the given userfeed_id (if it belongs to the current user).
+    Redirects to the folder that contained the userfeed and displays a deletion confirmation message.
+    """
+    userfeed = get_object_or_404(UserFeed, id=userfeed_id, user=request.user)
+
+    feed_name = userfeed.name
+    feed_folder = userfeed.folder
+    userfeed.delete()
+    messages.success(request, 'The ' + feed_name +
+                     " feed was successfully deleted.")
+    return redirect('view_userfeed', user_id=request.user.id, folder_id=feed_folder.id)
