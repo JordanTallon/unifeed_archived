@@ -19,7 +19,7 @@ pipeline {
                     echo 'Preparing environment...'
                     // Tell docker-compose to stop and remove containers, networks, volumes, and images created by 'up'
                     // Sometimes on a failed or interrupted pipeline, it doesn't hit the command after testing to shut it down
-                    sh "docker-compose down"
+                    sh "docker-compose down --remove-orphans"
                     sh "docker ps -q | xargs -r docker stop"
                 }
             }
@@ -81,7 +81,7 @@ pipeline {
                     }
                 }
                 echo 'Cleaning up...'
-                sh "docker-compose down"
+                sh "docker-compose down --remove-orphans"
             }
         }
 
@@ -102,7 +102,7 @@ pipeline {
                         
                         echo "Stopping the old server and freeing up port 80..."
 
-                        docker-compose -f docker-compose-deploy.yml down
+                        docker-compose -f docker-compose-deploy.yml down --remove-orphans
                         # Sometimes the nginx proxy held port 80 (this is probably dangerous, if there's any issues; i'll find another way)
                         lsof -ti:80 | xargs --no-run-if-empty kill
                         
