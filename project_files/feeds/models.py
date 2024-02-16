@@ -94,6 +94,5 @@ class UserFeed(models.Model):
         super().save(*args, **kwargs)
 
     class Meta:
-        # FLAG: i assume this is the desired behaviour, but i could be wrong (will revisit if theres a problem).
-        # Prevent the user from importing the same feed more than once
-        unique_together = ('user', 'feed')
+        # Prevent the user from importing the same feed more than once into the same folder
+        unique_together = ('user', 'feed', 'folder')
