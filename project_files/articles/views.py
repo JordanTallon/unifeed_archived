@@ -26,8 +26,8 @@ def article_details(request, article_id):
     ).exclude(
         image_url=""
     ).distinct()
-    # Up to 10 articles
+    # Up to 5 articles
     related_articles = random.sample(
-        list(related_articles_queryset), min(len(related_articles_queryset), 10))
+        list(related_articles_queryset), min(len(related_articles_queryset), 5))
 
     return render(request, 'articles/article_details.html', {'article': article, 'related_articles': related_articles, })
