@@ -22,6 +22,9 @@ class FeedFolder(models.Model):
         # To prevent the user from making multiple folders with the same name
         unique_together = ('user', 'name')
 
+    def __str__(self):
+        return self.name
+
 
 # Note: Feeds are centralized and do not depend on a coexistence with a user
 # For example, if a user deletes an account, the feed they imported should remain as a
@@ -51,6 +54,9 @@ class Feed(models.Model):
 
     # How often the feed should be updated (in minutes)
     ttl = models.IntegerField(default=10)
+
+    def __str__(self):
+        return self.name
 
 
 class UserFeed(models.Model):
