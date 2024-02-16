@@ -2,6 +2,7 @@ from django.db import models
 from feeds.models import Feed
 from datetime import datetime
 from django.utils import timezone
+from django.conf import settings
 
 
 class Article(models.Model):
@@ -73,3 +74,16 @@ class Article(models.Model):
         except Exception as e:
             print(f"An error occurred: {e}")
             return None
+
+
+class SavedArticle(models.Model):
+    # The article being saved
+    article = models.ForeignKey(
+        Article,
+        on_delete=models.CASCADE,
+    )
+    # The user saving the article
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
