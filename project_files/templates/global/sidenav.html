@@ -41,16 +41,18 @@
                         <span class="{% if folder_url in request.path %}fw-bold{% endif %}">{{ folder_data.folder.name }}</span>
                     </a>
                     {% if folder_url in request.path %}
-                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-2">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pt-2 pb-3">
                             {% for feed in folder_data.feeds %}
                                 {% url 'view_userfeed' user.id folder_data.folder.id feed.id as feed_url %}
-                                <li class="ms-auto mb-2">
+                                <li class="ms-auto px-3">
                                     <a class="text-decoration-none text-dark" href="{{ feed_url }}">
-                                        <i class="bi bi-dot"></i>
-                                        <span class="{% if feed_url in request.path %}text-dark{% else %}text-muted {% endif %}">{{ feed.name }}</span>
+                                        <span class="d-inline-block text-truncate w-100 {% if feed_url in request.path %}text-dark{% else %}text-muted {% endif %}">
+                                            <i class="bi bi-reception-3"></i>
+                                        {{ feed.name }}</span>
                                     </a>
                                 </li>
                             {% endfor %}
+                            <hr>
                         </ul>
                     {% endif %}
                 </li>
