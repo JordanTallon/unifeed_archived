@@ -7,20 +7,31 @@
     {% include "feeds/feed_sidebar.html" %}
     {% if userfeed_articles|length > 0 %}
         <div class="w-100 container mx-auto">
-            <!-- top buttons, refresh, etc -->
-            <div class="row mx-auto g-0 gy-4 g-md-4 g-lg-5">
-                <button hx-get="{% url 'view_userfeed' user.id folder_id %}{% if userfeed_id %}{{ userfeed_id }}{% endif %}"
-                        hx-target="#article-grid"
-                        data-bs-toggle="popover"
-                        data-bs-trigger="hover"
-                        data-bs-container="body"
-                        data-bs-placement="top"
-                        data-bs-content="Refresh"
-                        class="col-1 btn p-0 ms-auto">
-                    <i class="h4 text-secondary bi bi-arrow-clockwise"></i>
-                </button>
+            <div class="row mx-auto g-5 d-flex p-0">
+                <div class="col-10">
+                    <h1 class="h3 fw-bold">
+                        {% if userfeed %}
+                            {{ userfeed.name }}
+                        {% else %}
+                            {{ folder.name }}
+                        {% endif %}
+                    </h1>
+                </div>
+                <!-- top buttons, refresh, etc -->
+                <div class="col-2 d-flex">
+                    <button hx-get="{% url 'view_userfeed' user.id folder_id %}{% if userfeed_id %}{{ userfeed_id }}{% endif %}"
+                            hx-target="#article-grid"
+                            data-bs-toggle="popover"
+                            data-bs-trigger="hover"
+                            data-bs-container="body"
+                            data-bs-placement="top"
+                            data-bs-content="Refresh"
+                            class="btn p-0 ms-auto">
+                        <i class="h4 text-secondary bi bi-arrow-clockwise"></i>
+                    </button>
+                </div>
+                <div class="col-12 mx-auto border-top my-4"></div>
             </div>
-            <hr>
             <div id="article-grid" class="row mx-auto g-0 gy-4 g-md-4 g-lg-5">
                 {% include "global/article_grid.html" with article_list=userfeed_articles %}
             </div>
