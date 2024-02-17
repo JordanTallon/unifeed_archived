@@ -76,6 +76,43 @@ def parse_rss_feed(url):
 
 @api_view(['POST'])
 @login_required
+def update_rss_feed(request):
+
+    data = request.data
+
+    # Check if a 'feed_id' param was given in the request data
+    feed_id = data.get('feed_id')
+
+    if not feed_id:
+        return Response({"error": "feed_id is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Fetch the feed to be updated
+    feed = get_object_or_404(Feed, id=feed_id)
+
+    # Try fetch new RSS data
+    try:
+        rss, rss_channel_data = parse_rss_feed(feed.url)
+    except Exception as e:
+        return Response({"error": "Error in updating RSS feed: " + str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Update all feed information
+    feed.link = rss_channel_data.get('link', feed.link)
+    feed.name = rss_channel_data.get('title', feed.name)
+    feed.description = rss_channel_data.get('description', feed.description)
+    feed.image_url = rss_channel_data.get('image_url', feed.image_url)
+    feed.ttl = rss_channel_data.get('ttl', feed.ttl)
+    feed.last_updated = timezone.now()
+    feed.save()
+
+    # Send a signal to import articles from the feed
+    rss_feed_imported.send(sender=import_rss_feed,
+                           rss=rss, rss_channel_data=rss_channel_data, feed=feed)
+
+    return Response({"message": "RSS feed updated successfully"}, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+@login_required
 def import_new_feed(request):
 
     data = request.data
