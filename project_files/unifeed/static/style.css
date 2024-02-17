@@ -53,6 +53,9 @@ footer {
   display: none;
 }
 
+#sidenav {
+  width: 240px;
+}
 .shadow-top {
   box-shadow: 0 -5px 12px -5px #cacaca40;
 }
