@@ -77,7 +77,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django_htmx.middleware.HtmxMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    #   'unifeed.middleware.RequireLoginMiddleware',
+    'unifeed.middleware.RequireLoginMiddleware',
 ]
 
 ROOT_URLCONF = 'unifeed.urls'
