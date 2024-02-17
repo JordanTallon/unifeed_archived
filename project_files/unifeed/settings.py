@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import os
 import sys
 from pathlib import Path
+from celery.schedules import crontab
 
 # HuggingFace API settings
 HUGGINGFACE_API_URL = "https://api-inference.huggingface.co/models/JordanTallon/Unifeed"
@@ -174,3 +175,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Celery Configuration Options
 CELERY_BROKER_URL = 'redis://redis:6379/0'
+
+
+CELERY_BEAT_SCHEDULE = {
+    'update-all-feeds': {
+        'task': 'feeds.tasks.update_all_feeds',
+        # */30 = every 30 minutes run this task
+        'schedule': crontab(minute='*/30'),
+    },
+}
