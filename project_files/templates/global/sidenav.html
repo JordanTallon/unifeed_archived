@@ -55,6 +55,13 @@
                     {% endif %}
                 </li>
             {% endfor %}
+            <li class="mb-3">
+                <a class="text-decoration-none text-dark rounded w-100 d-flex"
+                   href="{% url "add_new_folder" %}">
+                    <i class="me-3 bi bi-folder-plus"></i>
+                    <span>Add New Folder</span>
+                </a>
+            </li>
             <li class="border-top mt-auto"></li>
             <li class="dropup">
                 <a type="button"
