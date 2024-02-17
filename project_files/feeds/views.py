@@ -34,19 +34,9 @@ def import_rss_feed(url):
         return existing_feed
 
     try:
-        rss = read_rss_feed(url)
-    except ValueError as e:
-        raise ValueError(f"Error fetching RSS feed: {e}")
-
-    if not rss:
-        raise ValueError("Unable to import an RSS feed for the given URL")
-
-    # Feedparse marks the rss as 'bozo' if the url contains incorrect rss data
-    if rss.bozo:
-        raise ValueError("Unable to parse an RSS feed at the given URL")
-
-    # Parse out relevant information within the 'feed' of the parsed RSS.
-    rss_channel_data = read_rss_channel_elements(rss)
+        rss, rss_channel_data = parse_rss_feed(url)
+    except Exception as e:
+        raise ValueError("Error in parsing RSS feed: " + str(e))
 
     feed = Feed.objects.create(
         url=url,
@@ -63,6 +53,25 @@ def import_rss_feed(url):
                            rss=rss, rss_channel_data=rss_channel_data, feed=feed)
 
     return feed
+
+
+def parse_rss_feed(url):
+    try:
+        rss = read_rss_feed(url)
+    except ValueError as e:
+        raise ValueError(f"Error fetching RSS feed: {e}")
+
+    if not rss:
+        raise ValueError("Unable to import an RSS feed for the given URL")
+
+    # Feedparse marks the rss as 'bozo' if the url contains incorrect rss data
+    if rss.bozo:
+        raise ValueError("Unable to parse an RSS feed at the given URL")
+
+    # Parse out relevant information within the 'feed' of the parsed RSS.
+    rss_channel_data = read_rss_channel_elements(rss)
+
+    return rss, rss_channel_data
 
 
 @api_view(['POST'])
