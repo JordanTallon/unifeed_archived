@@ -4,7 +4,7 @@
     {% with nav_middle="articles/article_details_header.html" %}{{ block.super }}{% endwith %}
 {% endblock topnav %}
 {% block content %}
-    <div class="container my-0">
+    <div class="container my-0 ">
         <div class="row gx-5">
             <div class="col-12 col-lg-8 p-4 d-flex flex-column">
                 <h1 class="fw-bold">{{ article.title }}</h1>
@@ -98,8 +98,14 @@
                            href="{% url 'article_details' article.id %}">
                             <div class="card border-0">
                                 {% if article.image_url != "" %}
-                                    <div class="card-img-top article-preview-image"
-                                         style="background-image: url('{{ article.image_url }}"></div>
+                                    <div class="card-img-top  article-preview-img-container">
+                                        <img class="article-preview-img"
+                                             src="{{ article.image_url }}"
+                                             width="auto"
+                                             height="auto"
+                                             alt="Image for article {{ article.name }}"
+                                             loading="lazy">
+                                    </div>
                                 {% endif %}
                                 <div class="card-body mt-2 p-0">
                                     <h5 class="card-title fw-bold">
