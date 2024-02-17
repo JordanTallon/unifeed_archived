@@ -34,13 +34,13 @@ def add_user_feed_to_folder(request, folder_name):
                     url = form.cleaned_data.get('url')
                     # Check if the feed is valid or already in the database (can reuse it from another user).
                     # If not, the function creates it.
-                    feed = import_rss_feed(url)
+                    feed, _ = import_rss_feed(url)
                 except ValueError as e:
                     messages.error(request, str(e))
                     return render(request, 'feeds/add_new_feed.html', {'form': form})
 
             user = request.user
-            folder = get_object_or_404(FeedFolder, name=folder_name)
+            folder = get_object_or_404(FeedFolder, user=user, name=folder_name)
 
             if UserFeed.objects.filter(folder=folder, feed=feed).exists():
                 messages.error(

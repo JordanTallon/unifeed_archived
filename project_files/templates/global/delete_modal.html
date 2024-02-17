@@ -1,6 +1,7 @@
 <div class="modal fade"
      id="{% block delete_modal_id %}{% endblock delete_modal_id %}"
-     data-bs-backdrop="static"
+     {% block modal_properties %}
+     {% endblock modal_properties %}
      data-bs-keyboard="false"
      tabindex="-1"
      aria-hidden="true">
