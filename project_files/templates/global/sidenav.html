@@ -1,9 +1,116 @@
-{% if user.is_authenticated %}
+<div id="sidenav"
+     class="flex-shrink-0 p-3 bg-light h-100 d-flex flex-column">
+    <a href="{% url 'home' %}"
+       class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
+        <span class="fs-4 fw-bold text-success">
+            <i class="bi bi-rss-fill"></i>
+            UniFeed
+        </span>
+    </a>
+    <ul class="list-unstyled ps-0 d-flex h-100 flex-column">
+        <p class="text-secondary">My UniFeed</p>
+        <li class="mb-3">
+            <a class="text-decoration-none text-dark rounded w-100 d-flex"
+               href="{% url 'home' %}">
+                <i class="me-3 bi bi-book"></i>
+                <span>Reading List</span>
+            </a>
+        </li>
+        <li class="mb-3">
+            <a class="text-decoration-none text-dark rounded w-100 d-flex"
+               href="{% url 'home' %}">
+                <i class="me-3 bi bi-clock-history"></i>
+                <span>Recently Read</span>
+            </a>
+        </li>
+        <li class="mb-3">
+            <a class="text-decoration-none text-dark rounded w-100 d-flex"
+               href="{% url "saved_articles" user.id %}">
+                <i class="me-3 bi bi-star"></i>
+                <span>Saved Articles</span>
+            </a>
+        </li>
+        <p class="text-secondary">My Folders</p>
+        {% for folder_data in sidebar_data.user_folders %}
+            <li class="mb-1">
+                {% url 'view_userfeed' user.id folder_data.folder.id as folder_url %}
+                <a class="btn p-0 rounded w-100 d-flex align-items-center"
+                   href="{{ folder_url }}">
+                    <i class="me-3 bi bi-folder"></i>
+                    <span class="{% if folder_url in request.path %}fw-bold{% endif %}">{{ folder_data.folder.name }}</span>
+                </a>
+                {% if folder_url in request.path %}
+                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-2">
+                        {% for feed in folder_data.feeds %}
+                            {% url 'view_userfeed' user.id folder_data.folder.id feed.id as feed_url %}
+                            <li class="ms-auto mb-2">
+                                <a class="text-decoration-none text-dark" href="{{ feed_url }}">
+                                    <i class="bi bi-dot"></i>
+                                    <span class="{% if feed_url in request.path %}text-dark{% else %}text-muted {% endif %}">{{ feed.name }}</span>
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </li>
+        {% endfor %}
+        <li class="border-top mt-auto"></li>
+        <li class="dropup">
+            <a type="button"
+               class="text-dark text-decoration-none d-flex justify-content-between"
+               data-bs-toggle="dropdown"
+               aria-expanded="false">
+                <div>
+                    <i class="bi bi-person me-2"></i>
+                    {{ user }}
+                </div>
+                <i class="bi bi-chevron-up"></i>
+            </a>
+            <ul class="dropdown-menu p-4">
+                <li>
+                    <a href="{% url "account_settings" %}"
+                       class="text-dark text-decoration-none">
+                        <i class="bi bi-person-gear me-2"></i>
+                        My Account
+                    </a>
+                </li>
+                <li class="mt-3">
+                    <hr class="dropdown-divider">
+                </li>
+                <li>
+                    <a href="{% url "logout" %}" class="text-dark text-decoration-none">
+                        <i class="bi bi-box-arrow-left me-2"></i>
+                        Logout
+                    </a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>
+{% comment %} {% if user.is_authenticated %}
     <nav class="navbar-light bg-light h-100" aria-label="Sidebar navigation">
-        <ul class="nav flex-column p-4 h-100">
+        <div class="d-flex flex-column">
+            <a href="{% url "home" %}" class="navbar-brand my-4 fs-3 fw-bold text-success">
+                <i class="bi bi-rss-fill"></i>
+                UniFeed
+            </a>
+            {% for folder_data in sidebar_data.user_folders %}
+                <div class="nav-item">
+                    {% url 'view_userfeed' user.id folder_data.folder.id as folder_url %}
+                    <a class="bg-info row nav-link text-dark" href="{{ folder_url }}">
+                        <i class="col-2 me-3 bi bi-folder"></i>
+                        <span class="col">{{ folder_data.folder.name }}</span>
+                    </a>
+                    <ul>
+                        <li>Add New Feed</li>
+                    </ul>
+                </div>
+            {% endfor %}
+        </div>
+</nav> {% endcomment %}
+{% comment %}       <ul class="nav flex-column h-100">
             <li class="nav-item mb-4">
-                <a href="{% url "home" %}"
-                   class="navbar-brand fs-3 fw-bold text-success">
+                <a href="{% url "home" %}" class="navbar-brand fs-3 fw-bold text-success">
                     <i class="bi bi-rss-fill"></i>
                     UniFeed
                 </a>
@@ -12,8 +119,7 @@
                 <span class="navbar-text">My UniFeed</span>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-dark {% if request.path == '/' %}active{% endif %}"
-                   href="{% url 'home' %}">
+                <a class="nav-link text-dark bg-warning {% if request.path == '/' %}active{% endif %}" href="{% url 'home' %}">
                     <i class="me-3 bi bi-book"></i>
                     <span>Reading List</span>
                 </a>
@@ -42,11 +148,13 @@
             {% for folder in sidebar_data.user_folders %}
                 <li class="nav-item">
                     {% url 'view_userfeed' user.id folder.id as folder_url %}
-                    <a class="nav-link text-dark {% if folder_url in request.path %}active{% endif %}"
-                       href="{{ folder_url }}">
+                    <a class="nav-link text-dark {% if folder_url in request.path %}active{% endif %}" href="{{ folder_url }}">
                         <i class="me-3 bi bi-folder"></i>
                         <span>{{ folder.name }}</span>
                     </a>
+                    <ul>
+                        <li>Add New Feed</li>
+                    </ul>
                 </li>
             {% endfor %}
             <li class="nav-item">
@@ -55,43 +163,7 @@
                     <span>Add New Folder</span>
                 </a>
             </li>
-            <li class="dropup mt-auto">
-                <a type="button"
-                   class="text-dark text-decoration-none d-flex justify-content-between"
-                   data-bs-toggle="dropdown"
-                   aria-expanded="false">
-                    <div>
-                        <i class="bi bi-person-circle me-2"></i>
-                        {{ user }}
-                    </div>
-                    <i class="bi bi-chevron-up"></i>
-                </a>
-                <ul class="dropdown-menu p-4">
-                    <li class="mt-3">
-                        <a href="{% url "account_settings" %}"
-                           class="text-dark text-decoration-none">
-                            <i class="bi bi-person me-2"></i>
-                            My Account
-                        </a>
-                    </li>
-                    <li class="mt-3">
-                        <a href="{% url "account_settings" %}"
-                           class="text-dark text-decoration-none">
-                            <i class="bi bi-graph-up me-2"></i>
-                            Dashboard
-                        </a>
-                    </li>
-                    <li class="mt-3">
-                        <hr class="dropdown-divider">
-                    </li>
-                    <li>
-                        <a href="{% url "logout" %}" class="text-dark text-decoration-none">
-                            <i class="bi bi-box-arrow-left me-2"></i>
-                            Logout
-                        </a>
-                    </li>
-                </ul>
-            </li>
-        </ul>
-    </nav>
-{% endif %}
+           
+</ul> {% endcomment %}
+{% comment %} </nav> {% endcomment %}
+{% comment %} {% endif %} {% endcomment %}

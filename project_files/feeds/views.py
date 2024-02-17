@@ -1,88 +1,21 @@
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 from django.contrib.auth import get_user_model
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
+from django.db.models import F
 from articles.models import Article
 from .models import *
 from .forms import FeedFolderForm, UserFeedForm, EditUserFeedForm
 from .utils import *
 from .serializers import *
-from .signals import rss_feed_imported
 from django.urls import reverse
 from django.shortcuts import render, redirect
 from django.contrib import messages
-
-
-def import_rss_feed(url):
-
-    # Verify that the 'url' param contained a genuine URL
-    validate = URLValidator()
-    try:
-        validate(url)
-    except:
-        raise ValueError("Invalid URL.")
-
-    # Check if the feed already exists, return it if so.
-    existing_feed = Feed.objects.filter(url=url).first()
-    if existing_feed:
-        return existing_feed
-
-    try:
-        rss = read_rss_feed(url)
-    except ValueError as e:
-        raise ValueError(f"Error fetching RSS feed: {e}")
-
-    if not rss:
-        raise ValueError("Unable to import an RSS feed for the given URL")
-
-    # Feedparse marks the rss as 'bozo' if the url contains incorrect rss data
-    if rss.bozo:
-        raise ValueError("Unable to parse an RSS feed at the given URL")
-
-    # Parse out relevant information within the 'feed' of the parsed RSS.
-    rss_channel_data = read_rss_channel_elements(rss)
-
-    feed = Feed.objects.create(
-        url=url,
-        link=rss_channel_data.get('link'),
-        name=rss_channel_data.get('title'),
-        description=rss_channel_data.get('description'),
-        image_url=rss_channel_data.get('image_url'),
-        ttl=rss_channel_data.get('ttl'),
-    )
-
-    feed.save()
-
-    rss_feed_imported.send(sender=import_rss_feed,
-                           rss=rss, rss_channel_data=rss_channel_data, feed=feed)
-
-    return feed
-
-
-@api_view(['POST'])
-@login_required
-def import_new_feed(request):
-
-    data = request.data
-
-    # Check if a 'url' param was even given in the request data
-    url = data.get('url')
-
-    if not url:
-        return Response({"error": "URL is required."}, status=status.HTTP_400_BAD_REQUEST)
-
-    try:
-        feed = import_rss_feed(url)
-        serialized_feed = FeedSerializer(feed).data
-        return Response({"message": "RSS Feed imported successfully.", "Imported Feed": serialized_feed}, status=status.HTTP_201_CREATED)
-    except ValueError as e:
-        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @login_required
@@ -149,7 +82,7 @@ def view_folder(request, user_id, folder_id):
         return HttpResponseForbidden("You are not authorized to view this folder.")
 
     repeat_times = range(3)
-    return render(request, 'feeds/view_feed.html', {'folder': folder, 'userfeeds': userfeeds, 'repeat': repeat_times})
+    return render(request, 'feeds/view_feed.html', {'folder': folder, 'userfeeds': userfeeds})
 
 
 @login_required
@@ -164,26 +97,37 @@ def view_userfeed(request, user_id, folder_id,  userfeed_id=None):
 
     # Get the folder
     folder = get_object_or_404(FeedFolder, pk=folder_id)
-
-    # Get all user feeds in the folder
     folder_userfeeds = UserFeed.objects.filter(user=user, folder=folder)
-
-    # If a userfeed was specified by ID, display only that feed.
+    # To pass for HTML context
+    userfeed = None
     if userfeed_id:
-        # Find the userfeed associated with that ID and return the articles in it
-        userfeed = get_object_or_404(
-            UserFeed, user=user, folder=folder, pk=userfeed_id)
-        userfeed_articles = Article.objects.filter(feed=userfeed.feed)
+        # If a userfeed was specified by ID, render only that feed.
+        feeds_to_render = [get_object_or_404(
+            UserFeed, user=user, folder=folder, pk=userfeed_id).feed]
+        userfeed = feeds_to_render[0]
     else:
-        # If no userfeed ID was present, get all userfeeds within the folder, and return all their articles.
-        userfeed = None
-        userfeed_articles = Article.objects.filter(
-            feed__in=folder_userfeeds.values_list('feed', flat=True))
+        # Render all user feeds in the folder
+        feeds_to_render = folder_userfeeds.values_list('feed', flat=True)
+
+    userfeed_articles = Article.objects.filter(
+        feed__in=feeds_to_render)
+
+    # Sort/order the articles by newest first
+    userfeed_articles = userfeed_articles.order_by(
+        F('publish_datetime').desc(nulls_last=True))
+
+    # Check if the request is from HTMX (which only needs an updated article list)
+    if request.htmx:
+        return render(request, 'global/article_grid.html', {
+            'article_list': userfeed_articles,
+        })
 
     return render(request, 'feeds/view_feed.html', {
+        'folder_id': folder_id,
+        'userfeed_id': userfeed_id,
         'folder': folder,
-        'folder_userfeeds': folder_userfeeds,
         'userfeed': userfeed,
+        'folder_userfeeds': folder_userfeeds,
         'userfeed_articles': userfeed_articles,
     })
 

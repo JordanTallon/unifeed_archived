@@ -1,20 +1,14 @@
 <div class="w-100 d-flex align-items-center justify-content-between">
-    <nav>
-        <a class="fw-bold text-decoration-none text-dark"
-           href="{% url 'view_userfeed' user.id folder.id %}">{{ folder.name }} \</a>
-        {% if userfeed != None %}
-            {{ userfeed.name }}
-        {% else %}
-            All
-        {% endif %}
-    </nav>
-    <div class="d-flex">
-        <div class="dropdown">
+    <div class="d-flex ms-auto">
+        <div class="dropdown ">
             <button class="btn  dropdown-toggle"
                     type="button"
                     id="manageFolderDropdown"
                     data-bs-toggle="dropdown"
-                    aria-expanded="false">Manage Folder</button>
+                    aria-expanded="false">
+                <span>Manage Folder</span>
+                <i class="bi bi-gear"></i>
+            </button>
             <ul class="dropdown-menu" aria-labelledby="manageFolderDropdown">
                 <li>
                     <a class="dropdown-item"

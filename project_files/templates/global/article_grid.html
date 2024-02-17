@@ -1,9 +1,15 @@
 {% for article in article_list %}
     <a class="article col-12 col-md-6 col-lg-4 text-dark text-decoration-none"
        href="{% url 'article_details' article.id %}">
-        <div class="h-100 w-100 d-flex flex-column">
-            <div class="article-preview-image mb-4"
-                 style="background-image: url('{{ article.image_url }}')"></div>
+        <div class="animate__animated  animate__fadeIn h-100 w-100 d-flex flex-column">
+            <div class="article-preview-img-container">
+                <img class="article-preview-img"
+                     src="{{ article.image_url }}"
+                     width="auto"
+                     height="auto"
+                     alt="Image for article {{ article.name }}"
+                     loading="lazy">
+            </div>
             <h1 class="h5 fw-bold">{{ article.title }}</h1>
             <p class="text-muted">{{ article.preview_description }}</p>
             <small class="d-flex justify-content-between mt-auto text-muted">

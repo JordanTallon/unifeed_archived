@@ -58,6 +58,44 @@ class Feed(models.Model):
     def __str__(self):
         return self.name
 
+    # A relative time since last_updated (i.e. '7 days ago', '2 hours ago', 'just now')
+    def time_since_update(self):
+
+        now = timezone.now()
+
+        try:
+            difference = now - self.last_updated
+
+            days = difference.days
+            weeks = days // 7
+            months = days // 30
+
+            if months > 0:
+                return f"{months} months ago"
+
+            if weeks > 0:
+                return f"{weeks} weeks ago"
+
+            if days > 1:
+                return f"{days} days ago"
+
+            if days == 1:
+                return f"{days} day ago"
+
+            mins = difference.seconds // 60
+
+            if mins >= 60:
+                hours = mins // 60
+                return f"{hours} hours ago"
+
+            if mins >= 1:
+                return f"{mins} minutes ago"
+
+            return "Just now."
+        except Exception as e:
+            print(f"An error occurred: {e}")
+            return None
+
 
 class UserFeed(models.Model):
 

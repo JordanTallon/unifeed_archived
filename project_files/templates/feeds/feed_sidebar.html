@@ -28,7 +28,7 @@
                 </div>
                 <div class="card-body">
                     <p class="card-text">{{ userfeed.description }}</p>
-                    <small class="col text-end my-2 text-muted">Lasted updated 3 days ago</small>
+                    <small class="col text-end my-2 text-muted">Lasted updated {{ userfeed.feed.time_since_update }}</small>
                     <div class="px-0 card-footer bg-white mt-2 pt-4 d-flex">
                         <a class="btn btn-outline-success"
                            href="{% url 'view_userfeed' user.id folder.id userfeed.id %}">

@@ -53,6 +53,9 @@ footer {
   display: none;
 }
 
+#sidenav {
+  width: 240px;
+}
 .shadow-top {
   box-shadow: 0 -5px 12px -5px #cacaca40;
 }
@@ -90,6 +93,10 @@ footer {
   margin: 0;
 }
 
+.alert-messages {
+  transform: translateY(-50%);
+}
+
 .feed-img {
   background-color: rgba(0, 0, 0, 0.45);
   border: 1px solid rgba(129, 129, 129, 1);
@@ -114,6 +121,7 @@ footer {
   overflow: auto;
   overflow-x: hidden;
   padding-top: 5svh;
+  padding-bottom: 5svh;
   height: 100%;
 }
 
@@ -121,17 +129,21 @@ footer {
   z-index: 9999;
 }
 
-.article-preview-image {
+.article-preview-img-container {
   background-color: #dfdfdf;
   width: 100%;
-  padding-bottom: 50%;
-  background-size: cover;
-  background-position: center;
+  aspect-ratio: 16 / 9;
   position: relative;
+  overflow: hidden;
+}
+.article-preview-img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
 }
 
 /* This adds a shadow to the article-preview-image (on top of the image) */
-.article-preview-image::after {
+.article-preview-img-container::after {
   transition: opacity 600ms ease, background 600ms ease;
   z-index: 100;
   position: absolute;
@@ -141,11 +153,11 @@ footer {
   top: 0;
   bottom: 0;
   background: radial-gradient(#ffffff00, #000000);
-  opacity: 0.15;
+  opacity: 0.2;
 }
 
 /* triggers when the grandparent 'article' element is hovered */
-.article:hover .article-preview-image:after {
+.article:hover .article-preview-img-container:after {
   opacity: 0.6;
   background: #202020;
 }

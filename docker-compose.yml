@@ -44,7 +44,7 @@ services:
   celery:
     build:
       context: .
-    command: celery -A unifeed worker --loglevel=info
+    command: celery -A unifeed worker --beat --loglevel=debug
     volumes:
       - ./project_files:/app
       - ./data/web:/vol/web

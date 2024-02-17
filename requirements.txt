@@ -31,3 +31,5 @@ coverage==7.4.1
 # For asynchronous api tasks
 celery==5.3.6
 redis==5.0.1
+# HTMX
+django-htmx==1.17.2

@@ -23,6 +23,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;700&display=swap"
           rel="stylesheet">
+    <!-- https://animate.style/ -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <title>
       {% block title %}
         Unifeed
@@ -42,13 +45,19 @@
         {% endblock topnav %}
       </header>
       <main class="position-relative">
-        {% if messages %}
-          {% for message in messages %}
-            <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-{{ message.tags }}{% endif %} w-75 my-2 mx-auto"
-                 role="alert">{{ message }}</div>
-          {% endfor %}
-        {% endif %}
-        <div class="container-fluid content">
+        <div class="container-fluid content animate__animated animate__fadeIn">
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert alert-messages container mx-auto {% if message.tags == 'error' %}alert-danger{% else %}alert-{{ message.tags }}{% endif %} alert-dismissible fade show"
+                   role="alert">
+                {{ message }}
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="alert"
+                        aria-label="Close"></button>
+              </div>
+            {% endfor %}
+          {% endif %}
           {% block content %}
             <!-- This is where children templates inject content -->
           {% endblock content %}
