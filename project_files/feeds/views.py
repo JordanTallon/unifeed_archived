@@ -1,7 +1,6 @@
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 from django.contrib.auth import get_user_model
@@ -13,61 +12,9 @@ from .models import *
 from .forms import FeedFolderForm, UserFeedForm, EditUserFeedForm
 from .utils import *
 from .serializers import *
-from .signals import rss_feed_imported
 from django.urls import reverse
 from django.shortcuts import render, redirect
 from django.contrib import messages
-
-
-def import_rss_feed(url):
-
-    # Verify that the 'url' param contained a genuine URL
-    validate = URLValidator()
-    try:
-        validate(url)
-    except:
-        raise ValueError("Invalid URL.")
-
-    # Check if a feed already exists with the RSS url, if not create it
-    feed, created = Feed.objects.get_or_create(
-        url=url
-    )
-
-    try:
-        rss, rss_channel_data = parse_rss_feed(url)
-    except Exception as e:
-        raise ValueError("Error in parsing RSS feed: " + str(e))
-
-    # Update the feed object with the rss_channel_data and save it
-    save_feed(feed, rss_channel_data)
-
-    # Send a signal to import articles from the feed
-    rss_feed_imported.send(sender=import_rss_feed,
-                           rss=rss, rss_channel_data=rss_channel_data, feed=feed)
-
-    return feed, created
-
-
-def save_feed(feed, rss_channel_data):
-    feed.link = rss_channel_data.get('link', feed.link)
-    feed.name = rss_channel_data.get('title', feed.name)
-    feed.description = rss_channel_data.get('description', feed.description)
-    feed.image_url = rss_channel_data.get('image_url', feed.image_url)
-    feed.ttl = rss_channel_data.get('ttl', feed.ttl)
-    feed.last_updated = timezone.now()
-    feed.save()
-
-
-def parse_rss_feed(url):
-    try:
-        rss = read_rss_feed(url)
-    except ValueError as e:
-        raise ValueError(f"Error fetching RSS feed: {e}")
-
-    # Parse out relevant information within the 'feed' of the parsed RSS.
-    rss_channel_data = read_rss_channel_elements(rss)
-
-    return rss, rss_channel_data
 
 
 @login_required
