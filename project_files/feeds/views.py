@@ -81,7 +81,7 @@ def view_folder(request, user_id, folder_id):
         return HttpResponseForbidden("You are not authorized to view this folder.")
 
     repeat_times = range(3)
-    return render(request, 'feeds/view_feed.html', {'folder': folder, 'userfeeds': userfeeds, 'repeat': repeat_times})
+    return render(request, 'feeds/view_feed.html', {'folder': folder, 'userfeeds': userfeeds})
 
 
 @login_required
@@ -96,28 +96,33 @@ def view_userfeed(request, user_id, folder_id,  userfeed_id=None):
 
     # Get the folder
     folder = get_object_or_404(FeedFolder, pk=folder_id)
-
-    # Get all user feeds in the folder
     folder_userfeeds = UserFeed.objects.filter(user=user, folder=folder)
 
-    # If a userfeed was specified by ID, display only that feed.
     if userfeed_id:
-        # Find the userfeed associated with that ID and return the articles in it
-        userfeed = get_object_or_404(
-            UserFeed, user=user, folder=folder, pk=userfeed_id)
-        userfeed_articles = Article.objects.filter(feed=userfeed.feed)
+        # If a userfeed was specified by ID, render only that feed.
+        feeds_to_render = [get_object_or_404(
+            UserFeed, user=user, folder=folder, pk=userfeed_id).feed]
     else:
-        # If no userfeed ID was present, get all userfeeds within the folder, and return all their articles.
-        userfeed = None
-        userfeed_articles = Article.objects.filter(
-            feed__in=folder_userfeeds.values_list('feed', flat=True))
+        # Render all user feeds in the folder
+        feeds_to_render = folder_userfeeds.values_list('feed', flat=True)
+
+    userfeed_articles = Article.objects.filter(
+        feed__in=feeds_to_render)
 
     # Sort/order the articles by newest first
     userfeed_articles = userfeed_articles.order_by('-publish_datetime')
+
+    # Check if the request is from HTMX (which only needs an updated article list)
+    if request.htmx:
+        return render(request, 'global/article_grid.html', {
+            'article_list': userfeed_articles,
+        })
+
     return render(request, 'feeds/view_feed.html', {
+        'folder_id': folder_id,
+        'userfeed_id': userfeed_id,
         'folder': folder,
         'folder_userfeeds': folder_userfeeds,
-        'userfeed': userfeed,
         'userfeed_articles': userfeed_articles,
     })
 
