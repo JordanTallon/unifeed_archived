@@ -10,6 +10,13 @@ def read_rss_feed(rss_url):
         raise ValueError(
             f"Failed to fetch {rss_url}. HTTP status code: {rss_object.status}")
 
+    if not rss_object:
+        raise ValueError("Unable to import an RSS feed for the given URL")
+
+    # Feedparse marks the rss as 'bozo' if the url contains incorrect rss data
+    if rss_object.bozo:
+        raise ValueError("Unable to parse an RSS feed at the given URL")
+
     return rss_object
 
 

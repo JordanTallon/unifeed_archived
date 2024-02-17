@@ -61,30 +61,13 @@ def parse_rss_feed(url):
     except ValueError as e:
         raise ValueError(f"Error fetching RSS feed: {e}")
 
-    if not rss:
-        raise ValueError("Unable to import an RSS feed for the given URL")
-
-    # Feedparse marks the rss as 'bozo' if the url contains incorrect rss data
-    if rss.bozo:
-        raise ValueError("Unable to parse an RSS feed at the given URL")
-
     # Parse out relevant information within the 'feed' of the parsed RSS.
     rss_channel_data = read_rss_channel_elements(rss)
 
     return rss, rss_channel_data
 
 
-@api_view(['POST'])
-@login_required
-def update_rss_feed(request):
-
-    data = request.data
-
-    # Check if a 'feed_id' param was given in the request data
-    feed_id = data.get('feed_id')
-
-    if not feed_id:
-        return Response({"error": "feed_id is required."}, status=status.HTTP_400_BAD_REQUEST)
+def update_rss_feed(feed_id):
 
     # Fetch the feed to be updated
     feed = get_object_or_404(Feed, id=feed_id)
