@@ -7,6 +7,7 @@ from django.contrib.auth import get_user_model
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
+from django.db.models import F
 from articles.models import Article
 from .models import *
 from .forms import FeedFolderForm, UserFeedForm, EditUserFeedForm
@@ -110,7 +111,8 @@ def view_userfeed(request, user_id, folder_id,  userfeed_id=None):
         feed__in=feeds_to_render)
 
     # Sort/order the articles by newest first
-    userfeed_articles = userfeed_articles.order_by('-publish_datetime')
+    userfeed_articles = userfeed_articles.order_by(
+        F('publish_datetime').desc(nulls_last=True))
 
     # Check if the request is from HTMX (which only needs an updated article list)
     if request.htmx:

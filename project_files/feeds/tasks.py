@@ -17,6 +17,9 @@ def update_all_feeds():
 
         if now >= next_update_due:
             print("Updating Feed", feed.name)
+            print(feed.last_updated)
+            print(feed.last_updated + timedelta(minutes=feed.ttl))
+            print(now)
             try:
                 import_rss_feed(feed.url)
                 print("Update succesful")
