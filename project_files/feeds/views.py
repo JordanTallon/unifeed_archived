@@ -180,6 +180,8 @@ def view_userfeed(request, user_id, folder_id,  userfeed_id=None):
         userfeed_articles = Article.objects.filter(
             feed__in=folder_userfeeds.values_list('feed', flat=True))
 
+    # Sort/order the articles by newest first
+    userfeed_articles = userfeed_articles.order_by('-publish_datetime')
     return render(request, 'feeds/view_feed.html', {
         'folder': folder,
         'folder_userfeeds': folder_userfeeds,

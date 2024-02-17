@@ -90,6 +90,10 @@ footer {
   margin: 0;
 }
 
+.alert-messages {
+  transform: translateY(-50%);
+}
+
 .feed-img {
   background-color: rgba(0, 0, 0, 0.45);
   border: 1px solid rgba(129, 129, 129, 1);
@@ -114,6 +118,7 @@ footer {
   overflow: auto;
   overflow-x: hidden;
   padding-top: 5svh;
+  padding-bottom: 5svh;
   height: 100%;
 }
 

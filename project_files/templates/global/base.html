@@ -42,13 +42,19 @@
         {% endblock topnav %}
       </header>
       <main class="position-relative">
-        {% if messages %}
-          {% for message in messages %}
-            <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-{{ message.tags }}{% endif %} w-75 my-2 mx-auto"
-                 role="alert">{{ message }}</div>
-          {% endfor %}
-        {% endif %}
         <div class="container-fluid content">
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert alert-messages container mx-auto {% if message.tags == 'error' %}alert-danger{% else %}alert-{{ message.tags }}{% endif %} alert-dismissible fade show"
+                   role="alert">
+                {{ message }}
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="alert"
+                        aria-label="Close"></button>
+              </div>
+            {% endfor %}
+          {% endif %}
           {% block content %}
             <!-- This is where children templates inject content -->
           {% endblock content %}
