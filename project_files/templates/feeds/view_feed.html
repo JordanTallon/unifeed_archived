@@ -6,7 +6,11 @@
 {% block content %}
     {% include "feeds/feed_sidebar.html" %}
     {% if userfeed_articles|length > 0 %}
-        <div class="w-100 container mx-auto">{% include "feeds/feed_articles.html" %}</div>
+        <div class="w-100 container mx-auto">
+            <div class="row mx-auto g-0 gy-4 g-md-4 g-lg-5">
+                {% include "global/article_grid.html" with article_list=userfeed_articles %}
+            </div>
+        </div>
     {% else %}
         <div class="d-flex flex-column justify-content-center row">
             <div class="mx-auto col-11 col-lg-6">

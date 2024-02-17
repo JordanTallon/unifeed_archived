@@ -37,6 +37,11 @@ def clean_rss_entries(rss_entries, rss_header):
         if clean_entry['image_url'] == '':
             clean_entry['image_url'] = rss_header['image_url']
 
+        # As a last resort, generate a placeholder image for the article displaying the feeds name
+        if clean_entry['image_url'] == '':
+            clean_entry[
+                'image_url'] = f"https://placehold.co/600x400/dfdfdf/FFF?text={ rss_header['title'] }&font=roboto"
+
         parsed_datetime = None
 
         # Check if feedparser was able to parse a datetime automatically, if not, parse our own.

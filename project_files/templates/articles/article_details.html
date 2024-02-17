@@ -7,7 +7,7 @@
     <div class="container my-0">
         <div class="row gx-5">
             <div class="col-12 col-lg-8 p-4 d-flex flex-column">
-                <div class="ms-auto">
+                <div class="ms-auto d-flex">
                     <a class="h5 text-secondary"
                        data-bs-toggle="popover"
                        data-bs-trigger="hover"
@@ -15,14 +15,30 @@
                        data-bs-placement="top"
                        data-bs-content="Add to Reading List">
                         <i class="bi bi-book"></i></a>
-                    <a href="#"
-                       class="h5 text-secondary ms-3"
-                       data-bs-toggle="popover"
-                       data-bs-trigger="hover"
-                       data-bs-container="body"
-                       data-bs-placement="top"
-                       data-bs-content="Save Article">
-                        <i class="bi bi-star"></i></a>
+                    <form method="post" action="{% url 'article_details' article.id %}">
+                        {% csrf_token %}
+                        {% if is_saved %}
+                            <button type="submit"
+                                    class="btn text-secondary ms-3"
+                                    data-bs-toggle="popover"
+                                    data-bs-trigger="hover"
+                                    data-bs-container="body"
+                                    data-bs-placement="top"
+                                    data-bs-content="Remove from Saved Articles">
+                                <i class="h5 bi bi-star-fill"></i>
+                            </button>
+                        {% else %}
+                            <button type="submit"
+                                    class="btn text-secondary ms-3"
+                                    data-bs-toggle="popover"
+                                    data-bs-trigger="hover"
+                                    data-bs-container="body"
+                                    data-bs-placement="top"
+                                    data-bs-content="Save Article">
+                                <i class="h5 bi bi-star"></i>
+                            </button>
+                        {% endif %}
+                    </form>
                 </div>
                 <h1 class="mt-4 fw-bold">{{ article.title }}</h1>
                 {% if article.publish_datetime != None %}

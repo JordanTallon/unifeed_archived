@@ -1,0 +1,9 @@
+{% extends "global/base.html" %}
+{% load static %}
+{% block content %}
+    <div class="w-100 container mx-auto">
+        <div class="row mx-auto g-0 gy-4 g-md-4 g-lg-5">
+            {% include "global/article_grid.html" with article_list=articles %}
+        </div>
+    </div>
+{% endblock content %}
