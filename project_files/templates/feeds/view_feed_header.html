@@ -2,7 +2,7 @@
     <nav>
         <a class="fw-bold text-decoration-none text-dark"
            href="{% url 'view_userfeed' user.id folder.id %}">{{ folder.name }} \</a>
-        {% if userfeed != None %}
+        {% if userfeed %}
             {{ userfeed.name }}
         {% else %}
             All

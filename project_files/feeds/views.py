@@ -98,11 +98,13 @@ def view_userfeed(request, user_id, folder_id,  userfeed_id=None):
     # Get the folder
     folder = get_object_or_404(FeedFolder, pk=folder_id)
     folder_userfeeds = UserFeed.objects.filter(user=user, folder=folder)
-
+    # To pass for HTML context
+    userfeed = None
     if userfeed_id:
         # If a userfeed was specified by ID, render only that feed.
         feeds_to_render = [get_object_or_404(
             UserFeed, user=user, folder=folder, pk=userfeed_id).feed]
+        userfeed = feeds_to_render[0]
     else:
         # Render all user feeds in the folder
         feeds_to_render = folder_userfeeds.values_list('feed', flat=True)
@@ -124,6 +126,7 @@ def view_userfeed(request, user_id, folder_id,  userfeed_id=None):
         'folder_id': folder_id,
         'userfeed_id': userfeed_id,
         'folder': folder,
+        'userfeed': userfeed,
         'folder_userfeeds': folder_userfeeds,
         'userfeed_articles': userfeed_articles,
     })
