@@ -176,8 +176,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Celery Configuration Options
 CELERY_BROKER_URL = 'redis://redis:6379/0'
-
-
+CELERY_BEAT_SCHEDULE_FILENAME = "/vol/celerybeat-schedule"
 CELERY_BEAT_SCHEDULE = {
     'update-all-feeds': {
         'task': 'feeds.tasks.update_all_feeds',
