@@ -28,31 +28,34 @@ def import_rss_feed(url):
     except:
         raise ValueError("Invalid URL.")
 
-    # Check if the feed already exists, return it if so.
-    existing_feed = Feed.objects.filter(url=url).first()
-    if existing_feed:
-        return existing_feed
+    # Check if a feed already exists with the RSS url, if not create it
+    feed, created = Feed.objects.get_or_create(
+        url=url
+    )
 
     try:
         rss, rss_channel_data = parse_rss_feed(url)
     except Exception as e:
         raise ValueError("Error in parsing RSS feed: " + str(e))
 
-    feed = Feed.objects.create(
-        url=url,
-        link=rss_channel_data.get('link'),
-        name=rss_channel_data.get('title'),
-        description=rss_channel_data.get('description'),
-        image_url=rss_channel_data.get('image_url'),
-        ttl=rss_channel_data.get('ttl'),
-    )
+    # Update the feed object with the rss_channel_data and save it
+    save_feed(feed, rss_channel_data)
 
-    feed.save()
-
+    # Send a signal to import articles from the feed
     rss_feed_imported.send(sender=import_rss_feed,
                            rss=rss, rss_channel_data=rss_channel_data, feed=feed)
 
-    return feed
+    return feed, created
+
+
+def save_feed(feed, rss_channel_data):
+    feed.link = rss_channel_data.get('link', feed.link)
+    feed.name = rss_channel_data.get('title', feed.name)
+    feed.description = rss_channel_data.get('description', feed.description)
+    feed.image_url = rss_channel_data.get('image_url', feed.image_url)
+    feed.ttl = rss_channel_data.get('ttl', feed.ttl)
+    feed.last_updated = timezone.now()
+    feed.save()
 
 
 def parse_rss_feed(url):
@@ -65,53 +68,6 @@ def parse_rss_feed(url):
     rss_channel_data = read_rss_channel_elements(rss)
 
     return rss, rss_channel_data
-
-
-def update_rss_feed(feed_id):
-
-    # Fetch the feed to be updated
-    feed = get_object_or_404(Feed, id=feed_id)
-
-    # Try fetch new RSS data
-    try:
-        rss, rss_channel_data = parse_rss_feed(feed.url)
-    except Exception as e:
-        return Response({"error": "Error in updating RSS feed: " + str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
-    # Update all feed information
-    feed.link = rss_channel_data.get('link', feed.link)
-    feed.name = rss_channel_data.get('title', feed.name)
-    feed.description = rss_channel_data.get('description', feed.description)
-    feed.image_url = rss_channel_data.get('image_url', feed.image_url)
-    feed.ttl = rss_channel_data.get('ttl', feed.ttl)
-    feed.last_updated = timezone.now()
-    feed.save()
-
-    # Send a signal to import articles from the feed
-    rss_feed_imported.send(sender=import_rss_feed,
-                           rss=rss, rss_channel_data=rss_channel_data, feed=feed)
-
-    return Response({"message": "RSS feed updated successfully"}, status=status.HTTP_200_OK)
-
-
-@api_view(['POST'])
-@login_required
-def import_new_feed(request):
-
-    data = request.data
-
-    # Check if a 'url' param was even given in the request data
-    url = data.get('url')
-
-    if not url:
-        return Response({"error": "URL is required."}, status=status.HTTP_400_BAD_REQUEST)
-
-    try:
-        feed = import_rss_feed(url)
-        serialized_feed = FeedSerializer(feed).data
-        return Response({"message": "RSS Feed imported successfully.", "Imported Feed": serialized_feed}, status=status.HTTP_201_CREATED)
-    except ValueError as e:
-        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @login_required
