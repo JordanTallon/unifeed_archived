@@ -31,15 +31,40 @@ def count_entities_and_adjectives_in_sentence(sentence):
     return entity_count, adjective_count
 
 
+def count_biased_adjectives_in_sentence(sentence):
+    # These adjectives were extracted as commonly associated with different political bias labels (see technical document)
+    biased_adjectives = ['white', 'other', 'anti', 'many', 'right', 'last', 'american', 'republican', 'political',
+                         'black', 'last', 'more', 'democratic', 'first', 'new', 'former', 'presidential', 'american',
+                         'illegal', 'pro']
+
+    words = sentence.lower().split()
+
+    # Count occurrences
+    bias_count = sum(word in biased_adjectives for word in words)
+
+    return bias_count
+
+
 def extract_ideal_sentences(article_text):
     # TODO: I will find 'ideal' sentences from an article, for now split and get the first 5
     # Cleaning should be done here too (removing sentences that are too short, empty, etc)
     sentences = article_text.split('.')
+    sentence_data = []
 
-    # My political bias AI is trained on sentences between 8 and 90 words, so its ideal we stay within that range.
-    # 8-90 is a good range, so this will cover most sentences.
-    sentences = [s for s in sentences
-                 if len(s.split(' ')) >= 8 and len(s.split(' ')) <= 90]
+    for sentence in sentences:
+        words = sentence.split()
+        # My political bias AI is trained on sentences between 8 and 90 words, so its ideal we stay within that range.
+        # 8-90 is a good range, so this will cover most sentences.
+        if 8 <= len(words) <= 90:  # Check sentence length
+            adj_count, ent_count = count_entities_and_adjectives_in_sentence(
+                sentence)
+            bias_adj_count = count_biased_adjectives_in_sentence(sentence)
+            sentence_data.append({
+                'sentence': sentence,
+                'adj_count': adj_count,
+                'ent_count': ent_count,
+                'bias_adj_count': bias
+            })
 
     # Restrict to 5 sentences per article (5 is arbitrary for testing, i'm not sure what a good limit is yet)
     if (len(sentences) >= 5):
