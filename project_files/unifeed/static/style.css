@@ -120,8 +120,8 @@ footer {
 .content {
   overflow: auto;
   overflow-x: hidden;
-  padding-top: 5svh;
-  padding-bottom: 5svh;
+  padding-top: 3svh;
+  padding-bottom: 3svh;
   height: 100%;
 }
 
