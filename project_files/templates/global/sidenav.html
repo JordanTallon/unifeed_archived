@@ -14,7 +14,7 @@
                 <a class="text-decoration-none text-dark rounded w-100 d-flex"
                    href="{% url "reading_list" %}">
                     <i class="me-3 bi bi-book"></i>
-                    <span>Reading List</span>
+                    <span class="{% if '/reading_list/' in request.path %}fw-bold{% endif %}">Reading List</span>
                 </a>
             </li>
             <li class="mb-3">
@@ -54,7 +54,7 @@
                 <a class="text-decoration-none text-dark rounded w-100 d-flex"
                    href="{% url "add_new_folder" %}">
                     <i class="me-3 bi bi-folder-plus"></i>
-                    <span>Add New Folder</span>
+                    <span class="{% if '/folder/add' in request.path %}fw-bold{% endif %}">Add New Folder</span>
                 </a>
             </li>
             <li class="border-top mt-auto"></li>
