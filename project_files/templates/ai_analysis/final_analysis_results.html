@@ -40,7 +40,7 @@
                                         <th scope="row">
                                             <span>{{ analysis.conclusion }}</span>
                                         </th>
-                                        <td>{{ sentence }}</td>
+                                        <td>{{ analysis.html|safe }}</td>
                                     </tr>
                                 {% endfor %}
                             </tbody>

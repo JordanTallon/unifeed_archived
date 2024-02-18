@@ -96,16 +96,18 @@ def read_rss_channel_elements(rss):
 
     if channel_elements['link'] != '':
         website_tld = tldextract.extract(channel_elements['link'])
-        subdomain = website_tld.subdomain + "."
+        subdomain = website_tld.subdomain
 
         # Subdomains we don't want to included (we want stuff like news.cnn to be included or abcnews.go etc)
         # But not stuff like www.fox, this list will be manually added to as undesired publisher names appear
         exclude_subdomains = {'www', 'm', 'ftp', 'mail', 'webmail', 'blog', 'cdn',
                               'static', 'api', 'secure', 'dev', 'development',
-                              'staging', 'admin'}
+                              'staging', 'admin', ''}
 
-        if subdomain and subdomain in exclude_subdomains:
+        if subdomain in exclude_subdomains:
             subdomain = ''
+        else:
+            subdomain += "."
 
         domain = website_tld.domain
         channel_elements['publisher'] = subdomain.capitalize() + \

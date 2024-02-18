@@ -54,11 +54,16 @@ def extract_article_text(scraped_article):
     """
     soup = BeautifulSoup(scraped_article, 'html.parser')
 
-    # First try get all paragraphs inside an <article> tag
-    extracted_paragraphs = soup.find('article').find_all('p')
+    if not soup:
+        raise ValueError("Failed to parse HTML from the given url")
 
-    if len(extracted_paragraphs) >= 3:
-        return extracted_paragraphs
+    # First try get all paragraphs inside an <article> tag
+    article = soup.find('article')
+
+    if article:
+        extracted_paragraphs = article.find_all('p')
+        if len(extracted_paragraphs) >= 3:
+            return extracted_paragraphs
 
     # Check for common article classes (this will be manually updated as more are discovered)
     common_article_classes = ['article-body',
@@ -72,10 +77,11 @@ def extract_article_text(scraped_article):
 
     # Check for div elements containing a number of paragraphs indiciative of an article
     divs = soup.find_all('div')
-    for div in divs:
-        extracted_paragraphs = div.find_all('p')
-        if len(extracted_paragraphs) >= 3:
-            return extracted_paragraphs
+    if len(divs) > 0:
+        for div in divs:
+            extracted_paragraphs = div.find_all('p')
+            if len(extracted_paragraphs) >= 3:
+                return extracted_paragraphs
 
     # As a last resort, return all paragraphs on the website
     return soup.find_all('p')
@@ -104,7 +110,7 @@ def scrape_data(url):
 
     extracted_paragraphs = extract_article_text(response.text)
 
-    if len(extracted_paragraphs < 3):
+    if len(extracted_paragraphs) < 3:
         raise ValueError("Failed to extract article content")
 
     content = ' '.join([p.get_text() for p in extracted_paragraphs])
