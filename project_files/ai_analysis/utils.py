@@ -26,17 +26,26 @@ def count_entities_and_adjectives_in_sentence(sentence):
     adjective_count = 0
     html_string = ""
 
-    for token in sentence:
-        if token.ent_type_ in relevant_entities:
-            html_string += f'<span class="entity entity-{token.ent_type_}">{token.text}</span>'
+    # This keeps track of all the entity 'spans' (the chars at which they begin and end)
+    ent_indices = set()
+
+    for ent in sentence.ents:
+        if ent.label_ in relevant_entities:
+            html_string += f'<span class="entity entity-{ent.label_}">{ent.text}</span>'
             entity_count += 1
-        elif token.pos_ == "ADJ":
+            # Add the span to the indices set
+            ent_indices.update(range(ent.start, ent.end))
+
+    for token in sentence:
+        # Ignore if it overlaps with any entity indices
+        # We want entity recognition prioritized and also need to avoid the added html
+        if token.i in ent_indices:
+            continue
+        if token.pos_ == "ADJ":
             html_string += f'<span class="adjective">{token.text}</span>'
             adjective_count += 1
         else:
             html_string += token.text
-
-        # Add a space after each token except for punctuation
         if not token.is_punct:
             html_string += ' '
 
@@ -89,7 +98,7 @@ def extract_ideal_sentences(article_text):
 
     sentence_df = pd.DataFrame(sentence_data)
 
-    # Condition to drop rows based on them being likely non biased
+    """     # Condition to drop rows based on them being likely non biased
     # currently sentences without any entities, adjectives, biased adjectives or sentiment
     no_bias_condition = (
         (sentence_df['adj_count'] == 0) |
@@ -97,7 +106,7 @@ def extract_ideal_sentences(article_text):
     )
 
     # Drop rows based on the no bias condition
-    sentence_df = sentence_df[~no_bias_condition]
+    sentence_df = sentence_df[~no_bias_condition] """
 
     # Sort by the number of 'biased' adjectives in the sentence
     # Followed by the number of entities it mentions and adjective count.
