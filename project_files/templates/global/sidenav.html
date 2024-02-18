@@ -12,7 +12,7 @@
             <p class="text-secondary">My UniFeed</p>
             <li class="mb-3">
                 <a class="text-decoration-none text-dark rounded w-100 d-flex"
-                   href="{% url 'home' %}">
+                   href="{% url "saved_articles" user.id %}">
                     <i class="me-3 bi bi-book"></i>
                     <span>Reading List</span>
                 </a>
@@ -22,13 +22,6 @@
                    href="{% url 'home' %}">
                     <i class="me-3 bi bi-clock-history"></i>
                     <span>Recently Read</span>
-                </a>
-            </li>
-            <li class="mb-3">
-                <a class="text-decoration-none text-dark rounded w-100 d-flex"
-                   href="{% url "saved_articles" user.id %}">
-                    <i class="me-3 bi bi-star"></i>
-                    <span>Saved Articles</span>
                 </a>
             </li>
             <p class="text-secondary">My Folders</p>
