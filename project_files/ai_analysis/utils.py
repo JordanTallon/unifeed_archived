@@ -18,6 +18,11 @@ def extract_ideal_sentences(article_text):
     # Cleaning should be done here too (removing sentences that are too short, empty, etc)
     sentences = article_text.split('.')
 
+    # My political bias AI is trained on sentences between 8 and 90 words, so its ideal we stay within that range.
+    # 8-90 is a good range, so this will cover most sentences.
+    sentences = [s for s in sentences
+                 if len(s.split(' ')) >= 8 and len(s.split(' ')) <= 90]
+
     # Restrict to 5 sentences per article (5 is arbitrary for testing, i'm not sure what a good limit is yet)
     if (len(sentences) >= 5):
         sentences = sentences[:5]
