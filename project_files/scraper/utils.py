@@ -34,8 +34,51 @@ def check_robots(website, path):
     # If the robots.txt of the website denies permission to scrape, this returns false.
     return (rp.can_fetch(user_agent, target))
 
+def extract_article_text(scraped_article)
+    """  
+    Takes in the html content of a scraped website and tries different different strategies to target and extract the main
+    articl content of the page. 
+    Starts with high level of specificity (very likely to be article text) 
+    To lower level of specificity (might not necessarily be article text)
+    "On average, articles tend to have at least three to five paragraphs, but longer articles might have more"
+    Not a very rigid source, but a starting point for what ultimately will need to be a manual observation and adjustment over time
+    https://www.quora.com/How-many-paragraphs-should-an-article-have
+    So the goal of this function is to find at least 3 paragraphs
+    """
+    soup = BeautifulSoup(scraped_article, 'html.parser')
+
+    # First try get all paragraphs inside an <article> tag
+    extracted_paragraphs = soup.find('article').find_all('p')
+
+    if len(extracted_paragraphs) >= 3:
+        return extracted_paragraphs
+        
+    # Check for common article classes (this will be manually updated as more are discovered)
+    common_article_classes = ['article-body', 'post-content', 'content', 'news-article']
+    for common_class in common_article_classes:
+        class_div = soup.find('div', class_=common_class)
+        if class_div:
+            extracted_paragraphs = class_div.find_all('p')
+            if len(extracted_paragraphs) >= 3:
+                return extracted_paragraphs
+    
+    # Check for div elements containing a number of paragraphs indiciative of an article 
+    divs = soup.find_all('div')
+    for div in divs:
+        extracted_paragraphs = div.find_all('p')
+        if len(extracted_paragraphs) >= 3:
+            return extracted_paragraphs
+            
+    # As a last resort, return all paragraphs on the website
+    return soup.find_all('p')
 
 def scrape_data(url):
+
+    website, path = parse_url(url)
+
+    if not check_robots(website, path):
+        raise ValueError(website + "/robots.txt",
+                         "denied UnifeedAgent permission to scrape.")
 
     # Try make a request to the url
     try:
@@ -49,6 +92,11 @@ def scrape_data(url):
         # If the url could not be reached, raise an error
         raise ValueError("Failed to establish a connection to the URL")
 
-    soup = BeautifulSoup(response.text, 'html.parser')
-    content = ' '.join([p.get_text() for p in soup.find_all('p')])
+    extracted_paragraphs = extract_article_text(response.text)
+
+    if len(extracted_paragraphs < 3):
+        raise ValueError("Failed to extract article content")
+
+    content = ' '.join([p.get_text() for p in extracted_paragraphs])
+
     return content
