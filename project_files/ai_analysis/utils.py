@@ -79,9 +79,16 @@ def extract_ideal_sentences(article_text):
 
     sentence_df = pd.DataFrame(sentence_data)
 
+    # Sort by the number of 'biased' adjectives in the sentence
+    # Followed by how subjective it is, then polarity.
+    # Lastly, the number of entities it mentions and adjective count.
+    # This should give us a sorted list where the first entries are the best candidates for political bias.
+    bias_candidates = sentence_df.sort_values(by=['bias_adj_count', 'subjectivity', 'polarity', 'ent_count', 'adj_count'],
+                                              ascending=[False, False, False, False, False])
+
     # Restrict to 5 sentences per article (5 is arbitrary for testing, i'm not sure what a good limit is yet)
-    if (len(sentences) >= 5):
-        sentences = sentences[:5]
+    if (len(bias_candidates) >= 5):
+        bias_candidates = bias_candidates[:5]
 
     return sentences
 
