@@ -45,7 +45,7 @@
         {% endblock topnav %}
       </header>
       <main class="position-relative">
-        <div class="container-fluid content animate__animated animate__fadeIn">
+        <div class="container-fluid content animate__animated animate__fast animate__fadeIn">
           {% if messages %}
             {% for message in messages %}
               <div class="alert alert-messages container mx-auto {% if message.tags == 'error' %}alert-danger{% else %}alert-{{ message.tags }}{% endif %} alert-dismissible fade show"

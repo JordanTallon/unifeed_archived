@@ -3,6 +3,7 @@ from django.core.validators import URLValidator
 from .models import Feed
 from .signals import rss_feed_imported
 from django.utils import timezone
+import tldextract
 
 
 def import_rss_feed(url):
@@ -40,6 +41,7 @@ def save_feed(feed, rss_channel_data):
     feed.description = rss_channel_data.get('description', feed.description)
     feed.image_url = rss_channel_data.get('image_url', feed.image_url)
     feed.ttl = rss_channel_data.get('ttl', feed.ttl)
+    feed.publisher = rss_channel_data.get('publisher', feed.publisher)
     feed.last_updated = timezone.now()
     feed.save()
 
@@ -91,6 +93,23 @@ def read_rss_channel_elements(rss):
     retrieved_image_url = channel_elements['image_url']
     if isinstance(retrieved_image_url, dict):
         channel_elements['image_url'] = retrieved_image_url.get('href', '')
+
+    if channel_elements['link'] != '':
+        website_tld = tldextract.extract(channel_elements['link'])
+        subdomain = website_tld.subdomain + "."
+
+        # Subdomains we don't want to included (we want stuff like news.cnn to be included or abcnews.go etc)
+        # But not stuff like www.fox, this list will be manually added to as undesired publisher names appear
+        exclude_subdomains = {'www', 'm', 'ftp', 'mail', 'webmail', 'blog', 'cdn',
+                              'static', 'api', 'secure', 'dev', 'development',
+                              'staging', 'admin'}
+
+        if subdomain and subdomain in exclude_subdomains:
+            subdomain = ''
+
+        domain = website_tld.domain
+        channel_elements['publisher'] = subdomain.capitalize() + \
+            domain.capitalize()
 
     return channel_elements
 
