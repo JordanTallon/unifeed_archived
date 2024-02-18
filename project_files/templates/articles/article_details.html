@@ -7,7 +7,7 @@
     <div class="container my-0 ">
         <div class="row gx-5">
             <div class="col-12 col-lg-8 p-4 d-flex flex-column">
-                <h1 class="fw-bold">{{ article.title }}</h1>
+                <h1 class="fw-bold h2">{{ article.title }}</h1>
                 <!-- Publish date / interactive buttons-->
                 <div class="d-flex mb-2 w-100 align-items-center">
                     {% if article.publish_datetime != None %}
@@ -50,11 +50,13 @@
                     </div>
                 </div>
                 {% if article.image_url != "" %}
-                    <img src="{{ article.image_url }}"
-                         class="mx-auto w-100 my-3"
-                         width="auto"
-                         height="auto"
-                         alt="News Photograph for {{ article.title }}">
+                    <div class="article-preview-img-container my-3">
+                        <img src="{{ article.image_url }}"
+                             class="article-preview-img"
+                             width="auto"
+                             height="auto"
+                             alt="News Photograph for {{ article.title }}">
+                    </div>
                 {% endif %}
                 {% if article.author != "" %}
                     <h3 class="h5 fw-bold">By {{ article.author }}</h3>
