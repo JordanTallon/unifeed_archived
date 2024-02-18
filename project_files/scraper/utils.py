@@ -1,6 +1,20 @@
 from bs4 import BeautifulSoup
 import requests
 from requests.exceptions import ConnectionError, Timeout, RequestException
+from urllib.parse import urlparse
+
+
+def parse_url(url):
+    """     
+    This function breaks up any given URL - primarily used to set up communication with a robots.txt file.
+    For example: "https://example.com/test_path" - we can get 'example.com' and 'test_path' from this.
+    For querying the site for any robots.txt and permission to scrape, we can add '/robots.txt' to get 'example.com/robots.txt'
+    And we can query the robots.txt with '/test_path' to see if we are allowed to scrape that path.
+    """
+    parsed_url = urlparse(url)
+    website = parsed_url.scheme + parsed_url.netloc
+    path = parsed_url.path
+    return website, path
 
 
 def scrape_data(url):
