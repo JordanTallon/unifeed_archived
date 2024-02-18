@@ -2,6 +2,7 @@ from scraper.utils import scrape_data
 from .utils import analyse_sentences_for_bias, extract_ideal_sentences, text_to_md5_hash
 from celery import shared_task
 from .models import ArticleAnalysisResults
+from traceback import format_exc
 
 
 # Shared task is basically telling the function to be picked up by a celery worker
@@ -12,7 +13,13 @@ def scrape(url, analysis_id):
     try:
         # Scrape the article content
         article_text = scrape_data(url)
+    except Exception as e:
+        # Log an error message and mark the analysis as failed
+        print(
+            f"An error occurred when scraping from {url}: {e}\n{format_exc()}")
+        analysis_failed(analysis_id)
 
+    try:
         # Extract sentences for analysis
         sentences = extract_ideal_sentences(article_text)
 
@@ -21,10 +28,10 @@ def scrape(url, analysis_id):
 
         # Pass the MD5 hash along with other data to the analysis task
         analyse_sentences.delay(analysis_id, sentences, article_text_md5)
-
-    except (ValueError):
+    except Exception as e:
         # Log an error message and mark the analysis as failed
-        print("An error occured when scraping from:", url)
+        print(
+            f"An error occurred when extracting ideal sentences: {e}\n{format_exc()}")
         analysis_failed(analysis_id)
 
 

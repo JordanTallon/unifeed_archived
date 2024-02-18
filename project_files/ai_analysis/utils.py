@@ -19,16 +19,14 @@ def text_to_md5_hash(text):
 
 
 def count_entities_and_adjectives_in_sentence(sentence):
-    doc = nlp(sentence)
-
     # We are primarily concerned with ORG, PERSON, GPE, NORP
     # Further elaboration under machine learning section of the technical specification
     relevant_entities = {'ORG', 'PERSON', 'GPE', 'NORP'}
-    entity_count = len(
-        [ent for ent in doc.ents if ent.label_ in relevant_entities])
+    entity_count = sum(
+        ent.label_ in relevant_entities for ent in sentence.ents)
 
     # Count number of tokens that spaCy flagged as 'ADJ'
-    adjective_count = sum(1 for token in doc if token.pos_ == "ADJ")
+    adjective_count = sum(token.pos_ == "ADJ" for token in sentence)
 
     return entity_count, adjective_count
 
@@ -53,23 +51,22 @@ def count_biased_adjectives_in_sentence(sentence):
 
 
 def extract_ideal_sentences(article_text):
-    # TODO: I will find 'ideal' sentences from an article, for now split and get the first 5
-    # Cleaning should be done here too (removing sentences that are too short, empty, etc)
-    sentences = article_text.split('.')
+    doc = nlp(article_text)
     sentence_data = []
 
-    for sentence in sentences:
-        words = sentence.split()
+    for sentence in doc.sents:
+        sentence_text = sentence.text.strip()
+        words = sentence_text.split()
         # My political bias AI is trained on sentences between 8 and 90 words, so its ideal we stay within that range.
         # 8-90 is a good range, so this will cover most sentences.
-        if 8 <= len(words) <= 90:  # Check sentence length
+        if 8 <= len(words) <= 90:
             adj_count, ent_count = count_entities_and_adjectives_in_sentence(
                 sentence)
-            bias_adj_count = count_biased_adjectives_in_sentence(sentence)
+            bias_adj_count = count_biased_adjectives_in_sentence(sentence_text)
             polarity, subjectivity = extract_polarity_and_subjectivity(
-                sentence)
+                sentence_text)
             sentence_data.append({
-                'sentence': sentence,
+                'sentence': sentence_text,
                 'adj_count': adj_count,
                 'ent_count': ent_count,
                 'bias_adj_count': bias_adj_count,
@@ -79,6 +76,19 @@ def extract_ideal_sentences(article_text):
 
     sentence_df = pd.DataFrame(sentence_data)
 
+    # Condition to drop rows based on them being likely non biased
+    # currently sentences without any entities, adjectives, biased adjectives or sentiment
+    no_bias_condition = (
+        (sentence_df['adj_count'] == 0) &
+        (sentence_df['ent_count'] == 0) &
+        (sentence_df['bias_adj_count'] == 0) &
+        (sentence_df['polarity'].apply(lambda x: abs(x) < 0.1)) &
+        (sentence_df['subjectivity'].apply(lambda x: abs(x) < 0.1))
+    )
+
+    # Drop rows based on the no bias condition
+    sentence_df = sentence_df[~no_bias_condition]
+
     # Sort by the number of 'biased' adjectives in the sentence
     # Followed by the number of entities it mentions and adjective count.
     # Lastly, how subjective the sentence is, then polarity.
@@ -86,9 +96,8 @@ def extract_ideal_sentences(article_text):
     bias_candidates = sentence_df.sort_values(by=['bias_adj_count', 'ent_count', 'adj_count', 'subjectivity', 'polarity'],
                                               ascending=[False, False, False, False, False])
 
-    # Get the top 10 sentences and convert it to a list to return
-    potentially_biased_sentences = bias_candidates.head(10)[
-        'sentence'].tolist()
+    # Get all potentially biased sentences
+    potentially_biased_sentences = bias_candidates['sentence'].tolist()
     return potentially_biased_sentences
 
 
