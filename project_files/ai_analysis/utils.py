@@ -22,13 +22,25 @@ def count_entities_and_adjectives_in_sentence(sentence):
     # We are primarily concerned with ORG, PERSON, GPE, NORP
     # Further elaboration under machine learning section of the technical specification
     relevant_entities = {'ORG', 'PERSON', 'GPE', 'NORP'}
-    entity_count = sum(
-        ent.label_ in relevant_entities for ent in sentence.ents)
+    entity_count = 0
+    adjective_count = 0
+    html_string = ""
 
-    # Count number of tokens that spaCy flagged as 'ADJ'
-    adjective_count = sum(token.pos_ == "ADJ" for token in sentence)
+    for token in sentence:
+        if token.ent_type_ in relevant_entities:
+            html_string += f'<span class="entity entity-{token.ent_type_}">{token.text}</span>'
+            entity_count += 1
+        elif token.pos_ == "ADJ":
+            html_string += f'<span class="adjective">{token.text}</span>'
+            adjective_count += 1
+        else:
+            html_string += token.text
 
-    return entity_count, adjective_count
+        # Add a space after each token except for punctuation
+        if not token.is_punct:
+            html_string += ' '
+
+    return entity_count, adjective_count, html_string
 
 
 def extract_polarity_and_subjectivity(text):
@@ -60,13 +72,14 @@ def extract_ideal_sentences(article_text):
         # My political bias AI is trained on sentences between 8 and 90 words, so its ideal we stay within that range.
         # 8-90 is a good range, so this will cover most sentences.
         if 8 <= len(words) <= 90:
-            adj_count, ent_count = count_entities_and_adjectives_in_sentence(
+            adj_count, ent_count, html = count_entities_and_adjectives_in_sentence(
                 sentence)
             bias_adj_count = count_biased_adjectives_in_sentence(sentence_text)
             polarity, subjectivity = extract_polarity_and_subjectivity(
                 sentence_text)
             sentence_data.append({
                 'sentence': sentence_text,
+                'sentence_html': html,
                 'adj_count': adj_count,
                 'ent_count': ent_count,
                 'bias_adj_count': bias_adj_count,
@@ -79,11 +92,8 @@ def extract_ideal_sentences(article_text):
     # Condition to drop rows based on them being likely non biased
     # currently sentences without any entities, adjectives, biased adjectives or sentiment
     no_bias_condition = (
-        (sentence_df['adj_count'] == 0) &
-        (sentence_df['ent_count'] == 0) &
-        (sentence_df['bias_adj_count'] == 0) &
-        (sentence_df['polarity'].apply(lambda x: abs(x) < 0.1)) &
-        (sentence_df['subjectivity'].apply(lambda x: abs(x) < 0.1))
+        (sentence_df['adj_count'] == 0) |
+        (sentence_df['ent_count'] == 0)
     )
 
     # Drop rows based on the no bias condition
@@ -96,12 +106,18 @@ def extract_ideal_sentences(article_text):
     bias_candidates = sentence_df.sort_values(by=['bias_adj_count', 'ent_count', 'adj_count', 'subjectivity', 'polarity'],
                                               ascending=[False, False, False, False, False])
 
-    # Get all potentially biased sentences
-    potentially_biased_sentences = bias_candidates['sentence'].tolist()
-    return potentially_biased_sentences
+    # Get all potentially biased sentences for analysis
+    potentially_biased_sentences = bias_candidates.head(5)[
+        'sentence'].tolist()
+
+    # And their HTML counterpart for rendering with highlights
+    potentially_biased_sentences_html = bias_candidates.head(5)['sentence_html'].tolist(
+    )
+
+    return potentially_biased_sentences, potentially_biased_sentences_html
 
 
-def analyse_sentences_for_bias(sentences):
+def analyse_sentences_for_bias(sentences, sentences_html):
 
     def query(payload):
         response = requests.post(settings.HUGGINGFACE_API_URL,
@@ -143,6 +159,7 @@ def analyse_sentences_for_bias(sentences):
             'left_bias': scores['left'],
             'center_bias': scores['center'],
             'right_bias': scores['right'],
+            'html': sentences_html[i],
             'conclusion': conclusion,
             'conclusion_strength': conclusion_strength,
         }

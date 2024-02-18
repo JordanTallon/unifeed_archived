@@ -142,6 +142,60 @@ footer {
   object-fit: cover;
 }
 
+/* Styling for entitites returned by spaCy when processing text for political analysis */
+.adjective {
+  background-color: #ff6397;
+}
+.adjective::after {
+  content: "ADJ";
+}
+
+.entity-ORG {
+  background-color: #00f4ec;
+}
+
+.entity-ORG::after {
+  content: "ORG";
+}
+
+.entity-GPE {
+  background-color: #ffcd73;
+}
+
+.entity-GPE::after {
+  content: "GPE";
+}
+
+.entity-NORP {
+  background-color: #e158fc;
+}
+
+.entity-NORP::after {
+  content: "NORP";
+}
+
+.entity-PERSON {
+  background-color: #b983fc;
+}
+
+.entity-PERSON::after {
+  content: "PERSON";
+}
+
+.adjective,
+.entity {
+  padding: 0.1rem 0.35rem;
+  border-radius: 2px;
+}
+
+.adjective::after,
+.entity::after {
+  font-weight: bold;
+  font-size: 0.75rem;
+  margin-left: 0.5rem;
+  vertical-align: middle;
+}
+
 /* This adds a shadow to the article-preview-image (on top of the image) */
 .article-preview-img-container::after {
   transition: opacity 600ms ease, background 600ms ease;

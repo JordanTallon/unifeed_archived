@@ -21,13 +21,14 @@ def scrape(url, analysis_id):
 
     try:
         # Extract sentences for analysis
-        sentences = extract_ideal_sentences(article_text)
+        sentences, sentences_html = extract_ideal_sentences(article_text)
 
         # Calculate the MD5 hash of the article text
         article_text_md5 = text_to_md5_hash(article_text)
 
         # Pass the MD5 hash along with other data to the analysis task
-        analyse_sentences.delay(analysis_id, sentences, article_text_md5)
+        analyse_sentences.delay(analysis_id, sentences,
+                                sentences_html, article_text_md5)
     except Exception as e:
         # Log an error message and mark the analysis as failed
         print(
@@ -37,13 +38,14 @@ def scrape(url, analysis_id):
 
 # retry 3 times in 25 second intervals
 @shared_task(bind=True, max_retries=3, default_retry_delay=25)
-def analyse_sentences(self, analysis_id, sentences, article_text_md5):
+def analyse_sentences(self, analysis_id, sentences, sentences_html, article_text_md5):
     try:
         # Perform analysis on the sentences
-        bias_results = analyse_sentences_for_bias(sentences)
+        bias_results = analyse_sentences_for_bias(sentences, sentences_html)
 
         # Store the analysis results
-        analysis_complete(analysis_id, bias_results, article_text_md5)
+        analysis_complete(analysis_id, bias_results,
+                          article_text_md5)
 
     except ValueError as exc:
         # If an error occurs, retry the task up to 3 times
