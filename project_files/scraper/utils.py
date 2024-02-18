@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 from requests.exceptions import ConnectionError, Timeout, RequestException
 from urllib.parse import urlparse
+from urllib.robotparser import RobotFileParser
 
 
 def parse_url(url):
@@ -15,6 +16,23 @@ def parse_url(url):
     website = parsed_url.scheme + parsed_url.netloc
     path = parsed_url.path
     return website, path
+
+
+def check_robots(website, path):
+    """ 
+    Takes in a website 'https://example.com' and a path '/news_article', locates the website's 'robot.txt' file,
+    reads the robots file and checks if 'UnifeedAgent' is explicitly denied permission to scrape the given path.
+    Some websites  deny all agents under a wildcard * . If scraping is not allowed, we will follow ethical scraping 
+    guidelines and cancel the scraping with a false return from this function.
+    """
+    rp = RobotFileParser()
+    rp.set_url(website + "/robots.txt")
+    target = website + path
+    rp.read()
+    user_agent = 'UnifeedAgent'
+
+    # If the robots.txt of the website denies permission to scrape, this returns false.
+    return (rp.can_fetch(user_agent, target))
 
 
 def scrape_data(url):
