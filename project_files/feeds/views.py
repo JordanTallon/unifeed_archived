@@ -191,7 +191,7 @@ def edit_folder(request, folder_id):
     else:
         form = FeedFolderForm(instance=folder)
 
-    return render(request, 'feeds/edit_existing_folder.html', {'form': form, 'folder_name': folder.name, 'folder_id': folder_id})
+    return render(request, 'feeds/edit_folder.html', {'form': form, 'folder_name': folder.name, 'folder_id': folder_id})
 
 
 @login_required
