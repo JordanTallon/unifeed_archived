@@ -34,6 +34,10 @@ footer {
   grid-area: sidebar;
 }
 
+#analysis-box {
+  min-height: 300px;
+}
+
 #menu-toggle {
   z-index: 9998;
 }
