@@ -13,7 +13,13 @@ def parse_url(url):
     And we can query the robots.txt with '/test_path' to see if we are allowed to scrape that path.
     """
     parsed_url = urlparse(url)
-    website = parsed_url.scheme + parsed_url.netloc
+
+    # Keep the scheme as part of the website if one was extracted
+    if parsed_url.scheme:
+        website = parsed_url.scheme + "://" + parsed_url.netloc
+    else:
+        website = parsed_url.netloc
+
     path = parsed_url.path
     return website, path
 
@@ -34,7 +40,8 @@ def check_robots(website, path):
     # If the robots.txt of the website denies permission to scrape, this returns false.
     return (rp.can_fetch(user_agent, target))
 
-def extract_article_text(scraped_article)
+
+def extract_article_text(scraped_article):
     """  
     Takes in the html content of a scraped website and tries different different strategies to target and extract the main
     articl content of the page. 
@@ -52,33 +59,35 @@ def extract_article_text(scraped_article)
 
     if len(extracted_paragraphs) >= 3:
         return extracted_paragraphs
-        
+
     # Check for common article classes (this will be manually updated as more are discovered)
-    common_article_classes = ['article-body', 'post-content', 'content', 'news-article']
+    common_article_classes = ['article-body',
+                              'post-content', 'content', 'news-article']
     for common_class in common_article_classes:
         class_div = soup.find('div', class_=common_class)
         if class_div:
             extracted_paragraphs = class_div.find_all('p')
             if len(extracted_paragraphs) >= 3:
                 return extracted_paragraphs
-    
-    # Check for div elements containing a number of paragraphs indiciative of an article 
+
+    # Check for div elements containing a number of paragraphs indiciative of an article
     divs = soup.find_all('div')
     for div in divs:
         extracted_paragraphs = div.find_all('p')
         if len(extracted_paragraphs) >= 3:
             return extracted_paragraphs
-            
+
     # As a last resort, return all paragraphs on the website
     return soup.find_all('p')
+
 
 def scrape_data(url):
 
     website, path = parse_url(url)
 
     if not check_robots(website, path):
-        raise ValueError(website + "/robots.txt",
-                         "denied UnifeedAgent permission to scrape.")
+        raise ValueError(
+            f"{website}/robots.txt denied UnifeedAgent permission to scrape.")
 
     # Try make a request to the url
     try:
@@ -87,7 +96,8 @@ def scrape_data(url):
         # If the url did not reply 200 (ok) then raise an error
         if response.status_code != 200:
             raise ValueError("Failed to retrieve data from the given URL")
-
+        if 'text/html' not in response.headers.get('Content-Type', ''):
+            raise ValueError("URL did not return HTML data")
     except (ConnectionError, Timeout, RequestException):
         # If the url could not be reached, raise an error
         raise ValueError("Failed to establish a connection to the URL")
