@@ -55,7 +55,7 @@ def RequireLoginMiddleware(get_response):
             if request.path in only_public_paths:
                 # Redirect them to the home page
                 # This prevents already logged in users from 'logging in' or making another account
-                return redirect('home')
+                return redirect('reading_list')
 
         return response
 

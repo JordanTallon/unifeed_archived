@@ -1,9 +1,31 @@
 {% extends "global/base.html" %}
 {% load static %}
 {% block content %}
-    <div class="w-100 container mx-auto">
-        <div class="row mx-auto g-0 gy-4 g-md-4 g-lg-5">
-            {% include "global/article_grid.html" with article_list=articles %}
+    {% if articles|length > 0 %}
+        <div class="w-100 container mx-auto">
+            <div class="row mx-auto g-0 gy-4 g-md-4 g-lg-5">
+                {% include "global/article_grid.html" with article_list=articles %}
+            </div>
         </div>
-    </div>
+    {% else %}
+        <div class="d-flex flex-column justify-content-center row">
+            <div class="mx-auto col-11 col-lg-6">
+                <div class="row">
+                    <div class="mx-auto col-8 col-lg-6 p-0 p-lg-4">
+                        <img src="{% static 'images/reading_list.svg' %}"
+                             class="img-fluid"
+                             alt="Two people standing next to a question mark."
+                             width="auto"
+                             height="auto">
+                    </div>
+                </div>
+                <div class="text-center mt-4">
+                    <h1 class="fw-bold">Your Reading List is currently empty.</h1>
+                    <p class="my-3 fs-5 text-muted">
+                        Why not explore your RSS feeds and add some interesting articles? This is your space to bookmark reads for later, keeping all your favorite content neatly organized in one place.
+                    </p>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 {% endblock content %}
