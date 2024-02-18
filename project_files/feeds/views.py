@@ -205,7 +205,7 @@ def delete_folder(request, folder_id):
     folder.delete()
     messages.success(request, 'The ' + folder_name +
                      " folder was successfully deleted.")
-    return redirect('home')
+    return redirect('reading_list')
 
 
 @login_required
