@@ -16,8 +16,6 @@ class Article(models.Model):
     image_url = models.URLField(blank=True, null=True)
     author = models.CharField(max_length=255, blank=True, default='')
     publish_datetime = models.DateTimeField(blank=True, null=True)
-    # Publisher would be nice to display. can be read from the title of the 'owning' rss feed?
-    publisher = models.CharField(max_length=255, blank=True, default='')
 
     # The feed this article belongs to
     feed = models.ForeignKey(

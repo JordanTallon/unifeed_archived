@@ -58,10 +58,14 @@
                              alt="News Photograph for {{ article.title }}">
                     </div>
                 {% endif %}
-                {% if article.author != "" %}
-                    <h3 class="h5 fw-bold">By {{ article.author }}</h3>
-                    <hr>
+                {% if article.author != "" %}<p>By {{ article.author }}</p>{% endif %}
+                {% if article.feed.publisher != "" %}
+                    <small>
+                        <a href="{{ article.feed.link }}"
+                           class="text-muted text-decoration-none"><i class="bi bi-box-arrow-up-right me-1"></i>{{ article.feed.publisher }}</a>
+                    </small>
                 {% endif %}
+                <hr>
                 {% if article.description != "" %}
                     <h4 class="h5 fw-bold">Description</h4>
                     <p>{{ article.description }}</p>

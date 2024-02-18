@@ -48,6 +48,9 @@ class Feed(models.Model):
     # Private toggle to exclude this from the potential 'search' function
     private = models.BooleanField(default=False)
 
+    # Extracted from the link e.g. https://www.vox.com : Vox 'publisher'
+    publisher = models.CharField(max_length=255, blank=True)
+
     # To keep track of when the feed was last updated.
     # feeds should be updated regularly but we don't want to update it if for example: it was already updated 5 seconds ago.
     last_updated = models.DateTimeField(default=timezone.now)

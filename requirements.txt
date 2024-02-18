@@ -33,3 +33,5 @@ celery==5.3.6
 redis==5.0.1
 # HTMX
 django-htmx==1.17.2
+# For extracting website 'names' from a url
+tldextract==5.1.1
