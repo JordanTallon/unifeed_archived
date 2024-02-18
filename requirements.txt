@@ -35,5 +35,7 @@ redis==5.0.1
 django-htmx==1.17.2
 # For extracting website 'names' from a url
 tldextract==5.1.1
+# Pandas - dataframes (analyse / sort data)
+pandas==2.2.0
 # For extracting sentiment from text
 spacytextblob==4.0.0
