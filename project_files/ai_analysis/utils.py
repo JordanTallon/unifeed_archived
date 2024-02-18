@@ -1,6 +1,9 @@
 import hashlib
 import requests
 from django.conf import settings
+# spaCy nlp library
+import spacy
+nlp = spacy.load('en_core_web_sm')
 
 
 # Function to assign the given text to a hash (using Python hashlib)
@@ -11,6 +14,21 @@ def text_to_md5_hash(text):
     md5_hash_result = hashlib.md5(encoded_text)
     # Digest the hash as a hexadecimal and return it
     return md5_hash_result.hexdigest()
+
+
+def count_entities_and_adjectives_in_sentence(sentence):
+    doc = nlp(sentence)
+
+    # We are primarily concerned with ORG, PERSON, GPE, NORP
+    # Further elaboration under machine learning section of the technical specification
+    relevant_entities = {'ORG', 'PERSON', 'GPE', 'NORP'}
+    entity_count = len(
+        [ent for ent in doc.ents if ent.label_ in relevant_entities])
+
+    # Count number of tokens that spaCy flagged as 'ADJ'
+    adjective_count = sum(1 for token in doc if token.pos_ == "ADJ")
+
+    return entity_count, adjective_count
 
 
 def extract_ideal_sentences(article_text):
