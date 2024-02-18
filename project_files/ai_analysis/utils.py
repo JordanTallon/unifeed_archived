@@ -86,11 +86,10 @@ def extract_ideal_sentences(article_text):
     bias_candidates = sentence_df.sort_values(by=['bias_adj_count', 'subjectivity', 'polarity', 'ent_count', 'adj_count'],
                                               ascending=[False, False, False, False, False])
 
-    # Restrict to 5 sentences per article (5 is arbitrary for testing, i'm not sure what a good limit is yet)
-    if (len(bias_candidates) >= 5):
-        bias_candidates = bias_candidates[:5]
-
-    return sentences
+    # Get the top 10 sentences and convert it to a list to return
+    potentially_biased_sentences = bias_candidates.head(10)[
+        'sentence'].tolist()
+    return potentially_biased_sentences
 
 
 def analyse_sentences_for_bias(sentences):
