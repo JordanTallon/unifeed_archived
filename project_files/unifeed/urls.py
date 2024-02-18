@@ -14,12 +14,11 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from . import views
-
 from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
+from django.shortcuts import redirect
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,7 +26,7 @@ urlpatterns = [
     path('analyse-political-bias/', include('ai_analysis.urls')),
     path('feeds/', include('feeds.urls')),
     path('articles/', include('articles.urls')),
-    path('', views.home_page, name="home")
+    path('', lambda request: redirect('/articles/reading_list')),
 ]
 
 # Imports media mapping for development server (managed by nginx in production)

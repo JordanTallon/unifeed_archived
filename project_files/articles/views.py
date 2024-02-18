@@ -41,8 +41,8 @@ def article_details(request, article_id):
 
 
 @login_required
-def saved_articles(request, user_id):
-    saved_articles = SavedArticle.objects.filter(user=user_id)
+def saved_articles(request):
+    saved_articles = SavedArticle.objects.filter(user=request.user.id)
     articles = [saved_article.article for saved_article in saved_articles]
 
     return render(request, 'articles/saved_articles.html', {'articles': articles})

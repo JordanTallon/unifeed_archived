@@ -1,7 +1,7 @@
 {% if user.is_authenticated %}
     <div id="sidenav"
          class="flex-shrink-0 p-3 bg-light h-100 d-flex flex-column">
-        <a href="{% url 'home' %}"
+        <a href="{% url 'reading_list' %}"
            class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
             <span class="fs-4 fw-bold text-success">
                 <i class="bi bi-rss-fill"></i>
@@ -12,14 +12,14 @@
             <p class="text-secondary">My UniFeed</p>
             <li class="mb-3">
                 <a class="text-decoration-none text-dark rounded w-100 d-flex"
-                   href="{% url "saved_articles" user.id %}">
+                   href="{% url "reading_list" %}">
                     <i class="me-3 bi bi-book"></i>
                     <span>Reading List</span>
                 </a>
             </li>
             <li class="mb-3">
                 <a class="text-decoration-none text-dark rounded w-100 d-flex"
-                   href="{% url 'home' %}">
+                   href="{% url 'reading_list' %}">
                     <i class="me-3 bi bi-clock-history"></i>
                     <span>Recently Read</span>
                 </a>

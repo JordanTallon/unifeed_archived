@@ -3,7 +3,7 @@
         {% if user.is_authenticated %}
             <!-- Unifeed Brand (for mobile only)-->
             <div class="col-2 d-block d-md-none p-0 m-0">
-                <a href="{% url "home" %}" class="p-0 fw-bold text-success">
+                <a href="{% url "reading_list" %}" class="p-0 fw-bold text-success">
                     <i class="my-auto fs-1 bi bi-rss-fill"></i>
                 </a>
             </div>
@@ -36,7 +36,7 @@
             </div>
         {% else %}
             <div class="col-6">
-                <a href="{% url "home" %}"
+                <a href="{% url "reading_list" %}"
                    class="navbar-brand fs-3 fw-bold text-success">
                     <i class="bi bi-rss-fill"></i>
                     UniFeed
