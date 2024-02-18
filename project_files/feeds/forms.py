@@ -55,6 +55,12 @@ class EditUserFeedForm(forms.ModelForm):
         model = UserFeed
         fields = ["name", "description", "folder"]
 
+    def __init__(self, *args, **kwargs):
+        super(EditUserFeedForm, self).__init__(*args, **kwargs)
+        if self.instance and self.instance.user:
+            self.fields['folder'].queryset = FeedFolder.objects.filter(
+                user=self.instance.user)
+
 
 class FeedFolderForm(ModelForm):
     class Meta:
