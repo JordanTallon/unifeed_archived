@@ -3,6 +3,7 @@ import requests
 from django.conf import settings
 # spaCy nlp library
 import spacy
+from textblob import TextBlob
 nlp = spacy.load('en_core_web_sm')
 
 
@@ -29,6 +30,11 @@ def count_entities_and_adjectives_in_sentence(sentence):
     adjective_count = sum(1 for token in doc if token.pos_ == "ADJ")
 
     return entity_count, adjective_count
+
+
+def extract_polarity_and_subjectivity(text):
+    blob = TextBlob(text)
+    return blob.sentiment.polarity, blob.sentiment.subjectivity
 
 
 def count_biased_adjectives_in_sentence(sentence):
@@ -59,11 +65,12 @@ def extract_ideal_sentences(article_text):
             adj_count, ent_count = count_entities_and_adjectives_in_sentence(
                 sentence)
             bias_adj_count = count_biased_adjectives_in_sentence(sentence)
+
             sentence_data.append({
                 'sentence': sentence,
                 'adj_count': adj_count,
                 'ent_count': ent_count,
-                'bias_adj_count': bias
+                'bias_adj_count': bias_adj_count
             })
 
     # Restrict to 5 sentences per article (5 is arbitrary for testing, i'm not sure what a good limit is yet)
