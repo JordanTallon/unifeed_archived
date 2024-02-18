@@ -80,7 +80,6 @@ def clean_rss_entries(rss_entries, rss_header):
         title_max_length = Article._meta.get_field('title').max_length
         author_max_length = Article._meta.get_field('author').max_length
         link_max_length = Article._meta.get_field('link').max_length
-        # publisher_max_length = Article._meta.get_field('publisher').max_length
 
         if len(clean_entry['link']) > link_max_length:
             # Sadly a link cannot be truncated without losing the validity of the url.

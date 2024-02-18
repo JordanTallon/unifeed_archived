@@ -1,8 +1,6 @@
 from django.db import models
-from django.urls import reverse
 from django.conf import settings
 from django.utils import timezone
-from django.apps import apps
 
 # A feed folder allows for users to 'group' their feeds into different folders
 # This is to allow the user to 1. organize their feeds, improving the user experience
