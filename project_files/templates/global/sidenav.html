@@ -40,11 +40,18 @@
                                 <li class="ms-auto px-3">
                                     <a class="text-decoration-none text-dark" href="{{ feed_url }}">
                                         <span class="d-inline-block text-truncate w-100 {% if feed_url in request.path %}text-dark{% else %}text-muted {% endif %}">
-                                            <i class="bi bi-reception-3"></i>
+                                            <small><i class="bi bi-bar-chart me-1"></i></small>
                                         {{ feed.name }}</span>
                                     </a>
                                 </li>
                             {% endfor %}
+                            <li class="ms-auto px-3 mt-2">
+                                <a class="text-decoration-none text-dark"
+                                   href="{% url 'add_user_feed_to_folder' folder_data.folder.name %}">
+                                    <span class="text-dark">
+                                        <small><i class="bi bi-plus-circle me-2"></i></small>Add New Feed</span>
+                                </a>
+                            </li>
                             <hr>
                         </ul>
                     {% endif %}
