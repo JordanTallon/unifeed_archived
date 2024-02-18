@@ -104,7 +104,7 @@ def scrape_data(url):
 
     extracted_paragraphs = extract_article_text(response.text)
 
-    if len(extracted_paragraphs < 3):
+    if len(extracted_paragraphs) < 3:
         raise ValueError("Failed to extract article content")
 
     content = ' '.join([p.get_text() for p in extracted_paragraphs])
