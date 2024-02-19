@@ -19,6 +19,21 @@ from django.contrib import messages
 
 
 @login_required
+def my_feed(request):
+    # Get all userfeeds belonging to the user
+    userfeeds = UserFeed.objects.filter(user=request.user)
+    # Then get all the 'feeds' they pull from
+    feeds = userfeeds.values_list('feed', flat=True)
+    # Lastly, find the articles that pull from the same 'feed'
+    articles = Article.objects.filter(feed__in=feeds)
+
+    # Order the articles so that the newest ones show up first
+    articles = articles.order_by(
+        F('publish_datetime').desc(nulls_last=True))
+    return render(request, 'feeds/my_feed.html', {'articles': articles})
+
+
+@login_required
 def add_user_feed_to_folder(request, folder_name):
 
     user = request.user
@@ -30,7 +45,7 @@ def add_user_feed_to_folder(request, folder_name):
 
             feed = form.cleaned_data.get('feed')
 
-            # If there's no feed, there but me be a url
+            # If there's no feed, there must be a url
             if not feed:
                 try:
                     url = form.cleaned_data.get('url')

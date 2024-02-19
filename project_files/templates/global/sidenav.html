@@ -24,6 +24,13 @@
                     <span class="{% if '/recently_read/' in request.path %}fw-bold{% endif %}">Recently Read</span>
                 </a>
             </li>
+            <li class="mb-3">
+                <a class="text-decoration-none text-dark rounded w-100 d-flex"
+                   href="{% url 'my_feed' %}">
+                    <i class="me-3 bi bi-list-stars"></i>
+                    <span class="{% if '/feeds/' == request.path %}fw-bold{% endif %}">My Feed</span>
+                </a>
+            </li>
             <p class="text-secondary">My Folders</p>
             {% for folder_data in sidebar_data.user_folders %}
                 <li class="mb-1">
