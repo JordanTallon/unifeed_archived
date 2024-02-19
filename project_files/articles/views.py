@@ -50,6 +50,14 @@ def saved_articles(request):
 
 
 @login_required
+def recently_read_articles(request):
+    recent_articles = RecentlyRead.objects.filter(user=request.user.id)
+    articles = [recent.article for recent in recent_articles]
+
+    return render(request, 'articles/recently_read.html', {'articles': articles})
+
+
+@login_required
 def read_article(request):
     if request.method == 'POST':
         article_id = request.POST.get("article_id")

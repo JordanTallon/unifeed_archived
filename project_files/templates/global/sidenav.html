@@ -19,9 +19,9 @@
             </li>
             <li class="mb-3">
                 <a class="text-decoration-none text-dark rounded w-100 d-flex"
-                   href="{% url 'reading_list' %}">
+                   href="{% url 'recently_read' %}">
                     <i class="me-3 bi bi-clock-history"></i>
-                    <span>Recently Read</span>
+                    <span class="{% if '/recently_read/' in request.path %}fw-bold{% endif %}">Recently Read</span>
                 </a>
             </li>
             <p class="text-secondary">My Folders</p>
