@@ -19,6 +19,11 @@ from django.contrib import messages
 
 
 @login_required
+def my_feed(request):
+    return render(request, 'feeds/my_feed.html')
+
+
+@login_required
 def add_user_feed_to_folder(request, folder_name):
 
     user = request.user

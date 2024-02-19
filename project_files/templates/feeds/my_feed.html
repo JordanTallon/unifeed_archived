@@ -1,0 +1,31 @@
+{% extends "global/base.html" %}
+{% load static %}
+{% block content %}
+    {% if articles %}
+        <div class="d-flex flex-column justify-content-center row">
+            <div class="mx-auto col-11 col-lg-6">
+                <div class="text-center">
+                    <h1 class="fw-bold">Recently Read Articles</h1>
+                </div>
+            </div>
+        </div>
+        <div class="w-100 container mx-auto">
+            <hr>
+            <div class="row mx-auto g-0 gy-4 g-md-4 g-lg-5">
+                {% include "global/article_grid.html" with article_list=articles %}
+            </div>
+        </div>
+    {% else %}
+        <div class="d-flex flex-column justify-content-center row">
+            <div class="mx-auto col-11 col-lg-6">
+                <div class="text-center mt-4">
+                    <h1 class="fw-bold">Your Reading History is currently empty</h1>
+                    <p class="my-3 fs-5 text-muted">Why not explore your feed for interesting articles?</p>
+                    <div class="mt-4">
+                        <a class="btn btn-success" href="TODO">My Feed</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock content %}

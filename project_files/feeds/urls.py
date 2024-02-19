@@ -18,5 +18,7 @@ urlpatterns = [
          views.view_userfeed, name='view_userfeed'),
     path('<int:user_id>/<int:folder_id>/<int:userfeed_id>/',
          views.view_userfeed, name='view_userfeed'),
+    path('',
+         views.my_feed, name='my_feed'),
 
 ]
