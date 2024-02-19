@@ -8,7 +8,7 @@ from django.utils import timezone
 
 
 class FeedFolder(models.Model):
-    name = models.CharField(max_length=400)
+    name = models.CharField(max_length=18)
 
     # Delete 'FeedFolder' if the user who created them is deleted
     user = models.ForeignKey(
