@@ -44,4 +44,22 @@ Once you have entered the correct information, you may proceed by clicking the '
 
 ![[Pasted image 20240219195736.png]]
 
-Congratulations, you are now ready to start using UniFeed.
+Congratulations, you are now ready to start exploring UniFeed.
+
+# Exploring UniFeed 
+
+## Adding a New Folder
+
+Folders in UniFeed allow you to personalize your experience by organizing your news feeds into different interests, categories or subjects. 
+
+They are an essential feature of UniFeed as all feeds must be contained within a folder. If you wish to skip the organization benefits, you can simply create an 'All' or 'Uncategorized' folder to put all of your feeds into.
+
+![[Pasted image 20240219202012.png]]
+
+You can create a folder by selecting the 'Add New Folder' option at the bottom of the 'My Folders' section of the side navigation. Additionally, there may be contextual 'Add New Folder' buttons to help guide you as indicated by the blue arrow.
+
+After selecting the 'Add New Folder' button you will be presented with a short form. You need only to enter a name for the folder and click the 'Save' button to proceed. Please note that each folder name must be unique. You can change the name of your folder at a later point.
+
+![[Pasted image 20240219202310.png]]
+
+Congratulations, you have created your first folder. The form will automatically redirect you to the folder view where you can begin adding feeds to your new folder. 
