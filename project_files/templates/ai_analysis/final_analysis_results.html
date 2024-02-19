@@ -16,8 +16,9 @@
              id="breakdownModal"
              tabindex="-1"
              aria-labelledby="breakdownModalLabel"
+             data-bs-backdrop="false"
              aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-fullscreen">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="breakdownModalLabel">Analysis Breakdown</h5>
@@ -26,21 +27,26 @@
                                 data-bs-dismiss="modal"
                                 aria-label="Close"></button>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body container">
                         <table class="table">
                             <thead id="analysis-result-list">
                                 <tr>
-                                    <th scope="col">Bias</th>
                                     <th scope="col">Sentence</th>
+                                    <th scope="col">Subjectivity</th>
+                                    <th scope="col">Polarity</th>
+                                    <th scope="col">Bias</th>
+                                    <th scope="col">Confidence</th>
+                                    <th scope="col">Feedback</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for sentence, analysis in bias_analysis.sentence_results.items %}
                                     <tr>
-                                        <th scope="row">
-                                            <span>{{ analysis.conclusion }}</span>
-                                        </th>
                                         <td>{{ analysis.html|safe }}</td>
+                                        <td>{{ analysis.subjectivity }}</td>
+                                        <td>{{ analysis.polarity }}</td>
+                                        <td class="fw-bold">{{ analysis.conclusion }}</td>
+                                        <td>{{ analysis.conclusion_strength }}</td>
                                     </tr>
                                 {% endfor %}
                             </tbody>

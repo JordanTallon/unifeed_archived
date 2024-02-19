@@ -34,6 +34,10 @@ footer {
   grid-area: sidebar;
 }
 
+#analysis-box {
+  min-height: 300px;
+}
+
 #menu-toggle {
   z-index: 9998;
 }
@@ -120,8 +124,8 @@ footer {
 .content {
   overflow: auto;
   overflow-x: hidden;
-  padding-top: 5svh;
-  padding-bottom: 5svh;
+  padding-top: 3svh;
+  padding-bottom: 3svh;
   height: 100%;
 }
 

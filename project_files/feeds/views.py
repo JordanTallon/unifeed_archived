@@ -21,6 +21,8 @@ from django.contrib import messages
 @login_required
 def add_user_feed_to_folder(request, folder_name):
 
+    user = request.user
+    folder = get_object_or_404(FeedFolder, user=user, name=folder_name)
     if request.method == "POST":
         form = UserFeedForm(request.POST)
 
@@ -37,15 +39,12 @@ def add_user_feed_to_folder(request, folder_name):
                     feed, _ = import_rss_feed(url)
                 except ValueError as e:
                     messages.error(request, str(e))
-                    return render(request, 'feeds/add_new_feed.html', {'form': form})
-
-            user = request.user
-            folder = get_object_or_404(FeedFolder, user=user, name=folder_name)
+                    return render(request, 'feeds/add_new_feed.html', {'form': form, 'folder_name': folder.name})
 
             if UserFeed.objects.filter(folder=folder, feed=feed).exists():
                 messages.error(
                     request, f"The {folder.name} folder already contains this feed.")
-                return render(request, 'feeds/add_new_feed.html', {'form': form})
+                return render(request, 'feeds/add_new_feed.html', {'form': form, 'folder_name': folder.name})
 
             try:
                 new_user_feed = form.save(commit=False)
@@ -59,15 +58,15 @@ def add_user_feed_to_folder(request, folder_name):
 
             except ValueError as e:
                 messages.error(request, str(e))
-                return render(request, 'feeds/add_new_feed.html', {'form': form})
+                return render(request, 'feeds/add_new_feed.html', {'form': form, 'folder_name': folder.name})
         else:
             messages.error(request, 'Failed to import Feed.')
-            return render(request, 'feeds/add_new_feed.html', {'form': form})
+            return render(request, 'feeds/add_new_feed.html', {'form': form, 'folder_name': folder.name})
 
     else:  # Not a POST request
         form = UserFeedForm()
 
-    return render(request, 'feeds/add_new_feed.html', {'form': form})
+    return render(request, 'feeds/add_new_feed.html', {'form': form, 'folder_name': folder.name})
 
 
 @login_required
@@ -206,7 +205,7 @@ def delete_folder(request, folder_id):
     folder.delete()
     messages.success(request, 'The ' + folder_name +
                      " folder was successfully deleted.")
-    return redirect('home')
+    return redirect('reading_list')
 
 
 @login_required

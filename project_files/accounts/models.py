@@ -4,7 +4,7 @@ from django.db import models
 
 class User(AbstractUser):
     email = models.EmailField(unique=True)
-    track_analytics = models.BooleanField(default=False)
+    track_history = models.BooleanField(default=False)
 
-    def toggle_analytics(self):
-        self.track_analytics = not self.track_analytics
+    def toggle_track_history(self):
+        self.track_history = not self.track_history

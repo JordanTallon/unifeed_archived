@@ -98,16 +98,6 @@ def extract_ideal_sentences(article_text):
 
     sentence_df = pd.DataFrame(sentence_data)
 
-    """     # Condition to drop rows based on them being likely non biased
-    # currently sentences without any entities, adjectives, biased adjectives or sentiment
-    no_bias_condition = (
-        (sentence_df['adj_count'] == 0) |
-        (sentence_df['ent_count'] == 0)
-    )
-
-    # Drop rows based on the no bias condition
-    sentence_df = sentence_df[~no_bias_condition] """
-
     # Sort by the number of 'biased' adjectives in the sentence
     # Followed by the number of entities it mentions and adjective count.
     # Lastly, how subjective the sentence is, then polarity.
@@ -115,18 +105,17 @@ def extract_ideal_sentences(article_text):
     bias_candidates = sentence_df.sort_values(by=['bias_adj_count', 'ent_count', 'adj_count', 'subjectivity', 'polarity'],
                                               ascending=[False, False, False, False, False])
 
-    # Get all potentially biased sentences for analysis
-    potentially_biased_sentences = bias_candidates.head(5)[
-        'sentence'].tolist()
+    sentence_df = bias_candidates.drop(
+        columns=['bias_adj_count', 'ent_count', 'adj_count'])
 
-    # And their HTML counterpart for rendering with highlights
-    potentially_biased_sentences_html = bias_candidates.head(5)['sentence_html'].tolist(
-    )
-
-    return potentially_biased_sentences, potentially_biased_sentences_html
+    # Return top 8 results
+    return sentence_df.head(8)
 
 
-def analyse_sentences_for_bias(sentences, sentences_html):
+def analyse_sentences_for_bias(sentences_json):
+
+    # Convert the Celery serialized json back to a dataframe
+    sentences_df = pd.read_json(sentences_json, orient="split")
 
     def query(payload):
         response = requests.post(settings.HUGGINGFACE_API_URL,
@@ -134,8 +123,9 @@ def analyse_sentences_for_bias(sentences, sentences_html):
 
         return response.json()
 
+    sentences = sentences_df['sentence'].tolist()
+
     # Query for all sentences and gather the results in a 'results' array
-    # TODO: lots of error handling, bad returns, sleeping server etc
     results = []
     for sentence in sentences:
         output = query({"inputs": sentence})
@@ -146,6 +136,11 @@ def analyse_sentences_for_bias(sentences, sentences_html):
             raise ValueError("Model is currently loading")
 
         results.append(output)
+
+    # Convert dataframe columns to lists
+    html_list = sentences_df['sentence_html'].tolist()
+    polarity_list = sentences_df['polarity'].tolist()
+    subjectivity_list = sentences_df['subjectivity'].tolist()
 
     # Associate each result with the sentence text. For displaying to the user later on.
     result_dict = {}
@@ -168,7 +163,9 @@ def analyse_sentences_for_bias(sentences, sentences_html):
             'left_bias': scores['left'],
             'center_bias': scores['center'],
             'right_bias': scores['right'],
-            'html': sentences_html[i],
+            'html': html_list[i],
+            'polarity': polarity_list[i],
+            'subjectivity': subjectivity_list[i],
             'conclusion': conclusion,
             'conclusion_strength': conclusion_strength,
         }

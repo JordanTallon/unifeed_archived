@@ -14,13 +14,6 @@
                         <small class="text-muted"><i class="me-2 bi bi-clock"></i>Published {{ article.publish_datetime }}</small>
                     {% endif %}
                     <div class="ms-auto d-flex">
-                        <a class="h5 text-secondary"
-                           data-bs-toggle="popover"
-                           data-bs-trigger="hover"
-                           data-bs-container="body"
-                           data-bs-placement="top"
-                           data-bs-content="Add to Reading List">
-                            <i class="bi bi-book"></i></a>
                         <form class="animate__animated animate__bounceIn"
                               method="post"
                               action="{% url 'article_details' article.id %}">
@@ -32,8 +25,8 @@
                                         data-bs-trigger="hover"
                                         data-bs-container="body"
                                         data-bs-placement="top"
-                                        data-bs-content="Remove from Saved Articles">
-                                    <i class="h5 bi bi-star-fill"></i>
+                                        data-bs-content="Remove from Reading List">
+                                    <i class="h5 bi bi-book-fill"></i>
                                 </button>
                             {% else %}
                                 <button type="submit"
@@ -42,8 +35,8 @@
                                         data-bs-trigger="hover"
                                         data-bs-container="body"
                                         data-bs-placement="top"
-                                        data-bs-content="Save Article">
-                                    <i class="h5 bi bi-star"></i>
+                                        data-bs-content="Add to Reading List">
+                                    <i class="h5 bi bi-book"></i>
                                 </button>
                             {% endif %}
                         </form>
