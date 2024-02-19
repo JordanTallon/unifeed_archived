@@ -28,6 +28,7 @@ A secure password that you will use to login to your account. To ensure the secu
 Optionally, you can also choose to opt in for UniFeed to track your reading history. This will allow UniFeed to keep track of the different articles you read and present them to you for future retrieval.
 
 ![[Pasted image 20240219191957.png]]
+
 Once you fill in the details, verify that they are correct and then hit the 'Create Account' button to create your account.
 
 Once your account is successfully created, you will be redirected to the 'Login' page where you can proceed with the next section.
@@ -100,7 +101,10 @@ Once you are on the 'Add New Feed' page, you have two choices:
 1. You may add a feed using a URL link. This allows you to import the RSS feed from any news website that you find on the internet. To find RSS feeds, you must browse your desired news websites or search on Google for public feeds.
 2. You can add a feed from a list of pre-existing feeds on the UniFeed website. These are feeds that were imported by other users or the site administrators. This allows you to quickly bring in an RSS feed without having to search for the RSS URL.
 
-For demonstration, I will use the URL option to add the Irish Times RSS feed which can be found at: https://www.irishtimes.com/arc/outboundfeeds/feed-irish-news/?from=0&size=20 
+For demonstration, I will use the URL option to add the Irish Times RSS feed which can be found at: 
+
+https://www.irishtimes.com/arc/outboundfeeds/feed-irish-news/?from=0&size=20 
+
 
 ![[Pasted image 20240219204437.png]]
 
@@ -185,7 +189,7 @@ An article is marked as 'Read' when you click on the 'Read Full Article' button.
 
 ![[Pasted image 20240219214806.png]]
 
-### My Feed
+## My Feed
 
 The My Feed page prevents you with a news feed containing articles from all of your imported feeds across all folders. This page is very powerful and allows you to keep up to date with potentially 100s of news sources in a single view.
 
@@ -196,7 +200,7 @@ You do not need to do anything to add feeds to 'My Feed'. All feeds you import a
 As seen in the screenshot, the 'My Feed' page contains articles from both the 'My Folder' and 'American' feeds, all in a single view.
 
 # Viewing a folder
-## Viewing an Individual feed
+## Viewing an Individual Folder Feed
 
 To view your feed in isolation, you may click the 'View' button in the 'Manage Feeds' side panel. This allows you to view the feed on its lonesome without the aggregation feature of the folder.
 
@@ -205,7 +209,7 @@ To view your feed in isolation, you may click the 'View' button in the 'Manage F
 Additionally, you can use the left navigation sidebar to view each feed individually.
 
 ![[Pasted image 20240219205931.png]]
-## Viewing an Aggregated Feed
+## Viewing an Aggregated Folder Feed
 
  Aggregated feeds are one of the core features of UniFeed. It its a very powerful feature, especially when combined with folders to create multiple different aggregated feeds. For example you could have a "Space" folder containing the RSS feed of both NASA and SpaceX , allowing you to see their articles together. You could then have another feed called "Nature" where you keep up with both "National Geographic" and "Animal Planet"
 
@@ -217,6 +221,36 @@ As seen by the red and blue arrows, the 'My Folder' feed contains both Irish Tim
 
 # Utilizing UniFeed's Political Bias AI
 ## Detecting Political Bias in an Article
+
+To begin detecting the political bias of an article, click into the article and then click on the 'Detect Political Bias' button under A.I tools on the right hand side.
+
+![[Pasted image 20240219222056.png]]
+
+After you click the button, UniFeed will begin analysing the article for bias. The A.I tools section will display a loading wheel as it waits for UniFeed to finish the analysis.
+
+![[Pasted image 20240219222153.png]]
+
 ## Viewing Analysis Results
-### Understanding the metrics
+
+Once the analysis is complete, the results of the analysis will display inside the A.I Tools section with a conclusion of bias detected in the article. 
+
+There will also be a button allowing you to view a more detailed breakdown of how the results were calculated. To view the breakdown, click on the 'View Breakdown' button.
+
+![[Pasted image 20240219222233.png]]
+## Understanding the Results
+
+After clicking on the 'View Breakdown' button, a panel containing the political bias of sentences in the article will appear.
+
+![[Pasted image 20240219222422.png]]
+
+The coloured labels around some words represent the type of word detected by the natural language processing. For example, 'Truckers for Trump millions' was detected as an organization, and 'New Yorkers' as a NORP: Nationalities or religious or political groups.
+
+These words are highlighted as entities and adjectives play an important role in how UniFeed detects political bias.
+
+The subjectivity and polarity are indicators of sentiment - a personal opinion detected in the sentence. These are also important for UniFeed to detect bias.
+
 ### Providing Feedback
+
+Lastly, you may click on 'Accurate' or 'Inaccurate' if you would like to leave feedback on the A.I analysis result. Your feedback is very important and will be used to help train and improve the prediction model in the future.
+
+![[Pasted image 20240219222820.png]]
