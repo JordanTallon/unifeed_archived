@@ -1,81 +1,85 @@
-<div id="final-analysis-results text-center">
-    <h5 class="fw-bold">Analysis Results</h5>
+<div id="final-analysis-results d-flex flex-column">
+    <h5 class="text-center">Bias Analysis Results</h5>
+    <hr>
     {% if bias_analysis.status == "failed" %}
         <div id="analysis-alert" class="alert alert-danger" role="alert">
             UniFeed is unable to process the analysis for the requested article. Please note that this issue has been logged for further review. We apologize for any inconvenience.
         </div>
     {% endif %}
     {% if bias_analysis.status == "completed" %}
-        <!-- Button trigger modal -->
-        <button type="button"
-                class="btn btn-primary"
-                data-bs-toggle="modal"
-                data-bs-target="#breakdownModal">View Breakdown</button>
-        <!-- Modal -->
-        <div class="modal fade"
-             id="breakdownModal"
-             tabindex="-1"
-             aria-labelledby="breakdownModalLabel"
-             data-bs-backdrop="false"
-             aria-hidden="true">
-            <div class="modal-dialog modal-fullscreen">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="breakdownModalLabel">Analysis Breakdown</h5>
-                        <button type="button"
-                                class="btn-close"
-                                data-bs-dismiss="modal"
-                                aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body container">
-                        <table class="table">
-                            <thead id="analysis-result-list">
-                                <tr>
-                                    <th scope="col">Sentence</th>
-                                    <th scope="col">Subjectivity</th>
-                                    <th scope="col">Polarity</th>
-                                    <th scope="col">Bias</th>
-                                    <th scope="col">Confidence</th>
-                                    <th scope="col">Feedback</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for sentence, analysis in bias_analysis.sentence_results.items %}
-                                    <tr>
-                                        <td>{{ analysis.html|safe }}</td>
-                                        <td>{{ analysis.subjectivity }}</td>
-                                        <td>{{ analysis.polarity }}</td>
-                                        <td class="fw-bold">{{ analysis.conclusion }}</td>
-                                        <td>{{ analysis.conclusion_strength }}</td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
+        <div class="my-2 text-center">
+            <p class="fw-bold text-capitalize">
+                {% if bias_analysis.bias_conclusion %}
+                    {% if bias_analysis.bias_conclusion == 'center' %}
+                        No strong bias detected.
+                    {% else %}
+                        {{ bias_analysis.bias_percent }}% {{ bias_analysis.bias_conclusion }} bias detected.
+                    {% endif %}
+                {% else %}
+                    No bias analysis data available.
+                {% endif %}
+            </p>
+            <!-- Button trigger modal -->
+            <button type="button"
+                    class="btn btn-primary"
+                    data-bs-toggle="modal"
+                    data-bs-target="#breakdownModal">View Breakdown</button>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade modal-bg"
+         id="breakdownModal"
+         tabindex="-1"
+         aria-labelledby="breakdownModalLabel"
+         data-bs-backdrop="false"
+         aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title fw-bold" id="breakdownModalLabel">Analysis Breakdown</h4>
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        {% for sentence, analysis in bias_analysis.sentence_results.items %}
+                            <div class="col-12 col-xl-6 g-4 ">
+                                <div class="card bg-light h-100 d-flex flex-column">
+                                    <div class="card-header">
+                                        <p class="lh-lg w-100">{{ analysis.html|safe }}</p>
+                                    </div>
+                                    <div class="card-body d-flex h-100 flex-column">
+                                        <div class="d-flex flex-wrap mt-auto py-3">
+                                            <span class="badge m-1 rounded-pill border text-dark">{{ analysis.subjectivity|floatformat:2 }} Subjectivity</span>
+                                            <span class="badge m-1 rounded-pill border text-dark">{{ analysis.polarity|floatformat:2 }} Polarity</span>
+                                            <span class="badge m-1 rounded-pill border text-dark">{{ analysis.left_bias|floatformat:2 }} Left Bias</span>
+                                            <span class="badge m-1 rounded-pill border text-dark">{{ analysis.center_bias|floatformat:2 }} Center Bias</span>
+                                            <span class="badge m-1 rounded-pill border text-dark">{{ analysis.right_bias|floatformat:2 }} Right Bias</span>
+                                        </div>
+                                        <div>
+                                            <div>
+                                                <p class="fw-bold">Conclusion</p>
+                                                <p class="text-muted">
+                                                    The conclusion is based on the model's training and algorithms and might not always perfectly represent the true political bias of the content.
+                                                </p>
+                                                <p class="text-muted fw-bold text-capitalize">{{ analysis.conclusion_strength }} {{ analysis.conclusion }}</p>
+                                            </div>
+                                            <hr>
+                                            <div>
+                                                <p class="fw-bold">Provide Feedback</p>
+                                                <a class="text-muted text-decoration-none fw-bold"><i class="bi bi-hand-thumbs-up me-2"></i>Accurate</a>
+                                                <a class="text-muted text-decoration-none fw-bold"><i class="bi bi-hand-thumbs-down me-2"></i>Inaccurate</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
         </div>
     {% endif %}
 </div>
-{% comment %} these confidence levels are based on the model's training and algorithms and might not always perfectly represent the true political bias of the content. {% endcomment %}
-{% comment %}
-                <div class="list-group-item list-group-item-action mb-2 {% if analysis.conclusion == 'left' %} list-group-item-primary {% elif analysis.conclusion == 'right' %} list-group-item-danger {% elif analysis.conclusion == 'center' %} list-group-item-success {% endif %}">
-                    <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1 ">{{ sentence }}</h5>
-                        <small class="text-muted ">?</small>
-                    </div>
-                    <small class="text-secondary text-capitalize">
-                        {{ analysis.conclusion_strength }}
-                        <span class="fw-bold">{{ analysis.conclusion }}</span> Bias
-                    </small>
-                    <hr>
-                    <small class="text-muted">Is this analysis accurate?
-                        <i class="bi bi-hand-thumbs-up"></i>
-                        <i class="bi bi-hand-thumbs-down"></i>
-                    </small>
-</div> {% endcomment %}
-{% comment %}
-                    Left Bias: {{ analysis.left_bias|floatformat:2 }}%,
-                    Center Bias: {{ analysis.center_bias|floatformat:2 }}%,
-                    Right Bias: {{ analysis.right_bias|floatformat:2 }}% 
-{% endcomment %}
