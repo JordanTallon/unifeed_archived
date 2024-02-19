@@ -37,8 +37,8 @@ def account_login(request):
 
             if user is not None:
                 login(request, user)
-                # Redirect to the home page after succesful login
-                return redirect(reverse('home'))
+                # Redirect to the reading list after succesful login
+                return redirect(reverse('reading_list'))
 
     context = {'form': form}
     return render(request, "accounts/login.html", context)
@@ -60,4 +60,4 @@ def account_settings(request):
 
 def account_logout(request):
     logout(request)
-    return redirect(reverse('home'))
+    return redirect(reverse('reading_list'))

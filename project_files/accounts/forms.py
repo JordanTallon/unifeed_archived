@@ -14,7 +14,7 @@ class UserRegistrationForm(UserCreationForm):
 
     def __init__(self, *args, **kwargs):
         super(UserRegistrationForm, self).__init__(*args, **kwargs)
-        self.fields['track_history'].help_text = "Enables UniFeed to keep track of your Article reading history."
+        self.fields['track_history'].help_text = "Enables UniFeed to keep track of your recently read articles."
 
 
 class UserLoginForm(AuthenticationForm):
@@ -25,12 +25,6 @@ class UserLoginForm(AuthenticationForm):
 
 
 class AccountSettingsForm(UserChangeForm):
-
-    def __init__(self, *args, **kwargs):
-        super(AccountSettingsForm, self).__init__(*args, **kwargs)
-        # Remove the password field that comes with UserChangeForm
-        # Custom fields for it are created in this form
-        self.fields.pop('password', None)
 
     password1 = forms.CharField(
         label='New password',
@@ -44,9 +38,25 @@ class AccountSettingsForm(UserChangeForm):
         required=False
     )
 
+    def __init__(self, *args, **kwargs):
+        super(AccountSettingsForm, self).__init__(*args, **kwargs)
+        # Remove the password field that comes with UserChangeForm
+        # Custom fields for it are created in this form
+        self.fields.pop('password', None)
+        self.fields['track_history'].help_text = "Enables UniFeed to keep track of your recently read articles."
+
+        # Force render order
+        self.fields = {
+            'url': self.fields['username'],
+            'email': self.fields['email'],
+            'password1': self.fields['password1'],
+            'password2': self.fields['password2'],
+            'track_history': self.fields['track_history'],
+        }
+
     class Meta:
         model = get_user_model()
-        fields = ['username', 'email']
+        fields = ['username', 'email', 'track_history']
 
     # https://docs.djangoproject.com/en/5.0/ref/forms/validation/
     # (for reminder on clean, TLDR: django automatically runs the clean function during form validation)

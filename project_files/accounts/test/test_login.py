@@ -61,5 +61,5 @@ class LoginTest(TestCase):
         # The user is logged in
         self.assertTrue('_auth_user_id' in self.client.session)
 
-        # The login page redirected to the home page after successful login
-        self.assertRedirects(response, reverse('home'))
+        # The login page redirected to the reading list after successful login
+        self.assertRedirects(response, reverse('reading_list'))
