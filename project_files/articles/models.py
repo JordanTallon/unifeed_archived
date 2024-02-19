@@ -87,3 +87,18 @@ class SavedArticle(models.Model):
     )
     # When the article was saved
     saved_at = models.DateTimeField(auto_now_add=True)
+
+
+class RecentlyRead(models.Model):
+    # The article being saved
+    article = models.ForeignKey(
+        Article,
+        on_delete=models.CASCADE,
+    )
+    # The user that recently read the article
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
+    # When the article was read
+    read_at = models.DateTimeField(auto_now_add=True)

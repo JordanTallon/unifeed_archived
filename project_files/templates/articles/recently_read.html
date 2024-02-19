@@ -1,0 +1,56 @@
+{% extends "global/base.html" %}
+{% load static %}
+{% block content %}
+    {% if user.track_history %}
+        {% if articles %}
+            <div class="d-flex flex-column justify-content-center row">
+                <div class="mx-auto col-11 col-lg-6">
+                    <div class="text-center">
+                        <h1 class="fw-bold">Recently Read Articles</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="w-100 container mx-auto">
+                <hr>
+                <div class="row mx-auto g-0 gy-4 g-md-4 g-lg-5">
+                    {% include "global/article_grid.html" with article_list=articles %}
+                </div>
+            </div>
+        {% else %}
+            <div class="d-flex flex-column justify-content-center row">
+                <div class="mx-auto col-11 col-lg-6">
+                    <div class="text-center mt-4">
+                        <h1 class="fw-bold">Your Reading History is currently empty</h1>
+                        <p class="my-3 fs-5 text-muted">Why not explore your RSS feeds for interesting articles?</p>
+                        <div class="mt-4">
+                            <a class="btn btn-success" href="TODO">My Feeds</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    {% else %}
+        <div class="d-flex flex-column justify-content-center row">
+            <div class="mx-auto col-11 col-lg-6">
+                <div class="row">
+                    <div class="mx-auto col-8 col-lg-6 p-0 p-lg-4">
+                        <img src="{% static 'images/notify.svg' %}"
+                             class="img-fluid"
+                             alt="Two people standing next to a question mark."
+                             width="auto"
+                             height="auto">
+                    </div>
+                </div>
+                <div class="text-center mt-4">
+                    <h1 class="fw-bold">Recently Read Articles Unavailable</h1>
+                    <p class="my-3 fs-5 text-muted">
+                        Looks like you haven't enabled history tracking. To start building your reading history, visit your account settings to enable tracking.
+                    </p>
+                    <div class="mt-4">
+                        <a class="btn btn-outline-success" href="{% url "account_settings" %}">My Account Settings</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock content %}
