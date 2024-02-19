@@ -49,6 +49,18 @@ Congratulations, you are now ready to start exploring UniFeed.
 
 ## Managing Your Account
 
+Once logged in, you can manage your account by clicking on your username at the bottom of the side navigation panel.
+
+A dropup will appear containing a 'My Account' option that will lead you to a page where you can manage your account settings. Alternatively, there is an 'Account Settings' button in the footer at the bottom right, as seen by the blue arrow.
+
+![[Pasted image 20240219223437.png]]
+
+In the account settings page, you can change important account features such as your username, email, and password. You can also toggle optional settings such as the 'Track History' option which is used by UniFeed to keep track of your read articles.
+
+![[Pasted image 20240219223530.png]]
+
+Once you are happy with the changes, click on the 'Save Changes' button. Your account settings will update with the new settings provided.
+
 # Adding a New Folder
 
 Folders in UniFeed allow you to personalize your experience by organizing your news feeds into different interests, categories or subjects. 
