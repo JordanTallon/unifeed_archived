@@ -50,9 +50,9 @@ def saved_articles(request):
 
 
 @login_required
-def read_article(request, article_id):
+def read_article(request):
     if request.method == 'POST':
-        article_id = request.get("article_id")
+        article_id = request.POST.get("article_id")
         user = request.user
 
         if article_id and user:
