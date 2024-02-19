@@ -3,6 +3,7 @@ from .utils import analyse_sentences_for_bias, extract_ideal_sentences, text_to_
 from celery import shared_task
 from .models import ArticleAnalysisResults
 from traceback import format_exc
+from collections import Counter
 
 
 # Shared task is basically telling the function to be picked up by a celery worker
@@ -58,6 +59,25 @@ def analyse_sentences(self, analysis_id, sentences_df, article_text_md5):
             analysis_failed(analysis_id)
 
 
+def make_final_conclusion(bias_results):
+    """     
+    Takes in bias results and makes a 'final' conclusion based on the sentence conclusions.
+    For example if most sentences are left then the final conclusion is left 
+    """
+    # Extract all conclusions from the results
+    conclusions = [result['conclusion'] for result in bias_results.values()]
+
+    conclusion_counts = Counter(conclusions)
+
+    most_common_conclusion = conclusion_counts.most_common(1)[0][0]
+
+    # Calculate the percentage occurrence of the conclusion that was most common
+    most_common_percentage = (
+        conclusion_counts[most_common_conclusion] / len(conclusions)) * 100
+
+    return most_common_conclusion, most_common_percentage
+
+
 def analysis_failed(analysis_id):
     # Mark the analysis status as 'failed' in the database
     analysis = ArticleAnalysisResults.objects.get(id=analysis_id)
@@ -71,5 +91,7 @@ def analysis_complete(analysis_id, bias_results, article_text_md5):
     analysis.url = analysis.url
     analysis.article_text_md5 = article_text_md5
     analysis.sentence_results = bias_results
+    analysis.bias_conclusion, analysis.bias_percent = make_final_conclusion(
+        bias_results)
     analysis.status = 'completed'
     analysis.save()
