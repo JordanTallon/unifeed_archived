@@ -39,7 +39,7 @@ footer {
 }
 
 #menu-toggle {
-  z-index: 9998;
+  z-index: 501;
 }
 
 #menu-toggle .bi-list {
@@ -238,7 +238,7 @@ xxl: 1400px */
     position: fixed;
     top: 0;
     bottom: 0;
-    z-index: 9998;
+    z-index: 500;
   }
 
   #left-sidebar.hidden {
@@ -255,7 +255,7 @@ xxl: 1400px */
     bottom: 0;
     background-color: black;
     opacity: 0.33;
-    z-index: 9000;
+    z-index: 499;
   }
 
   #overlay.hidden {
