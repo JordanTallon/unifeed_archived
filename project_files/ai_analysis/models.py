@@ -1,5 +1,4 @@
 from django.db import models
-from jsonfield import JSONField
 
 
 # This object is returned instantly to the user when they make a post request to analyze the bias of an article.
@@ -14,6 +13,12 @@ class ArticleAnalysisResults(models.Model):
 
     # Will store each analyzed sentence and their bias values
     sentence_results = models.JSONField(default=dict)
+
+    # A conclusion made based on the sentence results, most sentences = left = left conclusion
+    bias_conclusion = models.CharField(max_length=6, blank=True)
+
+    # The percentage of sentences the conclusion made up, e.g 50% left sentences
+    bias_percent = models.IntegerField(default=0)
 
     # Status keeps track of the asynchronous process stages to determine if the results are ready
     status = models.CharField(max_length=10, default="processing")
