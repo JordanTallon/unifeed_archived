@@ -46,9 +46,7 @@ Once you have entered the correct information, you may proceed by clicking the '
 
 Congratulations, you are now ready to start exploring UniFeed.
 
-# Exploring UniFeed 
-
-## Adding a New Folder
+# Adding a New Folder
 
 Folders in UniFeed allow you to personalize your experience by organizing your news feeds into different interests, categories or subjects. 
 
@@ -66,7 +64,7 @@ Please note that each folder name must be less than 19 characters and unique. Yo
 
 Congratulations, you have created your first folder. The form will automatically redirect you to the folder view where you can begin adding feeds to your new folder. 
 
-## Managing Your Folder
+# Managing Your Folder
 
 To manage your folder, begin by clicking on the 'Manage Folder' dropdown in the top right of your folder view.
 
@@ -76,20 +74,21 @@ The dropdown will present a few different options. For this section, we are prim
 
 ![[Pasted image 20240219202951.png]]
 
-### Edit Folder
+## Edit Folder
 
 The 'Edit Folder' button brings you to a new page where you can modify the name of your folder. Simply enter a new name for the folder and click save. Please note that the folder name must be less than 19 characters long.
 
 ![[Pasted image 20240219203228.png]]
 
-### Delete Folder
+## Delete Folder
 
 The 'Delete Folder' button will present a modal asking you to confirm the deletion of the folder. Please note, as indicated in the modal, that this action is undoable and any customization or feed associations to the folder will be lost.
 
 If you wish to proceed with the deletion, click on the 'Delete' button as indicated by the arrow. Otherwise, you may click the 'Cancel' button or close down the modal to abort the deletion process.
 
 ![[Pasted image 20240219203605.png]]
-## Adding a New feed
+
+# Adding a New feed
 
 When adding a new feed, you must first select the folder that the newly added feed will belong to. Afterwards, you can begin adding a new feed by either clicking on the 'Add New Feed' button at the bottom of the current folder in the side bar, or by clicking the option presented in the 'Manage Folder' drop down. 
 
@@ -109,4 +108,50 @@ Simply paste the URL into the URL field and click 'Add'.
 
 Once the new RSS feed is imported, you will be redirected to view the article contents of the feed.
 
-Congratulations you have successfully imported added a new RSS feed.
+Congratulations you have successfully added a new RSS feed. Please note that feeds only need to be imported once. UniFeed will automatically keep track of the feeds and provide you their latest articles.
+
+# Managing Your Feeds
+
+You may delete imported feeds from your folder, or  customize the default feed settings provided by the publisher such as its name and description. 
+
+To begin managing your feeds, you must first navigate to the folder that they belong to. Once there, you can click on the 'Manage Folder' button in the top right to present a dropdown containing a 'Manage Feeds' button
+
+![[Pasted image 20240219205530.png]]
+
+After clicking on the 'Manage Feeds' button you will be presented with a panel on the right side of the screen containing information and management functions for each Feed within the folder. For each feed, you have three options: View, Edit, or Delete.
+
+## Viewing a Feed
+
+To view your feed in isolation, you may click the 'View' button in the 'Manage Feeds' side panel. This allows you to view the feed on its lonesome without the aggregation feature of the folder.
+
+![[Pasted image 20240219205911.png]]
+
+Additionally, you can use the left navigation sidebar to view each feed individually.
+
+![[Pasted image 20240219205931.png]]
+
+## Editing a Feed
+
+To edit a feed, click on the 'Edit' button in the 'Manage Feeds' panel of the containing folder. 
+
+![[Pasted image 20240219210131.png]]
+
+You will be presented with a form allowing you to customize the feed settings. You can change the name of the feed, it's description, or move it to a new folder. 
+
+![[Pasted image 20240219210312.png]]
+
+Once you are happy with the new settings, simply click the save button.
+
+![[Pasted image 20240219210546.png]]
+
+## Deleting a Feed
+
+To delete a feed, click on the 'Delete' button in the 'Manage Feeds' panel of the containing folder. 
+
+![[Pasted image 20240219211402.png]]
+
+The 'Delete' button will present a modal asking you to confirm the deletion of the feed. Please note, as indicated in the modal, that this action is undoable and any custom feed settings will be lost.
+
+If you wish to proceed with the deletion, click on the 'Delete' button as indicated by the arrow. Otherwise, you may click the 'Cancel' button or close down the modal to abort the deletion process.
+
+![[Pasted image 20240219211456.png]]
