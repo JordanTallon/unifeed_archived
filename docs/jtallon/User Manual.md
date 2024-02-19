@@ -58,8 +58,55 @@ They are an essential feature of UniFeed as all feeds must be contained within a
 
 You can create a folder by selecting the 'Add New Folder' option at the bottom of the 'My Folders' section of the side navigation. Additionally, there may be contextual 'Add New Folder' buttons to help guide you as indicated by the blue arrow.
 
-After selecting the 'Add New Folder' button you will be presented with a short form. You need only to enter a name for the folder and click the 'Save' button to proceed. Please note that each folder name must be unique. You can change the name of your folder at a later point.
+After selecting the 'Add New Folder' button you will be presented with a short form. You need only to enter a name for the folder and click the 'Save' button to proceed. 
+
+Please note that each folder name must be less than 19 characters and unique. You can change the name of your folder at a later point.
 
 ![[Pasted image 20240219202310.png]]
 
 Congratulations, you have created your first folder. The form will automatically redirect you to the folder view where you can begin adding feeds to your new folder. 
+
+## Managing Your Folder
+
+To manage your folder, begin by clicking on the 'Manage Folder' dropdown in the top right of your folder view.
+
+![[Pasted image 20240219202653.png]]
+
+The dropdown will present a few different options. For this section, we are primarily concerned with 'Edit Folder' and 'Delete Folder' as indicated by the red arrows in the screenshot.
+
+![[Pasted image 20240219202951.png]]
+
+### Edit Folder
+
+The 'Edit Folder' button brings you to a new page where you can modify the name of your folder. Simply enter a new name for the folder and click save. Please note that the folder name must be less than 19 characters long.
+
+![[Pasted image 20240219203228.png]]
+
+### Delete Folder
+
+The 'Delete Folder' button will present a modal asking you to confirm the deletion of the folder. Please note, as indicated in the modal, that this action is undoable and any customization or feed associations to the folder will be lost.
+
+If you wish to proceed with the deletion, click on the 'Delete' button as indicated by the arrow. Otherwise, you may click the 'Cancel' button or close down the modal to abort the deletion process.
+
+![[Pasted image 20240219203605.png]]
+## Adding a New feed
+
+When adding a new feed, you must first select the folder that the newly added feed will belong to. Afterwards, you can begin adding a new feed by either clicking on the 'Add New Feed' button at the bottom of the current folder in the side bar, or by clicking the option presented in the 'Manage Folder' drop down. 
+
+![[Pasted image 20240219203013.png]]
+
+Once you are on the 'Add New Feed' page, you have two choices:
+1. You may add a feed using a URL link. This allows you to import the RSS feed from any news website that you find on the internet. To find RSS feeds, you must browse your desired news websites or search on Google for public feeds.
+2. You can add a feed from a list of pre-existing feeds on the UniFeed website. These are feeds that were imported by other users or the site administrators. This allows you to quickly bring in an RSS feed without having to search for the RSS URL.
+
+For demonstration, I will use the URL option to add the Irish Times RSS feed which can be found at: https://www.irishtimes.com/arc/outboundfeeds/feed-irish-news/?from=0&size=20 
+
+![[Pasted image 20240219204437.png]]
+
+Simply paste the URL into the URL field and click 'Add'.
+
+![[Pasted image 20240219204732.png]]
+
+Once the new RSS feed is imported, you will be redirected to view the article contents of the feed.
+
+Congratulations you have successfully imported added a new RSS feed.
