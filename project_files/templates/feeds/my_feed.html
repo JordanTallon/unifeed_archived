@@ -5,7 +5,8 @@
         <div class="d-flex flex-column justify-content-center row">
             <div class="mx-auto col-11 col-lg-6">
                 <div class="text-center">
-                    <h1 class="fw-bold">Recently Read Articles</h1>
+                    <h1 class="fw-bold">My Feed</h1>
+                    <p class="my-3 fs-5 text-muted">All of your imported feeds in one location.</p>
                 </div>
             </div>
         </div>
@@ -18,11 +19,20 @@
     {% else %}
         <div class="d-flex flex-column justify-content-center row">
             <div class="mx-auto col-11 col-lg-6">
+                <div class="row">
+                    <div class="mx-auto col-8 col-lg-6 p-0 p-lg-4">
+                        <img src="{% static 'images/no_feeds.svg' %}"
+                             class="img-fluid"
+                             alt="Two people standing next to a question mark."
+                             width="auto"
+                             height="auto">
+                    </div>
+                </div>
                 <div class="text-center mt-4">
-                    <h1 class="fw-bold">Your Reading History is currently empty</h1>
-                    <p class="my-3 fs-5 text-muted">Why not explore your feed for interesting articles?</p>
+                    <h1 class="fw-bold">Looks like there are no imported feeds in any of your folders.</h1>
+                    <p class="my-3 fs-5 text-muted">Get started by adding your first RSS feed to an existing or newly created folder.</p>
                     <div class="mt-4">
-                        <a class="btn btn-success" href="TODO">My Feed</a>
+                        <a class="btn btn-outline-secondary" href="{% url 'add_new_folder' %}">Add New Folder</a>
                     </div>
                 </div>
             </div>
