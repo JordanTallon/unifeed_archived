@@ -31,3 +31,17 @@ Optionally, you can also choose to opt in for UniFeed to track your reading hist
 Once you fill in the details, verify that they are correct and then hit the 'Create Account' button to create your account.
 
 Once your account is successfully created, you will be redirected to the 'Login' page where you can proceed with the next section.
+
+## Logging in to Your Account
+
+Once you created your account, it's time to login. The registration process should have redirected you to the login page, but if you find yourself lost you can navigate to the login page using either of the buttons in the following screenshot.
+
+![[Pasted image 20240219195247.png]]
+
+The login form requires you to fill in the username and password which you entered during the sign up process. Please keep in mind that both of these fields are case sensitive.
+
+Once you have entered the correct information, you may proceed by clicking the 'Login' button.
+
+![[Pasted image 20240219195736.png]]
+
+Congratulations, you are now ready to start using UniFeed.
