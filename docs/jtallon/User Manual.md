@@ -46,6 +46,8 @@ Once you have entered the correct information, you may proceed by clicking the '
 
 Congratulations, you are now ready to start exploring UniFeed.
 
+## Managing Your Account
+
 # Adding a New Folder
 
 Folders in UniFeed allow you to personalize your experience by organizing your news feeds into different interests, categories or subjects. 
@@ -118,19 +120,8 @@ To begin managing your feeds, you must first navigate to the folder that they be
 
 ![[Pasted image 20240219205530.png]]
 
-After clicking on the 'Manage Feeds' button you will be presented with a panel on the right side of the screen containing information and management functions for each Feed within the folder. For each feed, you have three options: View, Edit, or Delete.
-
-## Viewing a Feed
-
-To view your feed in isolation, you may click the 'View' button in the 'Manage Feeds' side panel. This allows you to view the feed on its lonesome without the aggregation feature of the folder.
-
-![[Pasted image 20240219205911.png]]
-
-Additionally, you can use the left navigation sidebar to view each feed individually.
-
-![[Pasted image 20240219205931.png]]
-
-## Editing a Feed
+After clicking on the 'Manage Feeds' button you will be presented with a panel on the right side of the screen containing information and management functions for each Feed within the folder. For each feed, you have two management options: Edit and Delete.
+## Editing / Moving a Feed
 
 To edit a feed, click on the 'Edit' button in the 'Manage Feeds' panel of the containing folder. 
 
@@ -155,3 +146,77 @@ The 'Delete' button will present a modal asking you to confirm the deletion of t
 If you wish to proceed with the deletion, click on the 'Delete' button as indicated by the arrow. Otherwise, you may click the 'Cancel' button or close down the modal to abort the deletion process.
 
 ![[Pasted image 20240219211456.png]]
+
+# Your UniFeed
+
+The 'My UniFeed' Section of the side navigation contains three pages: Reading List, Recently Read, and My Feed.
+
+## Reading List
+
+The Reading List page presents different articles that you have saved to your 'Reading List'. This list is for articles that you wish to read at a later date. Please note that you may only save up to 20 articles in the 'Reading List' at a time.
+
+### Adding an Article to Your Reading List
+
+To add an article to your 'Reading List' you must first click into the article. Once you are viewing the article details, you may click on a book icon located at the top right of the article image, as seen in the following screenshot.
+
+![[Pasted image 20240219214227.png]]
+
+### Removing an Article From Your Reading List
+
+Removing an Article from your 'Reading List' is as easy as adding it. You simply need to click the filled in grey book to remove the article from your 'Reading List', as seen in the following screenshot.
+
+![[Pasted image 20240219214111.png]]
+
+### Viewing Your Reading List
+
+To view your reading list, you must click on the 'Reading List' button under 'My UniFeed' in the side navigation panel.
+
+![[Pasted image 20240219214338.png]]
+
+You will be presented with all articles in your reading list sorted to start with the most recently added.
+
+## Recently Read
+
+The Recently Read section keeps track of the articles you have previously read. Please note that you must enable the 'Track History' option in your account settings for the 'Recently Read' feature to be enabled. Your reading history will only contain the last 20 articles you have read.
+
+![[Pasted image 20240219214731.png]]
+
+An article is marked as 'Read' when you click on the 'Read Full Article' button.
+
+![[Pasted image 20240219214806.png]]
+
+### My Feed
+
+The My Feed page prevents you with a news feed containing articles from all of your imported feeds across all folders. This page is very powerful and allows you to keep up to date with potentially 100s of news sources in a single view.
+
+You do not need to do anything to add feeds to 'My Feed'. All feeds you import are automatically brought in. If you do not wish to use the Folder feature, you can use the 'My Feed' page to make use of UniFeed's aggregation.
+
+![[Pasted image 20240219215401.png]]
+
+As seen in the screenshot, the 'My Feed' page contains articles from both the 'My Folder' and 'American' feeds, all in a single view.
+
+# Viewing a folder
+## Viewing an Individual feed
+
+To view your feed in isolation, you may click the 'View' button in the 'Manage Feeds' side panel. This allows you to view the feed on its lonesome without the aggregation feature of the folder.
+
+![[Pasted image 20240219205911.png]]
+
+Additionally, you can use the left navigation sidebar to view each feed individually.
+
+![[Pasted image 20240219205931.png]]
+## Viewing an Aggregated Feed
+
+ Aggregated feeds are one of the core features of UniFeed. It its a very powerful feature, especially when combined with folders to create multiple different aggregated feeds. For example you could have a "Space" folder containing the RSS feed of both NASA and SpaceX , allowing you to see their articles together. You could then have another feed called "Nature" where you keep up with both "National Geographic" and "Animal Planet"
+
+To view all feeds within a folder at once, simply click on the folder name, in this case 'My Folder' in the side navigation panel. 
+
+![[Pasted image 20240219215537.png]]
+
+As seen by the red and blue arrows, the 'My Folder' feed contains both Irish Times and Fox News articles together, sorted by most recently published.
+
+# Utilizing UniFeed's Political Bias AI
+## Detecting Political Bias in an Article
+## Viewing Analysis Results
+### Understanding the metrics
+### Providing Feedback
