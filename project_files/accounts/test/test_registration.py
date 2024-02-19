@@ -21,7 +21,7 @@ class RegistrationTest(TestCase):
         self.assertTrue('email' in self.form_class.Meta.fields)
         self.assertTrue('password1' in self.form_class.Meta.fields)
         self.assertTrue('password2' in self.form_class.Meta.fields)
-        self.assertTrue('track_analytics' in self.form_class.Meta.fields)
+        self.assertTrue('track_history' in self.form_class.Meta.fields)
 
     # Test to assure that the form works when given valid data
     def test_user_registration_form_succesful_validation(self):
@@ -30,7 +30,7 @@ class RegistrationTest(TestCase):
             "email": "test@example.com",
             "password1": "33Test1234",
             "password2": "33Test1234",
-            "track_analytics": False
+            "track_history": False
         }
 
         form = self.form_class(sample_data)
@@ -44,7 +44,7 @@ class RegistrationTest(TestCase):
             "email": "test@example.com",
             "password1": "33Test1234",
             "password2": "33Test1234",
-            "track_analytics": False
+            "track_history": False
         }
 
         form = self.form_class(sample_data)
@@ -58,7 +58,7 @@ class RegistrationTest(TestCase):
             "email": "test@example.com",
             "password1": "33Test1234",
             "password2": "33Test1234",
-            "track_analytics": False
+            "track_history": False
         }
         response = self.client.post(reverse('register'), sample_data)
         self.assertRedirects(response, reverse('login'))
@@ -74,7 +74,7 @@ class RegistrationTest(TestCase):
             "email": "validemail@example.com",
             "password1": "ValidPass1234",
             "password2": "ValidPass1234",
-            "track_analytics": True
+            "track_history": True
         }
         form = self.form_class(sample_data)
         self.assertFalse(form.is_valid())
@@ -87,7 +87,7 @@ class RegistrationTest(TestCase):
             "email": "invalid-email",  # Invalid email format
             "password1": "ValidPass1234",
             "password2": "ValidPass1234",
-            "track_analytics": True
+            "track_history": True
         }
         form = self.form_class(sample_data)
         self.assertFalse(form.is_valid())
@@ -101,7 +101,7 @@ class RegistrationTest(TestCase):
             "email": "validemail@example.com",
             "password1": "123",  # Invalid password: too short, entirely numeric
             "password2": "123",
-            "track_analytics": True
+            "track_history": True
         }
         form = self.form_class(sample_data)
         self.assertFalse(form.is_valid())
@@ -114,7 +114,7 @@ class RegistrationTest(TestCase):
             "email": "validemail@example.com",
             "password1": "33Test1234",
             "password2": "33Test12345",  # Mismatched password
-            "track_analytics": True
+            "track_history": True
         }
         form = self.form_class(sample_data)
         self.assertFalse(form.is_valid())

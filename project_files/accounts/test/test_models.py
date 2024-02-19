@@ -49,20 +49,20 @@ class UserModelTest(TestCase):
             User.objects.create_user(
                 username='test2', email="unique@example.com")
 
-    def test_user_track_analytics_default_false(self):
+    def test_user_track_history_default_false(self):
         user = User.objects.create_user(
             username='test', email="test@example.com")
 
-        self.assertFalse(user.track_analytics)
+        self.assertFalse(user.track_history)
 
-    def test_toggle_user_track_analytics(self):
+    def test_toggle_user_track_history(self):
         user = User.objects.create_user(
             username='test', email="test@example.com")
 
-        # Toggle analytics on
-        user.toggle_analytics()
-        self.assertTrue(user.track_analytics)
+        # Toggle track history on
+        user.toggle_track_history()
+        self.assertTrue(user.track_history)
 
-        # Toggle analytics off
-        user.toggle_analytics()
-        self.assertFalse(user.track_analytics)
+        # Toggle track history off
+        user.toggle_track_history()
+        self.assertFalse(user.track_history)

@@ -2,7 +2,6 @@ from django.contrib.auth.forms import UserCreationForm, UserChangeForm, Authenti
 from django.contrib.auth import get_user_model, password_validation
 from django.core.exceptions import ValidationError
 from django import forms
-
 from .models import User
 
 
@@ -11,7 +10,11 @@ class UserRegistrationForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['username', 'email', 'password1',
-                  'password2', 'track_analytics']
+                  'password2', 'track_history']
+
+    def __init__(self, *args, **kwargs):
+        super(UserRegistrationForm, self).__init__(*args, **kwargs)
+        self.fields['track_history'].help_text = "Enables UniFeed to keep track of your Article reading history."
 
 
 class UserLoginForm(AuthenticationForm):
