@@ -2,7 +2,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
 from .models import ArticleAnalysisResults
-from .tasks import scrape
+from .tasks import async_scrape
 from .serializer import ArticleAnalysisResultsSerializer
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
@@ -25,12 +25,10 @@ def check_analysis_status(request, analysis_id):
 
 @api_view(['POST'])
 def analyse_article_bias(request):
-
     data = request.data
-
-    # Check if a 'url' param was even given in the request data
     url = data.get('url')
 
+    # Check if a 'url' param was even given in the request data
     if not url:
         return Response({"error": "URL is required."}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -41,13 +39,13 @@ def analyse_article_bias(request):
     except ValidationError:
         return Response({"error": "Invalid URL."}, status=status.HTTP_400_BAD_REQUEST)
 
-    bias_analysis = ArticleAnalysisResults.objects.create(
-        url=url)
+    # Create a new analysis entry in the database
+    bias_analysis = ArticleAnalysisResults.objects.create(url=url)
 
-    # Start the asynchronous process
-    scrape.delay(url, bias_analysis.id)
+    # Start the asynchronous scraping process
+    async_scrape.delay(url, bias_analysis.id)
 
-    # Instantly return the BiasAnalysis so that client may track the status of the asynchronous tasks
+    # Instantly return the BiasAnalysis so that the client may track the status of the asynchronous tasks
     if request.content_type == 'application/json':
         return Response({'analysis_id': bias_analysis.id}, status=202)
     else:
