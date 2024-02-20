@@ -1,6 +1,7 @@
 import factory
 from faker import Faker
 from ..models import Article
+from feeds.test.factories import FeedFactory
 
 fake = Faker()
 
@@ -15,4 +16,4 @@ class ArticleFactory(factory.django.DjangoModelFactory):
     image_url = factory.LazyFunction(lambda: fake.image_url())
     author = factory.LazyFunction(lambda: fake.name())
     publish_datetime = factory.LazyFunction(lambda: fake.date_time())
-    # TODO add feed factory too feed = factory.SubFactory(FeedFactory)
+    feed = factory.SubFactory(FeedFactory)
