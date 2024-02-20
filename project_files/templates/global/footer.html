@@ -4,13 +4,18 @@
     </div>
     <div class="col-12 col-md-6 order-1 order-md-2">
         <nav class="d-flex justify-content-center justify-content-md-end">
-            <a href="{% url 'reading_list' %}"
-               class="text-decoration-none text-dark ms-2">Reading List</a>
-            <a href="{% url 'reading_list' %}"
-               class="text-decoration-none text-dark ms-2">My Feeds</a>
-            <a href="{% url 'reading_list' %}"
-               class="text-decoration-none text-dark ms-2">Account Settings</a>
-            <!-- TODO: Change these to "Login/ Sign up for logged out people"  -->
+            {% if user.is_authenticated %}
+                <a href="{% url 'reading_list' %}"
+                   class="text-decoration-none text-dark ms-3">Reading List</a>
+                <a href="{% url 'my_feed' %}"
+                   class="text-decoration-none text-dark ms-3">My Feed</a>
+                <a href="{% url 'account_settings' %}"
+                   class="text-decoration-none text-dark ms-3">Account Settings</a>
+            {% else %}
+                <a href="{% url 'login' %}" class="text-decoration-none text-dark ms-3">Login</a>
+                <a href="{% url 'register' %}"
+                   class="text-decoration-none text-dark ms-3">Sign Up</a>
+            {% endif %}
         </nav>
     </div>
 </div>
