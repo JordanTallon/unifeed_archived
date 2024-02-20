@@ -77,13 +77,52 @@ class ViewTests(TestCase):
         self.assertRedirects(response, reverse('view_userfeed', args=[
                              self.user.id, self.folder.id, userfeed_id]))
 
+    def test_post_add_user_feed_to_folder_with_valid_url(self):
+        # Test POST request with valid form data
+        form_data = {'url': 'http://rss.cnn.com/rss/edition.rss'}
+
+        # Get original count of UserFeeds
+        original_count = UserFeed.objects.count()
+
+        response = self.client.post(
+            reverse('add_user_feed_to_folder', args=[self.folder.name]), form_data)
+
+        # Assert that a new userfeed was added
+        self.assertEqual(UserFeed.objects.count(), original_count + 1)
+
+        # get the newly created UserFeed ID
+        new_userfeed = UserFeed.objects.latest('id')
+        userfeed_id = new_userfeed.id
+
+        # Make sure the user was redirected to view the new feed
+        self.assertRedirects(response, reverse('view_userfeed', args=[
+                             self.user.id, self.folder.id, userfeed_id]))
+
+    def test_post_add_user_feed_to_folder_with_invalid_url(self):
+        # Test POST request with invalid url in form
+        form_data = {'url': 'http://invalidurldcuproject.com'}
+
+        # Get original count of UserFeeds
+        original_count = UserFeed.objects.count()
+
+        response = self.client.post(
+            reverse('add_user_feed_to_folder', args=[self.folder.name]), form_data)
+
+        # Assert that no new userfeed was added
+        self.assertEqual(UserFeed.objects.count(), original_count)
+
+        # Check for an error message in the response
+        messages = list(get_messages(response.wsgi_request))
+        self.assertTrue(any("Error in parsing RSS feed" in str(message)
+                        for message in messages))
+
     def test_post_add_user_feed_to_folder_with_invalid_data(self):
 
         # Get original count of UserFeeds
         original_count = UserFeed.objects.count()
 
         # Test POST request with invalid data
-        form_data = {'feed': ''}
+        form_data = {'hey': ''}
         response = self.client.post(
             reverse('add_user_feed_to_folder', args=[self.folder.name]), form_data)
 
