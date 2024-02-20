@@ -38,7 +38,7 @@ class AIAnalysisFeedback(models.Model):
     bias = models.CharField(max_length=6, blank=True)
 
     # The confidence of the AI prediction
-    confidence = models.FloatField(default=0.0)
+    confidence = models.CharField(max_length=6, blank=True)
 
     # The user leaving the feedback
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
