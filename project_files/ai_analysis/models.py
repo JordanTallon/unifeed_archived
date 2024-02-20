@@ -22,3 +22,19 @@ class ArticleAnalysisResults(models.Model):
 
     # Status keeps track of the asynchronous process stages to determine if the results are ready
     status = models.CharField(max_length=10, default="processing")
+
+
+# Whenever an A.I Analysis is ran, the users will have a choice to provide feedback for each
+# derived Political Bias on a per sentence basis. This allows for UniFeed to gather data that
+# can be used to re-train and improve the prediction model over time
+class AIAnalysisFeedback(models.Model):
+    # The setence that was analyzed
+    sentence = models.CharField(max_length=500)
+    # The bias predicted for the sentence
+    bias = models.CharField(max_length=6, blank=True)
+    # The confidence of the AI prediction
+    confidence = models.FloatField(default=0.0)
+    # Agree Count (how many users agree with the prediction)
+    agree = models.IntegerField(default=0)
+    # Disagree Count (how many users disagree with the prediction)
+    disagree = models.IntegerField(default=0)
