@@ -64,7 +64,8 @@ class AccountSettingsTest(TestCase):
         original_data = {
             'username': 'original_name',
             'email': 'original@mail.com',
-            'password': '@password123!'
+            'password': '@password123!',
+            'track_history': 'true'
         }
 
         # Create a new user with the original data
@@ -97,7 +98,8 @@ class AccountSettingsTest(TestCase):
         original_data = {
             'username': 'original_name',
             'email': 'original@mail.com',
-            'password': '@password123!'
+            'password': '@password123!',
+            'track_history': 'true'
         }
 
         # Create a new user with the original data
@@ -130,7 +132,8 @@ class AccountSettingsTest(TestCase):
         original_data = {
             'username': 'original_name',
             'email': 'original@mail.com',
-            'password': '@password123!'
+            'password': '@password123!',
+            'track_history': 'true'
         }
 
         # Create a new user with the original data
