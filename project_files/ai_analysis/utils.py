@@ -118,10 +118,33 @@ def analyse_sentences_for_bias(sentences_json):
     sentences_df = pd.read_json(sentences_json, orient="split")
 
     def query(payload):
-        response = requests.post(settings.HUGGINGFACE_API_URL,
-                                 headers=settings.HUGGINGFACE_API_HEADERS, json=payload)
+        try:
+            response = requests.post(settings.HUGGINGFACE_API_URL,
+                                     headers=settings.HUGGINGFACE_API_HEADERS, json=payload)
+            response.raise_for_status()
 
-        return response.json()
+            data = response.json()
+
+            # Verify if the response is correct
+            # It should contain multiple lists like 'label':'center', 'score':'0.5' etc
+            if isinstance(data, list) and all(isinstance(item, list) for item in data):
+                for item_list in data:
+                    for item in item_list:
+                        # Ensure that the label / score is there
+                        if not all(k in item for k in ('label', 'score')):
+                            raise ValueError(
+                                "Unexpected item structure in response")
+                return data
+            else:
+                raise ValueError("Unexpected response format")
+
+        # TODO: Handle request / validation errors more sophisticatedly. For now just raise a
+        # ValueError to display a generic error message to the user
+        except requests.exceptions.RequestException as e:
+            raise ValueError(f"HTTP or Request error: {e}")
+
+        except ValueError as ve:
+            raise ValueError(f"Response validation error: {ve}")
 
     sentences = sentences_df['sentence'].tolist()
 
