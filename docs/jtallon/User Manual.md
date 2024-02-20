@@ -4,13 +4,13 @@
 
 To begin accessing UniFeed, you must first create an account.
 
-This begins by navigating to the 'Sign Up' page. The sign up page can be easily accessed for new users through the website entry page. As indicated in the following screenshot.
+This begins by navigating to the 'Sign Up' page. The sign up page can be easily accessed for new users through the website entry page. 
 
-![[Pasted image 20240219190524.png]]
+![sign_up](attachments/sign_up.png)
 
 Once you are on the 'Sign Up' page, you are greeted by a form where you must fill in the required fields to create your account
 
-![[Pasted image 20240219191853.png]]
+![sign_up_form](attachments/sign_up_form.png)
 
 The sign up process requires you to enter the following details:
 
@@ -27,7 +27,7 @@ A secure password that you will use to login to your account. To ensure the secu
 
 Optionally, you can also choose to opt in for UniFeed to track your reading history. This will allow UniFeed to keep track of the different articles you read and present them to you for future retrieval.
 
-![[Pasted image 20240219191957.png]]
+![sign_up_form_complete](attachments/sign_up_form_complete.png)
 
 Once you fill in the details, verify that they are correct and then hit the 'Create Account' button to create your account.
 
@@ -37,13 +37,13 @@ Once your account is successfully created, you will be redirected to the 'Login'
 
 Once you created your account, it's time to login. The registration process should have redirected you to the login page, but if you find yourself lost you can navigate to the login page using either of the buttons in the following screenshot.
 
-![[Pasted image 20240219195247.png]]
+![login_navigation](attachments/login_navigation.png)
 
 The login form requires you to fill in the username and password which you entered during the sign up process. Please keep in mind that both of these fields are case sensitive.
 
 Once you have entered the correct information, you may proceed by clicking the 'Login' button.
 
-![[Pasted image 20240219195736.png]]
+![login_submit](attachments/login_submit.png)
 
 Congratulations, you are now ready to start exploring UniFeed.
 
@@ -53,11 +53,11 @@ Once logged in, you can manage your account by clicking on your username at the 
 
 A dropup will appear containing a 'My Account' option that will lead you to a page where you can manage your account settings. Alternatively, there is an 'Account Settings' button in the footer at the bottom right, as seen by the blue arrow.
 
-![[Pasted image 20240219223437.png]]
+![my_account_navigation](attachments/my_account_navigation.png)
 
 In the account settings page, you can change important account features such as your username, email, and password. You can also toggle optional settings such as the 'Track History' option which is used by UniFeed to keep track of your read articles.
 
-![[Pasted image 20240219223530.png]]
+![account_settings_save](attachments/account_settings_save.png)
 
 Once you are happy with the changes, click on the 'Save Changes' button. Your account settings will update with the new settings provided.
 
@@ -67,7 +67,7 @@ Folders in UniFeed allow you to personalize your experience by organizing your n
 
 They are an essential feature of UniFeed as all feeds must be contained within a folder. If you wish to skip the organization benefits, you can simply create an 'All' or 'Uncategorized' folder to put all of your feeds into.
 
-![[Pasted image 20240219202012.png]]
+![add_new_folder_navigation](attachments/add_new_folder_navigation.png)
 
 You can create a folder by selecting the 'Add New Folder' option at the bottom of the 'My Folders' section of the side navigation. Additionally, there may be contextual 'Add New Folder' buttons to help guide you as indicated by the blue arrow.
 
@@ -75,7 +75,7 @@ After selecting the 'Add New Folder' button you will be presented with a short f
 
 Please note that each folder name must be less than 19 characters and unique. You can change the name of your folder at a later point.
 
-![[Pasted image 20240219202310.png]]
+![add_new_folder_form_save](attachments/add_new_folder_form_save.png)
 
 Congratulations, you have created your first folder. The form will automatically redirect you to the folder view where you can begin adding feeds to your new folder. 
 
@@ -83,17 +83,17 @@ Congratulations, you have created your first folder. The form will automatically
 
 To manage your folder, begin by clicking on the 'Manage Folder' dropdown in the top right of your folder view.
 
-![[Pasted image 20240219202653.png]]
+![manage_folder](attachments/manage_folder.png)
 
 The dropdown will present a few different options. For this section, we are primarily concerned with 'Edit Folder' and 'Delete Folder' as indicated by the red arrows in the screenshot.
 
-![[Pasted image 20240219202951.png]]
+![manage_folder_edit_delete](attachments/manage_folder_edit_delete.png)
 
 ## Edit Folder
 
 The 'Edit Folder' button brings you to a new page where you can modify the name of your folder. Simply enter a new name for the folder and click save. Please note that the folder name must be less than 19 characters long.
 
-![[Pasted image 20240219203228.png]]
+![edit_folder_form_save](attachments/edit_folder_form_save.png)
 
 ## Delete Folder
 
@@ -101,13 +101,13 @@ The 'Delete Folder' button will present a modal asking you to confirm the deleti
 
 If you wish to proceed with the deletion, click on the 'Delete' button as indicated by the arrow. Otherwise, you may click the 'Cancel' button or close down the modal to abort the deletion process.
 
-![[Pasted image 20240219203605.png]]
+![delete_folder_confirm](attachments/delete_folder_confirm.png)
 
 # Adding a New feed
 
 When adding a new feed, you must first select the folder that the newly added feed will belong to. Afterwards, you can begin adding a new feed by either clicking on the 'Add New Feed' button at the bottom of the current folder in the side bar, or by clicking the option presented in the 'Manage Folder' drop down. 
 
-![[Pasted image 20240219203013.png]]
+![add_new_feed_navigation](attachments/add_new_feed_navigation.png)
 
 Once you are on the 'Add New Feed' page, you have two choices:
 1. You may add a feed using a URL link. This allows you to import the RSS feed from any news website that you find on the internet. To find RSS feeds, you must browse your desired news websites or search on Google for public feeds.
@@ -117,12 +117,12 @@ For demonstration, I will use the URL option to add the Irish Times RSS feed whi
 
 https://www.irishtimes.com/arc/outboundfeeds/feed-irish-news/?from=0&size=20 
 
+![add_new_feed_form_save](attachments/add_new_feed_form_save.png)
 
-![[Pasted image 20240219204437.png]]
 
 Simply paste the URL into the URL field and click 'Add'.
 
-![[Pasted image 20240219204732.png]]
+![new_feed_view](attachments/new_feed_view.png)
 
 Once the new RSS feed is imported, you will be redirected to view the article contents of the feed.
 
@@ -134,34 +134,34 @@ You may delete imported feeds from your folder, or  customize the default feed s
 
 To begin managing your feeds, you must first navigate to the folder that they belong to. Once there, you can click on the 'Manage Folder' button in the top right to present a dropdown containing a 'Manage Feeds' button
 
-![[Pasted image 20240219205530.png]]
+![manage_folder_manage_feeds](attachments/manage_folder_manage_feeds.png)
 
 After clicking on the 'Manage Feeds' button you will be presented with a panel on the right side of the screen containing information and management functions for each Feed within the folder. For each feed, you have two management options: Edit and Delete.
 ## Editing / Moving a Feed
 
 To edit a feed, click on the 'Edit' button in the 'Manage Feeds' panel of the containing folder. 
 
-![[Pasted image 20240219210131.png]]
+![edit_feed_button](attachments/edit_feed_button.png)
 
 You will be presented with a form allowing you to customize the feed settings. You can change the name of the feed, it's description, or move it to a new folder. 
 
-![[Pasted image 20240219210312.png]]
+![edit_feed_form](attachments/edit_feed_form.png)
 
 Once you are happy with the new settings, simply click the save button.
 
-![[Pasted image 20240219210546.png]]
+![edit_feed_form_save](attachments/edit_feed_form_save.png)
 
 ## Deleting a Feed
 
 To delete a feed, click on the 'Delete' button in the 'Manage Feeds' panel of the containing folder. 
 
-![[Pasted image 20240219211402.png]]
+![delete_feed](attachments/delete_feed.png)
 
 The 'Delete' button will present a modal asking you to confirm the deletion of the feed. Please note, as indicated in the modal, that this action is undoable and any custom feed settings will be lost.
 
 If you wish to proceed with the deletion, click on the 'Delete' button as indicated by the arrow. Otherwise, you may click the 'Cancel' button or close down the modal to abort the deletion process.
 
-![[Pasted image 20240219211456.png]]
+![delete_feed_confirm](attachments/delete_feed_confirm.png)
 
 # Your UniFeed
 
@@ -175,19 +175,19 @@ The Reading List page presents different articles that you have saved to your 'R
 
 To add an article to your 'Reading List' you must first click into the article. Once you are viewing the article details, you may click on a book icon located at the top right of the article image, as seen in the following screenshot.
 
-![[Pasted image 20240219214227.png]]
+![add_reading_list](attachments/add_reading_list.png)
 
 ### Removing an Article From Your Reading List
 
 Removing an Article from your 'Reading List' is as easy as adding it. You simply need to click the filled in grey book to remove the article from your 'Reading List', as seen in the following screenshot.
 
-![[Pasted image 20240219214111.png]]
+![remove_reading_list](attachments/remove_reading_list.png)
 
 ### Viewing Your Reading List
 
 To view your reading list, you must click on the 'Reading List' button under 'My UniFeed' in the side navigation panel.
 
-![[Pasted image 20240219214338.png]]
+![reading_list_page](attachments/reading_list_page.png)
 
 You will be presented with all articles in your reading list sorted to start with the most recently added.
 
@@ -195,11 +195,11 @@ You will be presented with all articles in your reading list sorted to start wit
 
 The Recently Read section keeps track of the articles you have previously read. Please note that you must enable the 'Track History' option in your account settings for the 'Recently Read' feature to be enabled. Your reading history will only contain the last 20 articles you have read.
 
-![[Pasted image 20240219214731.png]]
+![read_full_article](attachments/read_full_article.png)
 
 An article is marked as 'Read' when you click on the 'Read Full Article' button.
 
-![[Pasted image 20240219214806.png]]
+![recently_read_page](attachments/recently_read_page.png)
 
 ## My Feed
 
@@ -207,7 +207,7 @@ The My Feed page prevents you with a news feed containing articles from all of y
 
 You do not need to do anything to add feeds to 'My Feed'. All feeds you import are automatically brought in. If you do not wish to use the Folder feature, you can use the 'My Feed' page to make use of UniFeed's aggregation.
 
-![[Pasted image 20240219215401.png]]
+![my_feed](attachments/my_feed.png)
 
 As seen in the screenshot, the 'My Feed' page contains articles from both the 'My Folder' and 'American' feeds, all in a single view.
 
@@ -216,18 +216,18 @@ As seen in the screenshot, the 'My Feed' page contains articles from both the 'M
 
 To view your feed in isolation, you may click the 'View' button in the 'Manage Feeds' side panel. This allows you to view the feed on its lonesome without the aggregation feature of the folder.
 
-![[Pasted image 20240219205911.png]]
+![manage_feeds_view](attachments/manage_feeds_view.png)
 
 Additionally, you can use the left navigation sidebar to view each feed individually.
 
-![[Pasted image 20240219205931.png]]
+![view_feed](attachments/view_feed.png)
 ## Viewing an Aggregated Folder Feed
 
  Aggregated feeds are one of the core features of UniFeed. It its a very powerful feature, especially when combined with folders to create multiple different aggregated feeds. For example you could have a "Space" folder containing the RSS feed of both NASA and SpaceX , allowing you to see their articles together. You could then have another feed called "Nature" where you keep up with both "National Geographic" and "Animal Planet"
 
 To view all feeds within a folder at once, simply click on the folder name, in this case 'My Folder' in the side navigation panel. 
 
-![[Pasted image 20240219215537.png]]
+![feed_aggregate](attachments/feed_aggregate.png)
 
 As seen by the red and blue arrows, the 'My Folder' feed contains both Irish Times and Fox News articles together, sorted by most recently published.
 
@@ -236,11 +236,11 @@ As seen by the red and blue arrows, the 'My Folder' feed contains both Irish Tim
 
 To begin detecting the political bias of an article, click into the article and then click on the 'Detect Political Bias' button under A.I tools on the right hand side.
 
-![[Pasted image 20240219222056.png]]
+![ai_analysis_start](attachments/ai_analysis_start.png)
 
 After you click the button, UniFeed will begin analysing the article for bias. The A.I tools section will display a loading wheel as it waits for UniFeed to finish the analysis.
 
-![[Pasted image 20240219222153.png]]
+![ai_analysis_scan](attachments/ai_analysis_scan.png)
 
 ## Viewing Analysis Results
 
@@ -248,12 +248,12 @@ Once the analysis is complete, the results of the analysis will display inside t
 
 There will also be a button allowing you to view a more detailed breakdown of how the results were calculated. To view the breakdown, click on the 'View Breakdown' button.
 
-![[Pasted image 20240219222233.png]]
+![ai_analysis_view_breakdown](attachments/ai_analysis_view_breakdown.png)
 ## Understanding the Results
 
 After clicking on the 'View Breakdown' button, a panel containing the political bias of sentences in the article will appear.
 
-![[Pasted image 20240219222422.png]]
+![ai_analysis_breakdown](attachments/ai_analysis_breakdown.png)
 
 The coloured labels around some words represent the type of word detected by the natural language processing. For example, 'Truckers for Trump millions' was detected as an organization, and 'New Yorkers' as a NORP: Nationalities or religious or political groups.
 
@@ -265,4 +265,4 @@ The subjectivity and polarity are indicators of sentiment - a personal opinion d
 
 Lastly, you may click on 'Accurate' or 'Inaccurate' if you would like to leave feedback on the A.I analysis result. Your feedback is very important and will be used to help train and improve the prediction model in the future.
 
-![[Pasted image 20240219222820.png]]
+![ai_analysis_feedback](attachments/ai_analysis_feedback.png)
