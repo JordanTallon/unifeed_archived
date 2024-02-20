@@ -1,10 +1,32 @@
+# Table of Contents
+
+- [Creating an Account](#Creating%20an%20Account)
+- [Logging in to Your Account](#Logging%20in%20to%20Your%20Account)
+- [Managing Your Account](#Managing%20Your%20Account)
+- [Edit Folder](#Edit%20Folder)
+- [Delete Folder](#Delete%20Folder)
+- [Editing / Moving a Feed](#Editing%20/%20Moving%20a%20Feed)
+- [Deleting a Feed](#Deleting%20a%20Feed)
+- [Reading List](#Reading%20List)
+  - [Adding an Article to Your Reading List](#Adding%20an%20Article%20to%20Your%20Reading%20List)
+  - [Removing an Article From Your Reading List](#Removing%20an%20Article%20From%20Your%20Reading%20List)
+  - [Viewing Your Reading List](#Viewing%20Your%20Reading%20List)
+- [Recently Read](#Recently%20Read)
+- [My Feed](#My%20Feed)
+- [Viewing an Individual Folder Feed](#Viewing%20an%20Individual%20Folder%20Feed)
+- [Viewing an Aggregated Folder Feed](#Viewing%20an%20Aggregated%20Folder%20Feed)
+- [Detecting Political Bias in an Article](#Detecting%20Political%20Bias%20in%20an%20Article)
+- [Viewing Analysis Results](#Viewing%20Analysis%20Results)
+- [Understanding the Results](#Understanding%20the%20Results)
+  - [Providing Feedback](#Providing%20Feedback)
+
 # Getting Started
 
 ## Creating an Account
 
 To begin accessing UniFeed, you must first create an account.
 
-This begins by navigating to the 'Sign Up' page. The sign up page can be easily accessed for new users through the website entry page. 
+This begins by navigating to the 'Sign Up' page. The sign up page can be easily accessed for new users through the website entry page.
 
 ![sign_up](attachments/sign_up.png)
 
@@ -63,7 +85,7 @@ Once you are happy with the changes, click on the 'Save Changes' button. Your ac
 
 # Adding a New Folder
 
-Folders in UniFeed allow you to personalize your experience by organizing your news feeds into different interests, categories or subjects. 
+Folders in UniFeed allow you to personalize your experience by organizing your news feeds into different interests, categories or subjects.
 
 They are an essential feature of UniFeed as all feeds must be contained within a folder. If you wish to skip the organization benefits, you can simply create an 'All' or 'Uncategorized' folder to put all of your feeds into.
 
@@ -71,13 +93,13 @@ They are an essential feature of UniFeed as all feeds must be contained within a
 
 You can create a folder by selecting the 'Add New Folder' option at the bottom of the 'My Folders' section of the side navigation. Additionally, there may be contextual 'Add New Folder' buttons to help guide you as indicated by the blue arrow.
 
-After selecting the 'Add New Folder' button you will be presented with a short form. You need only to enter a name for the folder and click the 'Save' button to proceed. 
+After selecting the 'Add New Folder' button you will be presented with a short form. You need only to enter a name for the folder and click the 'Save' button to proceed.
 
 Please note that each folder name must be less than 19 characters and unique. You can change the name of your folder at a later point.
 
 ![add_new_folder_form_save](attachments/add_new_folder_form_save.png)
 
-Congratulations, you have created your first folder. The form will automatically redirect you to the folder view where you can begin adding feeds to your new folder. 
+Congratulations, you have created your first folder. The form will automatically redirect you to the folder view where you can begin adding feeds to your new folder.
 
 # Managing Your Folder
 
@@ -105,20 +127,20 @@ If you wish to proceed with the deletion, click on the 'Delete' button as indica
 
 # Adding a New feed
 
-When adding a new feed, you must first select the folder that the newly added feed will belong to. Afterwards, you can begin adding a new feed by either clicking on the 'Add New Feed' button at the bottom of the current folder in the side bar, or by clicking the option presented in the 'Manage Folder' drop down. 
+When adding a new feed, you must first select the folder that the newly added feed will belong to. Afterwards, you can begin adding a new feed by either clicking on the 'Add New Feed' button at the bottom of the current folder in the side bar, or by clicking the option presented in the 'Manage Folder' drop down.
 
 ![add_new_feed_navigation](attachments/add_new_feed_navigation.png)
 
 Once you are on the 'Add New Feed' page, you have two choices:
+
 1. You may add a feed using a URL link. This allows you to import the RSS feed from any news website that you find on the internet. To find RSS feeds, you must browse your desired news websites or search on Google for public feeds.
 2. You can add a feed from a list of pre-existing feeds on the UniFeed website. These are feeds that were imported by other users or the site administrators. This allows you to quickly bring in an RSS feed without having to search for the RSS URL.
 
-For demonstration, I will use the URL option to add the Irish Times RSS feed which can be found at: 
+For demonstration, I will use the URL option to add the Irish Times RSS feed which can be found at:
 
-https://www.irishtimes.com/arc/outboundfeeds/feed-irish-news/?from=0&size=20 
+https://www.irishtimes.com/arc/outboundfeeds/feed-irish-news/?from=0&size=20
 
 ![add_new_feed_form_save](attachments/add_new_feed_form_save.png)
-
 
 Simply paste the URL into the URL field and click 'Add'.
 
@@ -130,20 +152,21 @@ Congratulations you have successfully added a new RSS feed. Please note that fee
 
 # Managing Your Feeds
 
-You may delete imported feeds from your folder, or  customize the default feed settings provided by the publisher such as its name and description. 
+You may delete imported feeds from your folder, or customize the default feed settings provided by the publisher such as its name and description.
 
 To begin managing your feeds, you must first navigate to the folder that they belong to. Once there, you can click on the 'Manage Folder' button in the top right to present a dropdown containing a 'Manage Feeds' button
 
 ![manage_folder_manage_feeds](attachments/manage_folder_manage_feeds.png)
 
 After clicking on the 'Manage Feeds' button you will be presented with a panel on the right side of the screen containing information and management functions for each Feed within the folder. For each feed, you have two management options: Edit and Delete.
+
 ## Editing / Moving a Feed
 
-To edit a feed, click on the 'Edit' button in the 'Manage Feeds' panel of the containing folder. 
+To edit a feed, click on the 'Edit' button in the 'Manage Feeds' panel of the containing folder.
 
 ![edit_feed_button](attachments/edit_feed_button.png)
 
-You will be presented with a form allowing you to customize the feed settings. You can change the name of the feed, it's description, or move it to a new folder. 
+You will be presented with a form allowing you to customize the feed settings. You can change the name of the feed, it's description, or move it to a new folder.
 
 ![edit_feed_form](attachments/edit_feed_form.png)
 
@@ -153,7 +176,7 @@ Once you are happy with the new settings, simply click the save button.
 
 ## Deleting a Feed
 
-To delete a feed, click on the 'Delete' button in the 'Manage Feeds' panel of the containing folder. 
+To delete a feed, click on the 'Delete' button in the 'Manage Feeds' panel of the containing folder.
 
 ![delete_feed](attachments/delete_feed.png)
 
@@ -212,6 +235,7 @@ You do not need to do anything to add feeds to 'My Feed'. All feeds you import a
 As seen in the screenshot, the 'My Feed' page contains articles from both the 'My Folder' and 'American' feeds, all in a single view.
 
 # Viewing a folder
+
 ## Viewing an Individual Folder Feed
 
 To view your feed in isolation, you may click the 'View' button in the 'Manage Feeds' side panel. This allows you to view the feed on its lonesome without the aggregation feature of the folder.
@@ -221,17 +245,19 @@ To view your feed in isolation, you may click the 'View' button in the 'Manage F
 Additionally, you can use the left navigation sidebar to view each feed individually.
 
 ![view_feed](attachments/view_feed.png)
+
 ## Viewing an Aggregated Folder Feed
 
- Aggregated feeds are one of the core features of UniFeed. It its a very powerful feature, especially when combined with folders to create multiple different aggregated feeds. For example you could have a "Space" folder containing the RSS feed of both NASA and SpaceX , allowing you to see their articles together. You could then have another feed called "Nature" where you keep up with both "National Geographic" and "Animal Planet"
+Aggregated feeds are one of the core features of UniFeed. It its a very powerful feature, especially when combined with folders to create multiple different aggregated feeds. For example you could have a "Space" folder containing the RSS feed of both NASA and SpaceX , allowing you to see their articles together. You could then have another feed called "Nature" where you keep up with both "National Geographic" and "Animal Planet"
 
-To view all feeds within a folder at once, simply click on the folder name, in this case 'My Folder' in the side navigation panel. 
+To view all feeds within a folder at once, simply click on the folder name, in this case 'My Folder' in the side navigation panel.
 
 ![feed_aggregate](attachments/feed_aggregate.png)
 
 As seen by the red and blue arrows, the 'My Folder' feed contains both Irish Times and Fox News articles together, sorted by most recently published.
 
 # Utilizing UniFeed's Political Bias AI
+
 ## Detecting Political Bias in an Article
 
 To begin detecting the political bias of an article, click into the article and then click on the 'Detect Political Bias' button under A.I tools on the right hand side.
@@ -244,11 +270,12 @@ After you click the button, UniFeed will begin analysing the article for bias. T
 
 ## Viewing Analysis Results
 
-Once the analysis is complete, the results of the analysis will display inside the A.I Tools section with a conclusion of bias detected in the article. 
+Once the analysis is complete, the results of the analysis will display inside the A.I Tools section with a conclusion of bias detected in the article.
 
 There will also be a button allowing you to view a more detailed breakdown of how the results were calculated. To view the breakdown, click on the 'View Breakdown' button.
 
 ![ai_analysis_view_breakdown](attachments/ai_analysis_view_breakdown.png)
+
 ## Understanding the Results
 
 After clicking on the 'View Breakdown' button, a panel containing the political bias of sentences in the article will appear.
