@@ -1,4 +1,6 @@
 import factory
+import factory.fuzzy
+from django.utils import timezone
 from faker import Faker
 from ..models import Feed
 
@@ -14,5 +16,6 @@ class FeedFactory(factory.django.DjangoModelFactory):
     url = factory.LazyFunction(lambda: fake.url())
     description = factory.LazyFunction(lambda: fake.paragraph())
     image_url = factory.LazyFunction(lambda: fake.image_url())
-    author = factory.LazyFunction(lambda: fake.name())
-    last_updated = factory.LazyFunction(lambda: fake.date_time())
+    publisher = factory.LazyFunction(lambda: fake.name())
+    last_updated = factory.LazyFunction(
+        lambda: timezone.make_aware(fake.date_time()))
