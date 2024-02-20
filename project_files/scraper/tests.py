@@ -7,10 +7,9 @@ from scraper.utils import scrape_data
 class ScraperViewsTest(TestCase):
     def test_scaper_succesful_response(self):
 
-        content = scrape_data('https://example.com')
+        content = scrape_data('https://www.lipsum.com/')
 
-        self.assertIn(
-            "This domain is for use in illustrative examples in documents", content)
+        self.assertIn("Lorem Ipsum", content)
 
     def test_scaper_bad_url_response(self):
 

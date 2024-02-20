@@ -2,6 +2,8 @@ from django.test import TestCase
 from django.db import IntegrityError
 from django.core.exceptions import ValidationError
 from ..models import User
+from articles.models import RecentlyRead
+from articles.test.factories import ArticleFactory
 
 
 class UserModelTest(TestCase):
@@ -55,14 +57,29 @@ class UserModelTest(TestCase):
 
         self.assertFalse(user.track_history)
 
-    def test_toggle_user_track_history(self):
+    def test_track_history_disable_deletes_articles(self):
         user = User.objects.create_user(
-            username='test', email="test@example.com")
+            username='test', email="test@example.com", track_history=True)
 
-        # Toggle track history on
-        user.toggle_track_history()
-        self.assertTrue(user.track_history)
+        # Create 3 fake articles to add to read history
+        articles = ArticleFactory.create_batch(3)
 
-        # Toggle track history off
-        user.toggle_track_history()
-        self.assertFalse(user.track_history)
+        # Create a RecentlyRead object for earch article to associate with the user
+        for article in articles:
+            RecentlyRead.objects.create(article=article, user=user)
+
+        # Count articles in user read history
+        history_count = len(RecentlyRead.objects.filter(user=user))
+
+        # Assert that the 3 articles are in the user history
+        self.assertEqual(history_count, 3)
+
+        # Disable history tracking for the user
+        user.track_history = False
+        user.save()
+
+        # Get articles in user read history
+        history = RecentlyRead.objects.filter(user=user)
+
+        # Assert that there are no articles in the user history
+        self.assertFalse(history)
