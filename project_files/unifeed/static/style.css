@@ -160,14 +160,14 @@ footer {
 
 /* Styling for entitites returned by spaCy when processing text for political analysis */
 .adjective {
-  background-color: #f995b6;
+  background-color: #ffc5d9;
 }
 .adjective::after {
   content: "ADJ";
 }
 
 .entity-ORG {
-  background-color: #7ffffb;
+  background-color: #a9fffc;
 }
 
 .entity-ORG::after {
@@ -175,7 +175,7 @@ footer {
 }
 
 .entity-GPE {
-  background-color: #ffe1a9;
+  background-color: #ffebc5;
 }
 
 .entity-GPE::after {
@@ -183,7 +183,7 @@ footer {
 }
 
 .entity-NORP {
-  background-color: #ef9eff;
+  background-color: #f4bffe;
 }
 
 .entity-NORP::after {
@@ -191,7 +191,7 @@ footer {
 }
 
 .entity-PERSON {
-  background-color: #dfcafa;
+  background-color: #ecdeff;
 }
 
 .entity-PERSON::after {
