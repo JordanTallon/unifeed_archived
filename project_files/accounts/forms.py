@@ -47,7 +47,7 @@ class AccountSettingsForm(UserChangeForm):
 
         # Force render order
         self.fields = {
-            'url': self.fields['username'],
+            'username': self.fields['username'],
             'email': self.fields['email'],
             'password1': self.fields['password1'],
             'password2': self.fields['password2'],

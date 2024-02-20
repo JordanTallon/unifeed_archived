@@ -89,9 +89,17 @@ def extract_article_text(scraped_article):
 
 def scrape_data(url):
 
-    website, path = parse_url(url)
+    try:
+        website, path = parse_url(url)
+    except:
+        raise ValueError("Could not parse website and path from URL")
 
-    if not check_robots(website, path):
+    try:
+        permission = check_robots(website, path)
+    except:
+        raise ValueError("Unable to check robots of the given URL")
+
+    if not permission:
         raise ValueError(
             f"{website}/robots.txt denied UnifeedAgent permission to scrape.")
 

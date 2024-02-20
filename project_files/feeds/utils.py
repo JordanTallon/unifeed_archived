@@ -5,6 +5,8 @@ from .signals import rss_feed_imported
 from django.utils import timezone
 import tldextract
 
+extract = tldextract.TLDExtract(cache_dir='/vol/web')
+
 
 def import_rss_feed(url):
 
@@ -95,7 +97,7 @@ def read_rss_channel_elements(rss):
         channel_elements['image_url'] = retrieved_image_url.get('href', '')
 
     if channel_elements['link'] != '':
-        website_tld = tldextract.extract(channel_elements['link'])
+        website_tld = extract(channel_elements['link'])
         subdomain = website_tld.subdomain
 
         # Subdomains we don't want to included (we want stuff like news.cnn to be included or abcnews.go etc)

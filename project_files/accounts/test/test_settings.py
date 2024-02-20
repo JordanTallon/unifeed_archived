@@ -1,7 +1,6 @@
 from django.test import TestCase
 from ..forms import AccountSettingsForm
 from ..models import User
-from http import HTTPStatus
 from django.urls import reverse
 
 
@@ -64,7 +63,8 @@ class AccountSettingsTest(TestCase):
         original_data = {
             'username': 'original_name',
             'email': 'original@mail.com',
-            'password': '@password123!'
+            'password': '@password123!',
+            'track_history': 'True'
         }
 
         # Create a new user with the original data
@@ -97,7 +97,8 @@ class AccountSettingsTest(TestCase):
         original_data = {
             'username': 'original_name',
             'email': 'original@mail.com',
-            'password': '@password123!'
+            'password': '@password123!',
+            'track_history': 'True'
         }
 
         # Create a new user with the original data
@@ -130,7 +131,8 @@ class AccountSettingsTest(TestCase):
         original_data = {
             'username': 'original_name',
             'email': 'original@mail.com',
-            'password': '@password123!'
+            'password': '@password123!',
+            'track_history': 'True'
         }
 
         # Create a new user with the original data

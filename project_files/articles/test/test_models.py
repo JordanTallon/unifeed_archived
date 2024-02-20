@@ -12,16 +12,15 @@ class ArticleModelTest(TestCase):
         self.article = Article.objects.create(
             title='DCU News',
             link='http://example.com/dcu-news',
+            feed=self.feed,
             publish_datetime=timezone.now()
         )
-
-        self.article.feeds.add(self.feed)
 
     def test_article_creation(self):
         # Assert expected values for the article
         self.assertEqual(self.article.title, 'DCU News')
         self.assertEqual(self.article.link, 'http://example.com/dcu-news')
-        self.assertIn(self.feed, self.article.feeds.all())
+        self.assertEqual(self.feed, self.article.feed)
 
         # Check if the current date was correctly applied to the publish date
         now_timestamp = timezone.now().timestamp()
