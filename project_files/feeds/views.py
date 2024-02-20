@@ -114,26 +114,28 @@ def view_userfeed(request, user_id, folder_id,  userfeed_id=None):
     folder_userfeeds = UserFeed.objects.filter(user=user, folder=folder)
     # To pass for HTML context
     userfeed = None
+
     if userfeed_id:
         # If a userfeed was specified by ID, render only that feed.
-        feeds_to_render = [get_object_or_404(
-            UserFeed, user=user, folder=folder, pk=userfeed_id).feed]
-        userfeed = feeds_to_render[0]
+        userfeed = get_object_or_404(
+            UserFeed, user=user, folder=folder, pk=userfeed_id)
+        feeds_to_render = [userfeed.feed]
+
     else:
         # Render all user feeds in the folder
         feeds_to_render = folder_userfeeds.values_list('feed', flat=True)
 
-    userfeed_articles = Article.objects.filter(
+    feed_articles = Article.objects.filter(
         feed__in=feeds_to_render)
 
     # Sort/order the articles by newest first
-    userfeed_articles = userfeed_articles.order_by(
+    feed_articles = feed_articles.order_by(
         F('publish_datetime').desc(nulls_last=True))
 
     # Check if the request is from HTMX (which only needs an updated article list)
     if request.htmx:
         return render(request, 'global/article_grid.html', {
-            'article_list': userfeed_articles,
+            'article_list': feed_articles,
         })
 
     return render(request, 'feeds/view_feed.html', {
@@ -142,7 +144,7 @@ def view_userfeed(request, user_id, folder_id,  userfeed_id=None):
         'folder': folder,
         'userfeed': userfeed,
         'folder_userfeeds': folder_userfeeds,
-        'userfeed_articles': userfeed_articles,
+        'userfeed_articles': feed_articles,
     })
 
 
