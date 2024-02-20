@@ -23,7 +23,7 @@
             <button type="button"
                     class="btn btn-primary"
                     data-bs-toggle="modal"
-                    data-bs-target="#breakdownModal">View Breakdown</button>
+                    data-bs-target="#breakdownModal">View Sentence Breakdown</button>
         </div>
     </div>
     <!-- Modal -->
@@ -36,7 +36,7 @@
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title fw-bold" id="breakdownModalLabel">Analysis Breakdown</h4>
+                    <h4 class="modal-title fw-bold" id="breakdownModalLabel">Bias Analysis Breakdown per Sentence</h4>
                     <button type="button"
                             class="btn-close"
                             data-bs-dismiss="modal"
@@ -48,10 +48,11 @@
                             <div class="col-12 mb-3">
                                 <div class="card bg-light h-100 d-flex flex-column">
                                     <div class="card-header">
-                                        <p class="lh-lg w-100">{{ analysis.html|safe }}</p>
+                                        <h5 class="lh-lg w-100">{{ analysis.html|safe }}</h5>
                                     </div>
                                     <div class="card-body d-flex h-100 flex-column">
-                                        <div class="d-flex flex-wrap mt-auto py-3">
+                                        <h5 class="fw-bold">Insights</h5>
+                                        <div class="d-flex flex-wrap mt-auto pb-3">
                                             <span class="badge m-1 rounded-pill border text-dark">{{ analysis.subjectivity|floatformat:2 }} Subjectivity</span>
                                             <span class="badge m-1 rounded-pill border text-dark">{{ analysis.polarity|floatformat:2 }} Polarity</span>
                                             <span class="badge m-1 rounded-pill border text-dark">{{ analysis.left_bias|floatformat:2 }} Left Bias</span>
@@ -60,18 +61,14 @@
                                         </div>
                                         <div>
                                             <div>
-                                                <p class="fw-bold">Conclusion</p>
-                                                <p class="text-muted">
+                                                <h5 class="fw-bold">Conclusion</h5>
+                                                <span class="d-block text-capitalize">{{ analysis.conclusion_strength }} {{ analysis.conclusion }}</span>
+                                                <small class="d-block text-muted">
                                                     The conclusion is based on the model's training and algorithms and might not always perfectly represent the true political bias of the content.
-                                                </p>
-                                                <p class="text-muted fw-bold text-capitalize">{{ analysis.conclusion_strength }} {{ analysis.conclusion }}</p>
+                                                </small>
                                             </div>
                                             <hr>
-                                            <div>
-                                                <p class="fw-bold">Provide Feedback</p>
-                                                <a class="text-muted text-decoration-none fw-bold"><i class="bi bi-hand-thumbs-up me-2"></i>Accurate</a>
-                                                <a class="text-muted text-decoration-none fw-bold"><i class="bi bi-hand-thumbs-down me-2"></i>Inaccurate</a>
-                                            </div>
+                                            {% include "ai_analysis/analysis_feedback.html" with sentence_id=forloop.counter sentence=sentence analysis=analysis %}
                                         </div>
                                     </div>
                                 </div>
