@@ -63,7 +63,7 @@
       + [6.6.3. Distribution of Sentences Containing an Entity](#663-distribution-of-sentences-containing-an-entity)
       + [6.6.4. Count of Entity Types Mentioned in Sentences](#664-count-of-entity-types-mentioned-in-sentences)
    * [6.7. Adjective Usage Across Political Ideologies](#67-adjective-usage-across-political-ideologies)
-      + [6.7.1. **Word Clouds Showing Most Common Adjectives Per Label**](#671-word-clouds-showing-most-common-adjectives-per-label)
+      + [6.7.1. Word Clouds Showing Most Common Adjectives Per Label](#671-word-clouds-showing-most-common-adjectives-per-label)
       + [6.7.2. Overlap of Adjective Usage Across All Ideology Labels](#672-overlap-of-adjective-usage-across-all-ideology-labels)
    * [6.8. Model Training](#68-model-training)
       + [6.8.1. Overview](#681-overview)
@@ -603,7 +603,7 @@ At this point the dataset is clean and balanced. To further explore the contents
 
 ## 6.7. Adjective Usage Across Political Ideologies
 
-### 6.7.1. **Word Clouds Showing Most Common Adjectives Per Label**
+### 6.7.1. Word Clouds Showing Most Common Adjectives Per Label
 
 **Most Common Adjectives in Left Sentences**
 
