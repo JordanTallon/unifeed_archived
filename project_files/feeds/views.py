@@ -1,10 +1,5 @@
-from rest_framework import status
-from rest_framework.response import Response
-from rest_framework.decorators import api_view
-from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 from django.contrib.auth import get_user_model
-from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
 from django.db.models import F
@@ -13,8 +8,7 @@ from .models import *
 from .forms import FeedFolderForm, UserFeedForm, EditUserFeedForm
 from .utils import *
 from .serializers import *
-from django.urls import reverse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 
 
