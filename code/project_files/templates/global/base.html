@@ -1,0 +1,83 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Optional meta tags (mainly to satisfy the linter) -->
+    <meta name="keywords"
+          content="AI, RSS, Unifeed, News, App, Political, Bias, Artificial Intelligence">
+    <meta name="description"
+          content="RSS Feed Aggregate App with Political Bias Detection AI">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+          crossorigin="anonymous" />
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;700&display=swap"
+          rel="stylesheet">
+    <!-- https://animate.style/ -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <!-- Favicon -->
+    <link rel="shortcut icon"
+          type="image/png"
+          href="{% static 'favicon.ico' %}" />
+    <title>
+      {% block title %}
+        Unifeed
+      {% endblock title %}
+    </title>
+    <link href="{% static 'style.css' %}" rel="stylesheet">
+  </head>
+  <body>
+    <div id="overlay" class="hidden" onclick="toggleSidebar()"></div>
+    <aside id="left-sidebar" class="hidden">
+      {% include "global/sidenav.html" %}
+    </aside>
+    <div class="content-container">
+      <header>
+        {% block topnav %}
+          {% include "global/topnav.html" %}
+        {% endblock topnav %}
+      </header>
+      <main class="position-relative">
+        <div class="container-fluid content animate__animated animate__fast animate__fadeIn">
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert alert-messages container mx-auto {% if message.tags == 'error' %}alert-danger{% else %}alert-{{ message.tags }}{% endif %} alert-dismissible fade show"
+                   role="alert">
+                {{ message }}
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="alert"
+                        aria-label="Close"></button>
+              </div>
+            {% endfor %}
+          {% endif %}
+          {% block content %}
+            <!-- This is where children templates inject content -->
+          {% endblock content %}
+        </div>
+      </main>
+      <footer>
+        {% include "global/footer.html" %}
+      </footer>
+    </div>
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+    <!-- Custom JS scripts -->
+    <script src="{% static 'scripts/sidebar.js' %}"></script>
+    <script src="{% static 'scripts/global.js' %}"></script>
+    <script src="https://unpkg.com/htmx.org"></script>
+  </body>
+</html>

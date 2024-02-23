@@ -1,0 +1,12 @@
+<div hx-get="{% url 'check_analysis_status' analysis_id %}"
+     hx-trigger="every 2s"
+     hx-swap="outerHTML"
+     id="polling-status"
+     class="d-flex flex-column h-100">
+  <div class="text-center my-auto">
+    <div>
+      <h5>Scanning Article for Political Bias</h5>
+    </div>
+    <div class="spinner-border my-3" role="status"></div>
+  </div>
+</div>

@@ -37,7 +37,7 @@ User Manual
 * `user_manual/user_manual.md`
 
 Technical Specification
-* `technical_mual/technical_specification.md"
+* `technical_manual/technical_specification.md"
 
 Blog
 * `blog.md` or https://jordantallon.github.io/

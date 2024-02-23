@@ -1,0 +1,42 @@
+<nav class="navbar container-fluid border-bottom shadow-bottom">
+    <div class="container row mx-auto p-0">
+        {% if user.is_authenticated %}
+            <!-- Unifeed Brand (for mobile only)-->
+            <div class="col-2 d-block d-md-none p-0 m-0">
+                <a href="{% url "reading_list" %}" class="p-0 fw-bold text-success">
+                    <i class="my-auto fs-1 bi bi-rss-fill"></i>
+                </a>
+            </div>
+            <!-- Search Bar -->
+            <div class="col-8 col-md-12 m-auto">
+                {% if nav_middle %}
+                    {% include nav_middle %}
+                {% endif %}
+            </div>
+            <!-- 'Hamburger' toggle, shown on mobile to toggle the sidebar open/closed-->
+            <div class="col-2 d-flex d-md-none p-0">
+                <div id="menu-toggle"
+                     class="p-0 ms-auto fw-bold text-dark closed"
+                     onclick="toggleSidebar()">
+                    <i class="my-auto fs-1 ms-auto bi bi-list"></i>
+                    <i class="my-auto fs-1 ms-auto bi bi-x-lg"></i>
+                </div>
+            </div>
+        {% else %}
+            <div class="col-6">
+                <a href="{% url "reading_list" %}"
+                   class="navbar-brand fs-3 fw-bold text-success">
+                    <i class="bi bi-rss-fill"></i>
+                    UniFeed
+                </a>
+            </div>
+            <!-- Login / Sign up buttons-->
+            <div class="d-none d-md-flex justify-content-end col-6">
+                <a href="{% url "login" %}"
+                   class="btn btn-outline-success me-2"
+                   type="button">Login</a>
+                <a href="{% url "register" %}" class="btn btn-success" type="button">Sign Up</a>
+            </div>
+        {% endif %}
+    </div>
+</nav>

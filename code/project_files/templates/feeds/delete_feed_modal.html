@@ -1,0 +1,15 @@
+<!-- djlint formatting formats the code nicely with whitespace. In some cases, such as the blocks 
+where I set dlint off, we want no whitespace so the sensitive variable is passed correctly -->
+{% extends "global/delete_modal.html" %}
+{# djlint:off #}
+{% block delete_modal_id %}deleteFeedModal{% endblock delete_modal_id %}
+{# djlint:on #}
+{% block delete_text %}
+    This action cannot be undone. All data associated with this feed will be lost.
+{% endblock delete_text %}
+{% block delete_button_text %}
+    Delete Feed
+{% endblock delete_button_text %}
+{# djlint:off #}
+{% block modal_properties %}data-bs-backdrop="false"{% endblock modal_properties%}
+{# djlint:on #}

@@ -1,0 +1,38 @@
+<div class="w-100 d-flex align-items-center justify-content-between">
+    <div class="d-flex ms-auto">
+        <div class="dropdown ">
+            <button class="btn  dropdown-toggle"
+                    type="button"
+                    id="manageFolderDropdown"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                <span>Manage Folder</span>
+                <i class="bi bi-gear"></i>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="manageFolderDropdown">
+                <li>
+                    <a class="dropdown-item"
+                       type="button"
+                       data-bs-toggle="offcanvas"
+                       data-bs-target="#offcanvasRight"
+                       aria-controls="offcanvasRight">Manage Feeds</a>
+                </li>
+                <li>
+                    <a class="dropdown-item"
+                       href="{% url 'add_user_feed_to_folder' folder.name %}">Add New Feed</a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="{% url 'edit_folder' folder.id %}">Edit Folder</a>
+                </li>
+                <hr>
+                <li>
+                    <button type="button"
+                            class="dropdown-item text-danger"
+                            data-bs-toggle="modal"
+                            data-bs-target="#deleteFolderModal">Delete Folder</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% include "feeds/delete_folder_modal.html" %}

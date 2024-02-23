@@ -1,0 +1,41 @@
+# PostgreSQL
+psycopg2==2.9.9
+# Proxy
+uWSGI==2.0.23
+#uWSGI==2.0.23
+djangorestframework==3.14.0
+django-factory_boy==1.0.0
+requests==2.31.0
+# For RSS App
+feedparser==6.0.11 
+sgmllib3k==1.0.0
+# Beautiful Soup
+bs4==0.0.2
+# Django
+Django==5.0.1
+# Rest Routes
+djangorestframework==3.14.0
+# Creating dummy data for tests
+django-factory_boy==1.0.0
+# Post requests
+requests==2.31.0
+# For JSONfield use in Django models
+JSONfield==3.1.0
+# For applying Bootstrap styling to Django forms
+django-crispy-forms==2.1
+crispy-bootstrap5==2023.10
+# For Django Lint (CI/CD check if HTML templates are well structured)
+djlint==1.34.1
+# For generating Unit Test coverage maps
+coverage==7.4.1
+# For asynchronous api tasks
+celery==5.3.6
+redis==5.0.1
+# HTMX
+django-htmx==1.17.2
+# For extracting website 'names' from a url
+tldextract==5.1.1
+# Pandas - dataframes (analyse / sort data)
+pandas==2.2.0
+# For extracting sentiment from text
+spacytextblob==4.0.0

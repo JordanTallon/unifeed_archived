@@ -1,0 +1,64 @@
+{% extends "global/base.html" %}
+{% load static %}
+{% block topnav %}
+    {% with nav_middle="feeds/view_feed_header.html" %}{{ block.super }}{% endwith %}
+{% endblock topnav %}
+{% block content %}
+    {% include "feeds/feed_sidebar.html" %}
+    {% if userfeed_articles|length > 0 %}
+        <div class="w-100 container mx-auto">
+            <div class="row mx-auto g-5 d-flex p-0">
+                <div class="col-10">
+                    <h1 class="h3 fw-bold">
+                        {% if userfeed %}
+                            {{ userfeed.name }}
+                        {% else %}
+                            {{ folder.name }}
+                        {% endif %}
+                    </h1>
+                </div>
+                <!-- top buttons, refresh, etc -->
+                <div class="col-2 d-flex">
+                    <button hx-get="{% url 'view_userfeed' user.id folder_id %}{% if userfeed_id %}{{ userfeed_id }}{% endif %}"
+                            hx-target="#article-grid"
+                            data-bs-toggle="popover"
+                            data-bs-trigger="hover"
+                            data-bs-container="body"
+                            data-bs-placement="top"
+                            data-bs-content="Refresh"
+                            class="btn p-0 ms-auto">
+                        <i class="h4 text-secondary bi bi-arrow-clockwise"></i>
+                    </button>
+                </div>
+                <div class="col-12 mx-auto border-top my-4"></div>
+            </div>
+            <div id="article-grid" class="row mx-auto g-0 gy-4 g-md-4 g-lg-5">
+                {% include "global/article_grid.html" with article_list=userfeed_articles %}
+            </div>
+        </div>
+    {% else %}
+        <div class="d-flex flex-column justify-content-center row">
+            <div class="mx-auto col-11 col-lg-6">
+                <div class="row">
+                    <div class="mx-auto col-8 col-lg-6 p-0 p-lg-4">
+                        <img src="{% static 'images/no_folder.svg' %}"
+                             class="img-fluid"
+                             alt="Woman putting files in a folder."
+                             width="auto"
+                             height="auto">
+                    </div>
+                </div>
+                <div class="text-center mt-4">
+                    <h1 class="fw-bold">Looks like you haven't added any RSS feeds to this folder yet.</h1>
+                    <p class="my-3 fs-5 text-muted">
+                        Get started by adding your first RSS feed. Stay updated with the latest content from your favorite websites and blogs, all in one place.
+                    </p>
+                    <div class="mt-4">
+                        <a class="btn btn-success"
+                           href="{% url 'add_user_feed_to_folder' folder.name %}">Add New Feed</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock content %}

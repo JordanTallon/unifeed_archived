@@ -1,0 +1,38 @@
+<div class="modal fade"
+     id="{% block delete_modal_id %}{% endblock delete_modal_id %}"
+     {% block modal_properties %}
+     {% endblock modal_properties %}
+     data-bs-keyboard="false"
+     tabindex="-1"
+     aria-hidden="true">
+    <div class="modal-dialog text-center">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <i class="h1 text-danger bi bi-exclamation-triangle"></i>
+                <h1 class="fw-bold h4 my-2">Are you sure?</h1>
+                <p class="text-muted my-2">
+                    {% block delete_text %}
+                    {% endblock delete_text %}
+                </p>
+                <div class="d-grid gap-2 p-4">
+                    <a type="button"
+                       class="btn btn-danger"
+                       id="delete-button"
+                       href="{% block delete_url %}{% endblock delete_url %}">
+                        {% block delete_button_text %}
+                        {% endblock delete_button_text %}
+                    </a>
+                    <button type="button"
+                            class="btn btn-outline-secondary"
+                            data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

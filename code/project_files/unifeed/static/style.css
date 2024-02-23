@@ -1,0 +1,275 @@
+* {
+  font-family: "Nunito", sans-serif;
+  box-sizing: border-box;
+}
+html {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-areas: "sidebar content";
+  grid-template-columns: fit-content(350px) 1fr;
+}
+
+/* Header */
+header {
+  grid-area: header;
+}
+
+main {
+  margin-top: 0;
+  grid-area: main;
+  overflow: hidden;
+}
+
+footer {
+  grid-area: footer;
+}
+
+#left-sidebar {
+  grid-area: sidebar;
+}
+
+#analysis-box {
+  min-height: 300px;
+}
+
+#menu-toggle {
+  z-index: 501;
+}
+
+#menu-toggle .bi-list {
+  display: none;
+}
+#menu-toggle .bi-x-lg {
+  display: block;
+}
+
+#menu-toggle.closed .bi-list {
+  display: block;
+}
+
+#menu-toggle.closed .bi-x-lg {
+  display: none;
+}
+
+#sidenav {
+  width: 240px;
+}
+
+#account-popup {
+  transform: translateY(55%);
+}
+
+.navbar {
+  min-height: 60px;
+}
+.shadow-top {
+  box-shadow: 0 -5px 12px -5px #cacaca40;
+}
+
+.shadow-bottom {
+  box-shadow: 0 5px 12px -5px #cacaca40;
+}
+
+.content-container {
+  grid-area: content;
+  height: 100svh;
+  display: grid;
+  grid-template-areas:
+    "header header header header header header header"
+    "main main main main main main main"
+    "footer footer footer footer footer footer footer";
+  grid-template-rows: auto 1fr auto;
+}
+
+.active {
+  font-weight: bold;
+}
+
+.letter-spaced {
+  letter-spacing: 0.133rem;
+}
+
+.feed-list {
+  z-index: 8000;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  overflow-y: auto;
+  width: 350px;
+  margin: 0;
+}
+
+.alert-messages {
+  transform: translateY(-50%);
+}
+
+.feed-img {
+  background-color: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(129, 129, 129, 1);
+}
+
+.modal-bg {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* Override crispy_form classes */
+.form-label {
+  font-weight: bold;
+}
+.asteriskField {
+  font-size: 0;
+}
+.asteriskField::after {
+  content: "Required";
+  opacity: 0.75 !important;
+  font-size: 0.8rem;
+  margin-left: 0.75rem;
+  font-weight: normal;
+}
+
+.content {
+  overflow: auto;
+  overflow-x: hidden;
+  padding-top: 3svh;
+  padding-bottom: 3svh;
+  height: 100%;
+}
+
+.offcanvas {
+  z-index: 9999;
+}
+
+.article-preview-img-container {
+  background-color: #dfdfdf;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  position: relative;
+  overflow: hidden;
+}
+.article-preview-img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+/* Styling for entitites returned by spaCy when processing text for political analysis */
+.adjective {
+  background-color: #ffc5d9;
+}
+.adjective::after {
+  content: "ADJ";
+}
+
+.entity-ORG {
+  background-color: #a9fffc;
+}
+
+.entity-ORG::after {
+  content: "ORG";
+}
+
+.entity-GPE {
+  background-color: #ffebc5;
+}
+
+.entity-GPE::after {
+  content: "GPE";
+}
+
+.entity-NORP {
+  background-color: #f4bffe;
+}
+
+.entity-NORP::after {
+  content: "NORP";
+}
+
+.entity-PERSON {
+  background-color: #ecdeff;
+}
+
+.entity-PERSON::after {
+  content: "PERSON";
+}
+
+.adjective,
+.entity {
+  padding: 0.1rem 0.8rem;
+  margin-left: 0.33rem;
+  margin-right: 0.33rem;
+  border-radius: 0.5rem;
+}
+
+.adjective::after,
+.entity::after {
+  font-weight: bold;
+  font-size: 0.75rem;
+  margin-left: 0.5rem;
+  vertical-align: middle;
+}
+
+/* This adds a shadow to the article-preview-image (on top of the image) */
+.article-preview-img-container::after {
+  transition: opacity 600ms ease, background 600ms ease;
+  z-index: 100;
+  position: absolute;
+  content: "";
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: radial-gradient(#ffffff00, #000000);
+  opacity: 0.2;
+}
+
+/* triggers when the grandparent 'article' element is hovered */
+.article:hover .article-preview-img-container:after {
+  opacity: 0.6;
+  background: #202020;
+}
+/* For reference:
+xs: 0,
+sm: 576px,
+md: 768px,
+lg: 992px,
+xl: 1200px,
+xxl: 1400px */
+
+/* This is Bootstrap's 'md' breakpoint */
+@media (max-width: 767px) {
+  #left-sidebar {
+    transition: transform 0.5s;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    z-index: 500;
+  }
+
+  #left-sidebar.hidden {
+    transform: translateX(-100%);
+  }
+
+  #overlay {
+    transition: opacity 0.5s;
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: black;
+    opacity: 0.33;
+    z-index: 499;
+  }
+
+  #overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+}

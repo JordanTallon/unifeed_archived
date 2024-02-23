@@ -1,0 +1,2 @@
+https://huggingface.co/datasets/mediabiasgroup/BABE-v3
+https://huggingface.co/datasets/mediabiasgroup/mbib-base

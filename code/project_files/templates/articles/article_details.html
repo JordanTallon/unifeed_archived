@@ -1,0 +1,130 @@
+{% extends "global/base.html" %}
+{% load static %}
+{% block topnav %}
+    {% with nav_middle="articles/article_details_header.html" %}{{ block.super }}{% endwith %}
+{% endblock topnav %}
+{% block content %}
+    <div class="container my-0 ">
+        <div class="row gx-5">
+            <div class="col-12 col-lg-8 p-4 d-flex flex-column">
+                <h1 class="fw-bold h2">{{ article.title }}</h1>
+                <!-- Publish date / interactive buttons-->
+                <div class="d-flex mb-2 w-100 align-items-center">
+                    {% if article.publish_datetime != None %}
+                        <small class="text-muted"><i class="me-2 bi bi-clock"></i>Published {{ article.publish_datetime }}</small>
+                    {% endif %}
+                    <div class="ms-auto d-flex">
+                        <form class="animate__animated animate__bounceIn"
+                              method="post"
+                              action="{% url 'article_details' article.id %}">
+                            {% csrf_token %}
+                            {% if is_saved %}
+                                <button type="submit"
+                                        class="btn text-secondary ms-3"
+                                        data-bs-toggle="popover"
+                                        data-bs-trigger="hover"
+                                        data-bs-container="body"
+                                        data-bs-placement="top"
+                                        data-bs-content="Remove from Reading List">
+                                    <i class="h5 bi bi-book-fill"></i>
+                                </button>
+                            {% else %}
+                                <button type="submit"
+                                        class="btn text-secondary ms-3"
+                                        data-bs-toggle="popover"
+                                        data-bs-trigger="hover"
+                                        data-bs-container="body"
+                                        data-bs-placement="top"
+                                        data-bs-content="Add to Reading List">
+                                    <i class="h5 bi bi-book"></i>
+                                </button>
+                            {% endif %}
+                        </form>
+                    </div>
+                </div>
+                {% if article.image_url != "" %}
+                    <div class="article-preview-img-container my-3">
+                        <img src="{{ article.image_url }}"
+                             class="article-preview-img"
+                             width="auto"
+                             height="auto"
+                             alt="News Photograph for {{ article.title }}">
+                    </div>
+                {% endif %}
+                {% if article.author != "" %}<p>By {{ article.author }}</p>{% endif %}
+                {% if article.feed.publisher != "" %}
+                    <small>
+                        <a href="{{ article.feed.link }}"
+                           class="text-muted text-decoration-none"><i class="bi bi-box-arrow-up-right me-1"></i>{{ article.feed.publisher }}</a>
+                    </small>
+                {% endif %}
+                <hr>
+                {% if article.description != "" %}
+                    <h4 class="h5 fw-bold">Description</h4>
+                    <p>{{ article.description }}</p>
+                {% endif %}
+                <p>{{ article.publisher }}</p>
+                <form class="d-grid gap-2 mb-4"
+                      action="{% url 'read_article' %}"
+                      method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="article_id" value="{{ article.id }}">
+                    <button class="btn btn-outline-success" type="submit">Read Full Article</button>
+                </form>
+            </div>
+            
+            <!-- Side content (a.i tools, related articles, etc) -->
+            <div class="col-12 col-lg-3 ms-auto p-4 d-flex flex-column">
+                <!-- A.I tools -->
+                <div id="analysis-box" class="p-4 border mb-4">
+                    <!-- HTMX will replace the content here with its HTML -->
+                    <div id="analysis-result-container" class="d-flex flex-column h-100">
+                        <small class="text-uppercase text-center fw-bold mb-4">
+                            <i class="bi bi-lightning-charge"></i>
+                            A.I Tools
+                        </small>
+                        {% csrf_token %}
+                        <button class="btn btn-outline-secondary"
+                                hx-post="{% url 'analyse_article_bias' %}"
+                                hx-vals='{"url": "{{ article.link }}"}'
+                                hx-target="#analysis-result-container"
+                                hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                hx-swap="outerHTML">
+                            <span class="mx-2">Detect Political Bias</span>
+                            <span class="badge bg-primary">New</span>
+                        </button>
+                    </div>
+                </div>
+                <small class="text-uppercase text-center fw-bold my-4">More Articles from {{ article.feed.publisher }}</small>
+                <div class="row gy-5">
+                    {% for article in related_articles %}
+                        <a class="text-decoration-none text-dark"
+                           href="{% url 'article_details' article.id %}">
+                            <div class="card border-0">
+                                {% if article.image_url != "" %}
+                                    <div class="card-img-top  article-preview-img-container">
+                                        <img class="article-preview-img"
+                                             src="{{ article.image_url }}"
+                                             width="auto"
+                                             height="auto"
+                                             alt="Image for article {{ article.name }}"
+                                             loading="lazy">
+                                    </div>
+                                {% endif %}
+                                <div class="card-body mt-2 p-0">
+                                    <h5 class="card-title fw-bold">
+                                        <small>{{ article.title }}</small>
+                                    </h5>
+                                    {% if article.description != "" %}<p class="card-text">{{ article.preview_description }}</p>{% endif %}
+                                    <p class="card-text">
+                                        {% if article.publish_datetime != None %}<small class="text-muted">{{ article.time_since }}</small>{% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
