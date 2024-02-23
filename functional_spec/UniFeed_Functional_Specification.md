@@ -1,4 +1,10 @@
-# 0. Table of Contents
+# UniFeed Functional Specification
+
+**Author**: Jordan Tallon
+
+**Student ID:** 21714601
+
+# Table of Contents
 - [1. Introduction](#1-introduction)
   - [1.1 Overview](#11-overview)
   - [1.2 Business Context](#12-business-context)
