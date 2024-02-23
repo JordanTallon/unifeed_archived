@@ -19,6 +19,7 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 from django.shortcuts import redirect
+from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,6 +27,8 @@ urlpatterns = [
     path('analyse-political-bias/', include('ai_analysis.urls')),
     path('feeds/', include('feeds.urls')),
     path('articles/', include('articles.urls')),
+    path('help/', views.help_page, name='help'),
+    path('ai_transparency/', views.ai_transparency, name='ai_transparency'),
     path('', lambda request: redirect('/articles/reading_list')),
 ]
 

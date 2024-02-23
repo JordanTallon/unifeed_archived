@@ -71,6 +71,21 @@
                     <span class="{% if '/folder/add' in request.path %}fw-bold{% endif %}">Add New Folder</span>
                 </a>
             </li>
+            <p class="text-secondary mt-3 mb-2">Additional Resources</p>
+            <li class="mb-1">
+                <a class="text-decoration-none text-muted rounded w-100 d-flex"
+                   href="{% url "help" %}">
+                    <i class="me-3 bi bi-info-circle"></i>
+                    <span class="{% if '/help/' in request.path %}text-dark fw-bold{% endif %}">Help</span>
+                </a>
+            </li>
+            <li>
+                <a class="text-decoration-none text-muted rounded w-100 d-flex"
+                   href="{% url "ai_transparency" %}">
+                    <i class="me-3 bi bi-emoji-smile"></i>
+                    <span class="{% if '/ai_transparency/' in request.path %}text-dark fw-bold{% endif %}">AI Transparency</span>
+                </a>
+            </li>
             <li class="border-top mt-auto"></li>
             <li class="dropup" id="account-popup">
                 <a type="button"

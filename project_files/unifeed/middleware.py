@@ -20,9 +20,10 @@ def RequireLoginMiddleware(get_response):
         public_paths = [
             reverse('login'),
             reverse('register'),
+            reverse('help'),
         ]
 
-        # List of 'public/whitelisted' prefixes (attempt at implementing * wildcard.)
+        # List of 'public/whitelisted' prefixes (implementing * wildcard.)
         public_path_prefixes = [
             '/admin',
             '/api',
