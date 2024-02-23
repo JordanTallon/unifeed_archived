@@ -8,7 +8,7 @@ Root Directory - Deployment related code such as Docker / Docker Compose files
 UniFeed Django web app
 * `code/project_files/` 
 
-UniFeed Machine Learning model
+UniFeed Machine Learning model code
 * `code/machine_learning/` 
 
 # Testing and Validation
@@ -37,7 +37,7 @@ User Manual
 * `user_manual/user_manual.md`
 
 Technical Specification
-* `technical_manual/technical_specification.md"
+* `technical_manual/technical_specification.md`
 
 Blog
 * `blog.md` or https://jordantallon.github.io/
