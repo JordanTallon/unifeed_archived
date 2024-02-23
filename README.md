@@ -43,10 +43,13 @@ Blog
 * `blog.md` or https://jordantallon.github.io/
 
 Video Walkthrough
-* `video.md`
+* `video.md` or https://drive.google.com/file/d/1uZPTrC9aqxZveVb3-Oc4m-w-7fUyxx9h/view?usp=sharing
 
 Ethics
 * `docs/ethics.pdf`
 
 Proposal Form
 * `proposal/CA326_Project_Proposal_Form.docx`
+
+User Testing Form
+* `docs/user_testing_form.pdf`
