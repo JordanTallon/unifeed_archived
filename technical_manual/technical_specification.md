@@ -74,6 +74,7 @@
       + [6.12.1. Training Hyperparameters](#6121-training-hyperparameters)
       + [6.12.2. Framework Versions](#6122-framework-versions)
       + [6.12.3. Library Versions](#6123-library-versions)
+      + [6.12.4. Dataset Split](#6124-dataset-split)
 - [7. Deployment and Testing](#7-deployment-and-testing)
    * [7.1. Dockerization](#71-dockerization)
       + [7.1.1. UniFeed Dockerfile](#711-unifeed-dockerfile)
@@ -712,6 +713,12 @@ Some limitations/biases include:
 - `pandas==1.5.3`
 - `numpy==1.23.5` 
 - `textblob==0.15.3` 
+
+### 6.12.4. Dataset Split
+
+80 / 20 training validation split.
+
+Splitting was random with the seed '326' for deterministic reproducibility.
 
 # 7. Deployment and Testing
 
