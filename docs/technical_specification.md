@@ -841,24 +841,24 @@ UniFeed uses Jenkins for its  Continuous Integration and Continuous Deployment (
 
 ### 7.3.4. Feeds Tests
 
-- **FeedFolderModelTest**
+**FeedFolderModelTest**
   - `test_user_create_folder`: Tests creating a new feed folder.
   - `test_add_unique_folders`: Checks adding unique folders.
   - `test_folder_name_must_be_unique`: Ensures folder names must be unique per user.
 
-- **FeedModelTest**
+**FeedModelTest**
   - `test_feed_creation`: Tests feed creation.
   - `test_last_updated_default`: Checks if the last updated timestamp is correct.
 
-- **UserFeedModelTest**
+**UserFeedModelTest**
   - `test_create_user_feed`: Tests creating a user feed.
   - `test_user_feed_custom_name_and_description`: Checks custom naming and description for user feeds.
 
-- **RssFeedImportTest**
+**RssFeedImportTest**
   - `test_read_rss_entries`: Validates reading entries from an RSS feed.
   - `test_read_rss_feed`: Ensures that the RSS feed can be read successfully.
 
-- **ViewTests**
+**ViewTests**
   - `test_my_feed_view`: Tests the 'my feed' view.
   - `test_get_add_user_feed_to_folder`: Ensures correct response for adding a user feed to a folder.
   - `test_post_add_user_feed_to_folder_with_valid_data`: Tests adding a user feed to a folder with valid data.
