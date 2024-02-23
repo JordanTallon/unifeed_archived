@@ -505,7 +505,7 @@ To normalize the range of the 'political-bias' DataFrame and further ensure that
 
 ## 6.5. Dataset Balancing
 
-![[attachments/tech_spec_balance_before.png]]
+![](attachments/tech_spec_balance_before.png)
 
 As seen in the bar chart, there is a huge imbalance in the classes of the BABE dataset. Particularly, the 'center' class is highly under represented in the Dataset. The Mean (red line) is below the median (green dashed line) indicating a negative skew. 
 
@@ -607,15 +607,15 @@ At this point the dataset is clean and balanced. To further explore the contents
 
 **Most Common Adjectives in Left Sentences**
 
-![[attachments/tech_spec_word_cloud_left.png]]
+![](attachments/tech_spec_word_cloud_left.png)
 
 **Most Common Adjectives in Center Sentences**
 
-![[attachments/tech_spec_word_cloud_center.png]]
+![](attachments/tech_spec_word_cloud_center.png)
 
 **Most Common Adjectives in Right Sentences**
 
-![[attachments/tech_spec_word_cloud_right.png]]
+![](attachments/tech_spec_word_cloud_right.png)
 
 **Findings**
 
@@ -709,7 +709,7 @@ Some limitations/biases include:
 - `spacy==3.6.1` 
 - `spacytextblob==4.0.0` 
 - `matplotlib==3.7.1` 
-- `pandas==1.5.3
+- `pandas==1.5.3`
 - `numpy==1.23.5` 
 - `textblob==0.15.3` 
 
