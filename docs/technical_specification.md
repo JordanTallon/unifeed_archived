@@ -835,7 +835,7 @@ UniFeed uses Jenkins for its  Continuous Integration and Continuous Deployment (
 **ArticleModelTest**
   - `test_article_creation`: Tests the creation of articles.
 
-- **TestArticleImport**
+**TestArticleImport**
   - `test_clean_rss_entries`: Tests the cleaning of RSS feed entries.
   - `test_read_rss_feed`: Ensures RSS feeds are correctly read and processed.
 
