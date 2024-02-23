@@ -1,7 +1,7 @@
 {% extends "global/base.html" %}
 {% load static %}
 {% block content %}
-    <div class="container">
+    <div class="container px-4 ">
         <div class="text-center">
             <h1 class="fw-bold">UniFeed User Manual</h1>
         </div>
@@ -13,18 +13,20 @@
             This begins by navigating to the <strong>Sign Up</strong> page. The sign up page can be easily accessed for new users through the website entry page.
         </p>
         <p>
-            <img src="attachments/sign_up.png"
+            <img src="{% static 'attachments/sign_up.png' %}"
                  width="auto"
                  height="auto"
+                 class="w-50 d-block mx-auto p-2 border rounded border rounded"
                  alt="sign_up">
         </p>
         <p>
             Once you are on the <strong>Sign Up</strong> page, you are greeted by a form where you must fill in the required fields to create your account
         </p>
         <p>
-            <img src="attachments/sign_up_form.png"
+            <img src="{% static 'attachments/sign_up_form.png' %}"
                  width="auto"
                  height="auto"
+                 class="w-50 d-block mx-auto p-2 border rounded border rounded"
                  alt="sign_up_form">
         </p>
         <p>The sign up process requires you to enter the following details:</p>
@@ -46,9 +48,10 @@
             Optionally, you can also choose to opt in for UniFeed to track your reading history. This will allow UniFeed to keep track of the different articles you read and present them to you for future retrieval.
         </p>
         <p>
-            <img src="attachments/sign_up_form_complete.png"
+            <img src="{% static 'attachments/sign_up_form_complete.png' %}"
                  width="auto"
                  height="auto"
+                 class="w-50 d-block mx-auto p-2 border rounded border rounded"
                  alt="sign_up_form_complete">
         </p>
         <p>
@@ -62,9 +65,10 @@
             Once you created your account, it&#39;s time to login. The registration process should have redirected you to the login page, but if you find yourself lost you can navigate to the login page using either of the buttons in the following screenshot.
         </p>
         <p>
-            <img src="attachments/login_navigation.png"
+            <img src="{% static 'attachments/login_navigation.png' %}"
                  width="auto"
                  height="auto"
+                 class="w-50 d-block mx-auto p-2 border rounded border rounded"
                  alt="login_navigation">
         </p>
         <p>
@@ -74,9 +78,10 @@
             Once you have entered the correct information, you may proceed by clicking the <strong>Login</strong> button.
         </p>
         <p>
-            <img src="attachments/login_submit.png"
+            <img src="{% static 'attachments/login_submit.png' %}"
                  width="auto"
                  height="auto"
+                 class="w-50 d-block mx-auto p-2 border rounded border rounded"
                  alt="login_submit">
         </p>
         <p>Congratulations, you are now ready to start exploring UniFeed.</p>
@@ -88,18 +93,20 @@
             A dropup will appear containing a <strong>My Account</strong> option that will lead you to a page where you can manage your account settings. Alternatively, there is an <strong>Account Settings</strong> button in the footer at the bottom right, as seen by the blue arrow.
         </p>
         <p>
-            <img src="attachments/my_account_navigation.png"
+            <img src="{% static 'attachments/my_account_navigation.png' %}"
                  width="auto"
                  height="auto"
+                 class="w-50 d-block mx-auto p-2 border rounded border rounded"
                  alt="my_account_navigation">
         </p>
         <p>
             In the account settings page, you can change important account features such as your username, email, and password. You can also toggle optional settings such as the <strong>Track History</strong> option which is used by UniFeed to keep track of your read articles.
         </p>
         <p>
-            <img src="attachments/account_settings_save.png"
+            <img src="{% static 'attachments/account_settings_save.png' %}"
                  width="auto"
                  height="auto"
+                 class="w-50 d-block mx-auto p-2 border rounded border rounded"
                  alt="account_settings_save">
         </p>
         <p>
@@ -113,9 +120,10 @@
             They are an essential feature of UniFeed as all feeds must be contained within a folder. If you wish to skip the organization benefits, you can simply create an <strong>All</strong> or <strong>Uncategorized</strong> folder to put all of your feeds into.
         </p>
         <p>
-            <img src="attachments/add_new_folder_navigation.png"
+            <img src="{% static 'attachments/add_new_folder_navigation.png' %}"
                  width="auto"
                  height="auto"
+                 class="w-50 d-block mx-auto p-2 border rounded border rounded"
                  alt="add_new_folder_navigation">
         </p>
         <p>
@@ -128,9 +136,10 @@
             Please note that each folder name must be less than 19 characters and unique. You can change the name of your folder at a later point.
         </p>
         <p>
-            <img src="attachments/add_new_folder_form_save.png"
+            <img src="{% static 'attachments/add_new_folder_form_save.png' %}"
                  width="auto"
                  height="auto"
+                 class="w-50 d-block mx-auto p-2 border rounded border rounded"
                  alt="add_new_folder_form_save">
         </p>
         <p>
@@ -141,18 +150,20 @@
             To manage your folder, begin by clicking on the <strong>Manage Folder</strong> dropdown in the top right of your folder view.
         </p>
         <p>
-            <img src="attachments/manage_folder.png"
+            <img src="{% static 'attachments/manage_folder.png' %}"
                  width="auto"
                  height="auto"
+                 class="w-50 d-block mx-auto p-2 border rounded border rounded"
                  alt="manage_folder">
         </p>
         <p>
             The dropdown will present a few different options. For this section, we are primarily concerned with <strong>Edit Folder</strong> and <strong>Delete Folder</strong> as indicated by the red arrows in the screenshot.
         </p>
         <p>
-            <img src="attachments/manage_folder_edit_delete.png"
+            <img src="{% static 'attachments/manage_folder_edit_delete.png' %}"
                  width="auto"
                  height="auto"
+                 class="w-50 d-block mx-auto p-2 border rounded border rounded"
                  alt="manage_folder_edit_delete">
         </p>
         <h4 class="mt-3 pt-3"  id="edit-folder">Edit Folder</h4>
@@ -160,9 +171,10 @@
             The <strong>Edit Folder</strong> button brings you to a new page where you can modify the name of your folder. Simply enter a new name for the folder and click save. Please note that the folder name must be less than 19 characters long.
         </p>
         <p>
-            <img src="attachments/edit_folder_form_save.png"
+            <img src="{% static 'attachments/edit_folder_form_save.png' %}"
                  width="auto"
                  height="auto"
+                 class="w-50 d-block mx-auto p-2 border rounded border rounded"
                  alt="edit_folder_form_save">
         </p>
         <h4 class="mt-3 pt-3"  id="delete-folder">Delete Folder</h4>
@@ -173,9 +185,10 @@
             If you wish to proceed with the deletion, click on the <strong>Delete</strong> button as indicated by the arrow. Otherwise, you may click the <strong>Cancel</strong> button or close down the modal to abort the deletion process.
         </p>
         <p>
-            <img src="attachments/delete_folder_confirm.png"
+            <img src="{% static 'attachments/delete_folder_confirm.png' %}"
                  width="auto"
                  height="auto"
+                 class="w-50 d-block mx-auto p-2 border rounded border rounded"
                  alt="delete_folder_confirm">
         </p>
         <h3 class="fw-bold"  id="adding-a-new-feed">Adding a New feed</h3>
@@ -183,9 +196,10 @@
             When adding a new feed, you must first select the folder that the newly added feed will belong to. Afterwards, you can begin adding a new feed by either clicking on the <strong>Add New Feed</strong> button at the bottom of the current folder in the side bar, or by clicking the option presented in the <strong>Manage Folder</strong> drop down.
         </p>
         <p>
-            <img src="attachments/add_new_feed_navigation.png"
+            <img src="{% static 'attachments/add_new_feed_navigation.png' %}"
                  width="auto"
                  height="auto"
+                 class="w-50 d-block mx-auto p-2 border rounded border rounded"
                  alt="add_new_feed_navigation">
         </p>
         <p>
@@ -204,18 +218,20 @@
             <a href="https://www.irishtimes.com/arc/outboundfeeds/feed-irish-news/?from=0&amp;size=20">https://www.irishtimes.com/arc/outboundfeeds/feed-irish-news/?from=0&amp;size=20</a>
         </p>
         <p>
-            <img src="attachments/add_new_feed_form_save.png"
+            <img src="{% static 'attachments/add_new_feed_form_save.png' %}"
                  width="auto"
                  height="auto"
+                 class="w-50 d-block mx-auto p-2 border rounded border rounded"
                  alt="add_new_feed_form_save">
         </p>
         <p>
             Simply paste the URL into the URL field and click <strong>Add</strong>.
         </p>
         <p>
-            <img src="attachments/new_feed_view.png"
+            <img src="{% static 'attachments/new_feed_view.png' %}"
                  width="auto"
                  height="auto"
+                 class="w-50 d-block mx-auto p-2 border rounded border rounded"
                  alt="new_feed_view">
         </p>
         <p>Once the new RSS feed is imported, you will be redirected to view the article contents of the feed.</p>
@@ -230,9 +246,10 @@
             To begin managing your feeds, you must first navigate to the folder that they belong to. Once there, you can click on the <strong>Manage Folder</strong> button in the top right to present a dropdown containing a <strong>Manage Feeds</strong> button
         </p>
         <p>
-            <img src="attachments/manage_folder_manage_feeds.png"
+            <img src="{% static 'attachments/manage_folder_manage_feeds.png' %}"
                  width="auto"
                  height="auto"
+                 class="w-50 d-block mx-auto p-2 border rounded border rounded"
                  alt="manage_folder_manage_feeds">
         </p>
         <p>
@@ -243,25 +260,28 @@
             To edit a feed, click on the <strong>Edit</strong> button in the <strong>Manage Feeds</strong> panel of the containing folder.
         </p>
         <p>
-            <img src="attachments/edit_feed_button.png"
+            <img src="{% static 'attachments/edit_feed_button.png' %}"
                  width="auto"
                  height="auto"
+                 class="w-50 d-block mx-auto p-2 border rounded border rounded"
                  alt="edit_feed_button">
         </p>
         <p>
             You will be presented with a form allowing you to customize the feed settings. You can change the name of the feed, it&#39;s description, or move it to a new folder.
         </p>
         <p>
-            <img src="attachments/edit_feed_form.png"
+            <img src="{% static 'attachments/edit_feed_form.png' %}"
                  width="auto"
                  height="auto"
+                 class="w-50 d-block mx-auto p-2 border rounded border rounded"
                  alt="edit_feed_form">
         </p>
         <p>Once you are happy with the new settings, simply click the save button.</p>
         <p>
-            <img src="attachments/edit_feed_form_save.png"
+            <img src="{% static 'attachments/edit_feed_form_save.png' %}"
                  width="auto"
                  height="auto"
+                 class="w-50 d-block mx-auto p-2 border rounded border rounded"
                  alt="edit_feed_form_save">
         </p>
         <h4 class="mt-3 pt-3"  id="deleting-a-feed">Deleting a Feed</h4>
@@ -269,9 +289,10 @@
             To delete a feed, click on the <strong>Delete</strong> button in the <strong>Manage Feeds</strong> panel of the containing folder.
         </p>
         <p>
-            <img src="attachments/delete_feed.png"
+            <img src="{% static 'attachments/delete_feed.png' %}"
                  width="auto"
                  height="auto"
+                 class="w-50 d-block mx-auto p-2 border rounded border rounded"
                  alt="delete_feed">
         </p>
         <p>
@@ -281,9 +302,10 @@
             If you wish to proceed with the deletion, click on the <strong>Delete</strong> button as indicated by the arrow. Otherwise, you may click the <strong>Cancel</strong> button or close down the modal to abort the deletion process.
         </p>
         <p>
-            <img src="attachments/delete_feed_confirm.png"
+            <img src="{% static 'attachments/delete_feed_confirm.png' %}"
                  width="auto"
                  height="auto"
+                 class="w-50 d-block mx-auto p-2 border rounded border rounded"
                  alt="delete_feed_confirm">
         </p>
         <h3 class="fw-bold"  id="your-unifeed">Your UniFeed</h3>
@@ -299,9 +321,10 @@
             To add an article to your <strong>Reading List</strong> you must first click into the article. Once you are viewing the article details, you may click on a book icon located at the top right of the article image, as seen in the following screenshot.
         </p>
         <p>
-            <img src="attachments/add_reading_list.png"
+            <img src="{% static 'attachments/add_reading_list.png' %}"
                  width="auto"
                  height="auto"
+                 class="w-50 d-block mx-auto p-2 border rounded border rounded"
                  alt="add_reading_list">
         </p>
         <h5 id="removing-an-article-from-your-reading-list">Removing an Article From Your Reading List</h5>
@@ -309,9 +332,10 @@
             Removing an Article from your <strong>Reading List</strong> is as easy as adding it. You simply need to click the filled in grey book to remove the article from your <strong>Reading List</strong>, as seen in the following screenshot.
         </p>
         <p>
-            <img src="attachments/remove_reading_list.png"
+            <img src="{% static 'attachments/remove_reading_list.png' %}"
                  width="auto"
                  height="auto"
+                 class="w-50 d-block mx-auto p-2 border rounded border rounded"
                  alt="remove_reading_list">
         </p>
         <h5 id="viewing-your-reading-list">Viewing Your Reading List</h5>
@@ -319,9 +343,10 @@
             To view your reading list, you must click on the <strong>Reading List</strong> button under <strong>My UniFeed</strong> in the side navigation panel.
         </p>
         <p>
-            <img src="attachments/reading_list_page.png"
+            <img src="{% static 'attachments/reading_list_page.png' %}"
                  width="auto"
                  height="auto"
+                 class="w-50 d-block mx-auto p-2 border rounded border rounded"
                  alt="reading_list_page">
         </p>
         <p>You will be presented with all articles in your reading list sorted to start with the most recently added.</p>
@@ -330,18 +355,20 @@
             The Recently Read section keeps track of the articles you have previously read. Please note that you must enable the <strong>Track History</strong> option in your account settings for the <strong>Recently Read</strong> feature to be enabled. Your reading history will only contain the last 20 articles you have read.
         </p>
         <p>
-            <img src="attachments/read_full_article.png"
+            <img src="{% static 'attachments/read_full_article.png' %}"
                  width="auto"
                  height="auto"
+                 class="w-50 d-block mx-auto p-2 border rounded border rounded"
                  alt="read_full_article">
         </p>
         <p>
             An article is marked as <strong>Read</strong> when you click on the <strong>Read Full Article</strong> button.
         </p>
         <p>
-            <img src="attachments/recently_read_page.png"
+            <img src="{% static 'attachments/recently_read_page.png' %}"
                  width="auto"
                  height="auto"
+                 class="w-50 d-block mx-auto p-2 border rounded border rounded"
                  alt="recently_read_page">
         </p>
         <h4 class="mt-3 pt-3"  id="my-feed">My Feed</h4>
@@ -352,9 +379,10 @@
             You do not need to do anything to add feeds to <strong>My Feed</strong>. All feeds you import are automatically brought in. If you do not wish to use the Folder feature, you can use the <strong>My Feed</strong> page to make use of UniFeed&#39;s aggregation.
         </p>
         <p>
-            <img src="attachments/my_feed.png"
+            <img src="{% static 'attachments/my_feed.png' %}"
                  width="auto"
                  height="auto"
+                 class="w-50 d-block mx-auto p-2 border rounded border rounded"
                  alt="my_feed">
         </p>
         <p>
@@ -366,16 +394,18 @@
             To view your feed in isolation, you may click the <strong>View</strong> button in the <strong>Manage Feeds</strong> side panel. This allows you to view the feed on its lonesome without the aggregation feature of the folder.
         </p>
         <p>
-            <img src="attachments/manage_feeds_view.png"
+            <img src="{% static 'attachments/manage_feeds_view.png' %}"
                  width="auto"
                  height="auto"
+                 class="w-50 d-block mx-auto p-2 border rounded border rounded"
                  alt="manage_feeds_view">
         </p>
         <p>Additionally, you can use the left navigation sidebar to view each feed individually.</p>
         <p>
-            <img src="attachments/view_feed.png"
+            <img src="{% static 'attachments/view_feed.png' %}"
                  width="auto"
                  height="auto"
+                 class="w-50 d-block mx-auto p-2 border rounded border rounded"
                  alt="view_feed">
         </p>
         <h4 class="mt-3 pt-3"  id="viewing-an-aggregated-folder-feed">Viewing an Aggregated Folder Feed</h4>
@@ -386,9 +416,10 @@
             To view all feeds within a folder at once, simply click on the folder name, in this case <strong>My Folder</strong> in the side navigation panel.
         </p>
         <p>
-            <img src="attachments/feed_aggregate.png"
+            <img src="{% static 'attachments/feed_aggregate.png' %}"
                  width="auto"
                  height="auto"
+                 class="w-50 d-block mx-auto p-2 border rounded border rounded"
                  alt="feed_aggregate">
         </p>
         <p>
@@ -400,18 +431,20 @@
             To begin detecting the political bias of an article, click into the article and then click on the <strong>Detect Political Bias</strong> button under A.I tools on the right hand side.
         </p>
         <p>
-            <img src="attachments/ai_analysis_start.png"
+            <img src="{% static 'attachments/ai_analysis_start.png' %}"
                  width="auto"
                  height="auto"
+                 class="w-50 d-block mx-auto p-2 border rounded border rounded"
                  alt="ai_analysis_start">
         </p>
         <p>
             After you click the button, UniFeed will begin analysing the article for bias. The A.I tools section will display a loading wheel as it waits for UniFeed to finish the analysis.
         </p>
         <p>
-            <img src="attachments/ai_analysis_scan.png"
+            <img src="{% static 'attachments/ai_analysis_scan.png' %}"
                  width="auto"
                  height="auto"
+                 class="w-50 d-block mx-auto p-2 border rounded border rounded"
                  alt="ai_analysis_scan">
         </p>
         <h4 class="mt-3 pt-3"  id="viewing-analysis-results">Viewing Analysis Results</h4>
@@ -422,9 +455,10 @@
             There will also be a button allowing you to view a more detailed breakdown of how the results were calculated. To view the breakdown, click on the <strong>View Breakdown</strong> button.
         </p>
         <p>
-            <img src="attachments/ai_analysis_view_breakdown.png"
+            <img src="{% static 'attachments/ai_analysis_view_breakdown.png' %}"
                  width="auto"
                  height="auto"
+                 class="w-50 d-block mx-auto p-2 border rounded border rounded"
                  alt="ai_analysis_view_breakdown">
         </p>
         <h4 class="mt-3 pt-3"  id="understanding-the-results">Understanding the Results</h4>
@@ -432,9 +466,10 @@
             After clicking on the <strong>View Breakdown</strong> button, a panel containing the political bias of sentences in the article will appear.
         </p>
         <p>
-            <img src="attachments/ai_analysis_breakdown.png"
+            <img src="{% static 'attachments/ai_analysis_breakdown.png' %}"
                  width="auto"
                  height="auto"
+                 class="w-50 d-block mx-auto p-2 border rounded border rounded"
                  alt="ai_analysis_breakdown">
         </p>
         <p>
@@ -451,9 +486,10 @@
             Lastly, you may click on <strong>Accurate</strong> or <strong>Inaccurate</strong> if you would like to leave feedback on the A.I analysis result. Your feedback is very important and will be used to help train and improve the prediction model in the future.
         </p>
         <p>
-            <img src="attachments/ai_analysis_feedback.png"
+            <img src="{% static 'attachments/ai_analysis_feedback.png' %}"
                  width="auto"
                  height="auto"
+                 class="w-50 d-block mx-auto p-2 border rounded border rounded"
                  alt="ai_analysis_feedback">
         </p>
     </div>

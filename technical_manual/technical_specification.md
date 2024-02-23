@@ -937,16 +937,18 @@ UniFeed uses a function called `clean_rss_entries` to process and standardize RS
 	*  https://huggingface.co/JordanTallon/Unifeed
 3. **Update the HUGGINGFACE_API_URL setting** 
 	* Found in `project_files/unifeed/settings.py`. Change the URL to your forked repo.
-3.  **Generate a HuggingFace API Key**
+3. **Generate a HuggingFace API Key**
 	* Located in your HuggingFace account settings. The API key needs read permissions
-4. **Configure Environment Variables**
-	- Copy the environment sample file `.env.sample` to a new `.env` file.
-	- Update the `.env` file with your specific variables: `DB_HOST`, `DB_PORT`, `SECRET_KEY`, `HUGGINGFACE_API_KEY`
-5. **Build and run docker-compose.yml for the development environment**
+4. **Navigate to the UniFeed code directory**
+	* `cd code`
+5. **Configure Environment Variables**
+	* Copy the environment sample file `.env.sample` to a new `.env` file.
+	* Update the `.env` file with your specific variables: `DB_HOST`, `DB_PORT`, `SECRET_KEY`, `HUGGINGFACE_API_KEY`
+6. **Build and run docker-compose.yml for the development environment**
 	* `docker-compose up --build`
 	* This will start the Django application, PostgreSQL database, Redis, and Celery worker as services.
 	* Once the Docker containers are running, access the application by navigating to `http://localhost:8000/` or `http://127.0.0.1:8000/` in your web browser.
-6. **(Alternatively) build and run docker-compose-deploy.yml for the production environment** 
+7. **(Alternatively) build and run docker-compose-deploy.yml for the production environment** 
 	* `docker-compose up -f docker-compose-deploy.yml --build`
 	* This will start the Django application, Nginx Proxy, Redis, and Celery worker as services.
 	* UniFeed will run on port 80 of your server by default.
