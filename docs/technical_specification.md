@@ -732,14 +732,14 @@ UniFeed's Dockerfile for the application server is based on `python:3.12.0-slim`
 - Setting up user and directory permissions for security and resource management.
 - Defining entry points and commands to run the application.
 
-## 7.2. Proxy Dockerfile
+### 7.1.2 Proxy Dockerfile
 
 For the deployment envrionment, UniFeed builds a second Dockerfile for the nginx proxy server. This Dockerfile mostly uses the default nginx-unprivileged image, with the notable changes being:
 1. The Dockerfile runs a script `scripts/run.sh` with Django related configurations such as using `manage.py` to collect static files, waiting for the PostgreSQL database to reply, and applying any database migrations. 
 2. It executes uWSGI to provide a WSGI socket for the proxy server to use and speak with the Django app on port 9000.
 3. Four workers are deployed for the UniFeed deployment website to handle multiple requests to the server at once.
 
-### 7.2.1. Docker-Compose
+### 7.1.3. Docker-Compose
 
 UniFeed uses two `docker-compose.yml` files for different environments:
 
@@ -755,7 +755,7 @@ UniFeed uses two `docker-compose.yml` files for different environments:
    - The Proxy Dockerfile is built in this compose as the live server requires nginx for delivering content securely to multiple users.
    - Environment variables are fully obscured by using a .env file in (created in the folder that contains the compose on the DigitalOcean server) to pass environment variables discretely. 
 
-## 7.3. CI/CD Pipeline
+## 7.2. CI/CD Pipeline
 
 UniFeed uses Jenkins for its  Continuous Integration and Continuous Deployment (CI/CD) pipeline. The Jenkins environment is also hosted on DigitalOcean under a separate server. It is setup to communicate with the Docker daemon using a socket. The pipeline is multi-branch meaning it monitors all branches of the UniFeed repo. It performs  automated builds, testing, linting, and deployment. The Jenkins server is configured to respond to changes in the GitLab repository using webhooks. This means  that every code update is automatically processed through the stages outlined in the Jenkinsfile. The Jenkins server also communicated back to GitLab to keep it updated on the status of the pipeline so that it can be viewed in the repo. Here's an overview of each stage in the pipeline:
 
@@ -770,9 +770,9 @@ UniFeed uses Jenkins for its  Continuous Integration and Continuous Deployment (
 * **Stage 5. Deploy**
 	* At this point, if the pipeline was executed for a branch that isn't `main` the pipeline has succeeded. If this is the `main` branch, then Jenkins begins the deployment process to push the changes to the live server.  This involves SSHing into the remote server, pulling the latest changes from the repository, and restarting the application using Docker Compose. The deployment script handles the stopping of old servers, freeing up ports, and starting new Docker containers. The GitLab commit status is updated based on the success or failure of the deployment script.
 
-## 7.4. Unit Tests
+## 7.3. Unit Tests
 
-### 7.4.1. Accounts Tests
+### 7.3.1. Accounts Tests
 
 **Models**
 - `test_add_new_user`: Tests adding a new user.
@@ -811,7 +811,7 @@ UniFeed uses Jenkins for its  Continuous Integration and Continuous Deployment (
   - `test_form_change_email`: Tests functionality to change a user's email.
   - `test_form_change_password`: Tests functionality to change a user's password.
 
-### 7.4.2. AI Analysis Tests
+### 7.3.2. AI Analysis Tests
 
 **AIAnalysisUtilsTests**
   - `test_generate_text_md5`: Tests MD5 hash generation for a given text.
@@ -830,7 +830,7 @@ UniFeed uses Jenkins for its  Continuous Integration and Continuous Deployment (
 - `test_scaper_non_existent_url_response`: Tests the scraper's response to a non-existent URL.
 - `test_scaper_succesful_response`: Tests the scraper's successful response.
 
-### 7.4.3. Articles  Tests
+### 7.3.3. Articles  Tests
 
 **ArticleModelTest**
   - `test_article_creation`: Tests the creation of articles.
@@ -839,7 +839,7 @@ UniFeed uses Jenkins for its  Continuous Integration and Continuous Deployment (
   - `test_clean_rss_entries`: Tests the cleaning of RSS feed entries.
   - `test_read_rss_feed`: Ensures RSS feeds are correctly read and processed.
 
-### 7.4.4. Feeds Tests
+### 7.3.4. Feeds Tests
 
 - **FeedFolderModelTest**
   - `test_user_create_folder`: Tests creating a new feed folder.
