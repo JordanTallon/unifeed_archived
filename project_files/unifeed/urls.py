@@ -28,6 +28,7 @@ urlpatterns = [
     path('feeds/', include('feeds.urls')),
     path('articles/', include('articles.urls')),
     path('help/', views.help_page, name='help'),
+    path('ai_transparency/', views.ai_transparency, name='ai_transparency'),
     path('', lambda request: redirect('/articles/reading_list')),
 ]
 

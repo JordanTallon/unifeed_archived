@@ -1,0 +1,735 @@
+{% extends "global/base.html" %}
+{% load static %}
+{% block content %}
+    <div class="container px-4 ">
+        <div class="text-center">
+            <h1 class="fw-bold">UniFeed Artifical Intelligence Transparency</h1>
+            <p class="my-3 fs-5 text-muted">How UniFeed processes data and makes decisions.</p>
+        </div>
+        <hr>
+        <h3 class="fw-bold" id="machine-learning-methods">Machine Learning Methods</h3>
+        <h4 class="mt-3 py-2" id="1-datasets">Datasets</h4>
+        <h5 class="my-2" id="1-1-babe-dataset">BABE Dataset</h5>
+        <p>
+            The first dataset utilized in the model is BABE (Bias Annotations By Experts), as detailed in the research work &quot;Neural Media Bias Detection Using Distant Supervision With BABE.&quot; In particular, the version 3 of the dataset is used which consists of 4,120 sentences carefully labelled by trained experts to offer a comprehensive dataset with balance amongst topics and outlets. The dataset contains the following fields:
+        </p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Field</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>text</td>
+                    <td>The sentence extracted from the political content.</td>
+                </tr>
+                <tr>
+                    <td>news_link</td>
+                    <td>A source link to the article where the entry originated.</td>
+                </tr>
+                <tr>
+                    <td>outlet</td>
+                    <td>The outlet which published the original article.</td>
+                </tr>
+                <tr>
+                    <td>topic</td>
+                    <td>The topic of the article.</td>
+                </tr>
+                <tr>
+                    <td>type</td>
+                    <td>
+                        The political alignment of the content: <strong>left</strong>, <strong>right</strong>, <strong>center</strong>, or <strong>nan</strong>.
+                    </td>
+                </tr>
+                <tr>
+                    <td>label</td>
+                    <td>A binary label indicating whether the entry is biased or not (0 for unbiased, 1 for biased).</td>
+                </tr>
+                <tr>
+                    <td>label_opinion</td>
+                    <td>
+                        A label indicating the subjectivity of the entry, e.g., <strong>Entirely Factual</strong>, <strong>Writer</strong>s Opinion'.
+                    </td>
+                </tr>
+                <tr>
+                    <td>biased_words</td>
+                    <td>A list of words associated with political bias, derived from the MBG bias lexicon.</td>
+                </tr>
+            </tbody>
+        </table>
+        <h5 class="my-2" id="1-2-mbib-political-bias-dataset">
+            MBIB <strong>political-bias</strong> Dataset
+        </h5>
+        <p>
+            The second dataset is the <strong>political-bias</strong> dataset, which was published alongside the Media Bias Identification Benchmark (MBIB) paper which encompasses 22 carefully selected bias datasets. This dataset contains just two fields:
+        </p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Field</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>text</td>
+                    <td>The sentence extracted from the political content.</td>
+                </tr>
+                <tr>
+                    <td>label</td>
+                    <td>A binary label indicating whether the entry is biased or not (0 for unbiased, 1 for biased).</td>
+                </tr>
+            </tbody>
+        </table>
+        <h4 class="mt-3 py-2" id="2-dataset-integration">Dataset Integration</h4>
+        <h5 class="my-2" id="2-1-feature-selection">Feature Selection</h5>
+        <p>
+            The primary goal of the model is to understand and analyse language used in news articles. The focus on the <strong>text</strong> content and it<strong>s respective</strong>label' allow for the model to concentrate on the core content of the articles in an attempt to derive linguistic features associated with different political ideologies.
+        </p>
+        <h5 class="my-2" id="2-2-combining-the-babe-and-political-bias-datasets">
+            Combining the BABE and political-bias Datasets
+        </h5>
+        <p>
+            Only entries where the <strong>label</strong> of the <strong>political-bias</strong> dataset are equal to 0 (unbiased) are considered for use in our model. When the label is set to 1 (biased) this indicates that there is a <strong>left-wing</strong> OR <strong>right-wing</strong> bias for the given entry. For our model, we need to know the specific bias, that is, which political ideology the bias belongs to. This makes the biased content of <strong>political-bias</strong> incompatible with our classification goals. The unbiased content (0) is equivalent to <strong>NOT left or right wing</strong>, which is compatible with the <strong>center</strong> <strong>type</strong> of the BABE dataset, where <strong>center</strong> indicates that the bias is neither <strong>left</strong> nor <strong>right</strong>. This allows for us to integrate the <strong>political-bias</strong> dataset to act as a donor for balancing the BABE dataset where there are missing <strong>center</strong> entries. Combining the two datasets in this way allows for us to avoid techniques like oversampling which can lead to overfitting or loss of information.
+        </p>
+        <h4 class="mt-3 py-2" id="3-dataset-analysis">Dataset Analysis</h4>
+        <h5 class="my-2" id="3-1-overview">Overview</h5>
+        <p>
+            The Dataset Analysis steps were performed twice. An initial analysis was performed before cleaning to determine a strategy for the pre-processing steps. The aim of this step to explore the dataset for issues to address during the cleaning and balancing stages. Where relevant, a before and after illustration will be provided to demonstrate the impact the later stages had on the findings.
+        </p>
+        <h5 class="my-2" id="3-2-sentence-length-distribution">Sentence Length Distribution</h5>
+        <p>
+            To determine the length of each sentence, they were split up into words. The analysis will be based on the word count of the content.
+        </p>
+        <p>
+            <strong>General Findings</strong>
+        </p>
+        <p>
+            <img src="{% static 'attachments/tech_spec_sentence_length_histogram.png' %}"
+                 width="auto"
+                 height="auto"
+                 class="img-fluid d-block mx-auto p-2 border rounded border rounded"
+                 alt="">
+        </p>
+        <p>
+            Most sentences fall within the 20-40 word length range. Specifically, the mean is 32.87, the min is 1 and the max is 99. The histogram on the left displays a min sentence length of 1, which indicates a data error in one of the entries as a sentence should be more than 1 word long.
+        </p>
+        <p>To further analyse the sentences with more than 70 words, a boxplot was created.</p>
+        <p>
+            <img src="{% static 'attachments/tech_spec_sentence_box_plot.png' %}"
+                 width="auto"
+                 height="auto"
+                 class="img-fluid d-block mx-auto p-2 border rounded border rounded"
+                 alt="">
+        </p>
+        <p>
+            The Box Plot analysis revealed an outlier with a notably higher word count (99 words) compared to the rest of the dataset. This observation led to the decision to exclude this particular sentence. The motivation behind this choice was to maintain a more compact distribution of sentence lengths, particularly for longer sentences. The longer sentences may provide insights, such as a political affiliation being associated with longer sentences that this model wishes to retain. The outlier at 99 words is the only one of its sentence length, so it may falsely lead the model into associating very long sentences with its label due to its unique characteristics. The impact of this exclusion can be seen in the Box Plot on the right side of the figure, where the outliers are much better clustered.
+        </p>
+        <h4 class="mt-3 py-2" id="4-dataset-cleaning">Dataset Cleaning</h4>
+        <h5 class="my-2" id="4-1-removal-of-entries-with-missing-values">Removal of Entries with Missing Values</h5>
+        <p>
+            <strong>BABE Dataset</strong>
+        </p>
+        <p>
+            <img src="{% static 'attachments/tech_spec_babe_label_entries.png' %}"
+                 width="auto"
+                 height="auto"
+                 class="img-fluid d-block mx-auto p-2 border rounded border rounded"
+                 alt="">
+        </p>
+        <p>
+            In the BABE dataset there are a large amount of entries with the value <strong>nan</strong> as their political label. These are remnants of political sentences that contain information such as their biased words or subjectivity, but were not allocated a <strong>left</strong>, <strong>right</strong>, or <strong>center</strong> label. For the purpose of the UniFeed model, these entries serve no purpose.
+        </p>
+        <p>
+            <img src="{% static 'attachments/tech_spec_babe_after_nan_removal.png' %}"
+                 width="auto"
+                 height="auto"
+                 class="img-fluid d-block mx-auto p-2 border rounded border rounded"
+                 alt="">
+        </p>
+        <p>
+            The <strong>nan</strong> labelled entries are removed entirely from the dataset. This brought the dataset from 4,121 entries to 2,2 with a total loss of 1,449 <strong>nan</strong> entries.
+        </p>
+        <p>
+            <strong>MBIB Political Bias Dataset</strong>
+            For the second <strong>political-bias</strong> DataFrame, this step was not necessary. During the Dataset integration step, only entries from the <strong>political-bias</strong> Dataset with a label of 1 were preserved, which consequently discarded any entries that did not have a label value.
+        </p>
+        <h5 class="my-2" id="4-2-removal-of-duplicate-entries">Removal of Duplicate Entries</h5>
+        <p>
+            <strong>BABE Dataset</strong>
+            All potential duplicate entries within the first DataFrame, BABE, were dropped with the drop strategy set to <code>keep=first</code>, where the first instance of a duplicate is preserved. Fortunately, the BABE dataset contained no duplicate entries. The same duplicate removal process was repeated for the second DataFrame, <strong>political-bias</strong> which also ended up with no duplicate entries. This is an ideal result where no data was lost during the duplication removal process.
+        </p>
+        <p>
+            <strong>MBIB Political Bias Dataset</strong>
+            To ensure that there are no collisions between the first and second Dataset in preparation for the Dataset Balancing section, a check was performed that removes any entries from the <strong>political-bias</strong> DataFrame that contain the same text as any entries in the <strong>BABE</strong> DataFrame. No collision was found between the two Datasets, ensuring that the <strong>political-bias</strong> DataFrame will not introduce any duplicate values to the <strong>BABE</strong> DataFrame.
+        </p>
+        <h5 class="my-2" id="4-3-removal-of-skewed-entries">Removal of Skewed Entries</h5>
+        <p>
+            <strong>Range Constraint</strong>
+            All entries with a word count outside of the range 9-90 were removed from both DataFrames. The 9-90 range was derived during an early analysis of the dataset sentence ranges per label. For more detail on the analysis, see the Dataset Analysis section. Forcing the dataset into this range ensures that there are no data errors such as <strong>sentences</strong> with 1 or 2 words in the final Dataset. Only 11 entries were lost during this process. The impact on number of entries in the dataset was miniscule but the result was very positive for maintaining a balance of sentence lengths across all labels.
+        </p>
+        <p>
+            <strong>MBIB Political Bias Dataset</strong>
+            To normalize the range of the <strong>political-bias</strong> DataFrame and further ensure that it is a suitable donor, sentences outside of the range of 8-90 words were removed. This guarantees that the DataFrame will not introduce a skew when it is integrated during Dataset Balancing. A total of 1,407 entries were removed from <strong>political-bias</strong>, making this a crucial step in ensuring its suitability as a donor.
+        </p>
+        <h4 class="mt-3 py-2" id="5-dataset-balancing">Dataset Balancing</h4>
+        <p>
+            <img src="{% static 'attachments/tech_spec_balance_before.png' %}"
+                 width="auto"
+                 height="auto"
+                 class="img-fluid d-block mx-auto p-2 border rounded border rounded"
+                 alt="">
+        </p>
+        <p>
+            As seen in the bar chart, there is a huge imbalance in the classes of the BABE dataset. Particularly, the <strong>center</strong> class is highly under represented in the Dataset. The Mean (red line) is below the median (green dashed line) indicating a negative skew.
+        </p>
+        <p>
+            To address this imbalance, a typical approach would be to oversample or undersample the different classes in the hopes of correcting the skew without introducing undesired behaviour. Thanks to the earlier donor Dataset integration and preperation, the UniFeed model completely avoids undersampling and oversamlping. As outlined in the previous stages, the <strong>political-bias</strong> Dataset has been modified to be a suitable donor for <strong>center</strong> classes to fill in the missing BABE entries.
+        </p>
+        <p>
+            <img src="{% static 'attachments/tech_spec_after_balance.png' %}"
+                 width="auto"
+                 height="auto"
+                 class="img-fluid d-block mx-auto p-2 border rounded border rounded"
+                 alt="">
+        </p>
+        <p>
+            After merging both datasets, the skew is completely removed with Mean and Median values being almost equal. The potential negative impacts this merge may have had such as: introducing a skew in sentence lengths, or duplicate values were considered and addressed before the merge by performing cleaning and integration operations on both datasets.
+        </p>
+        <p>
+            Further details on the preparation of the donor dataset can be seen in the Dataset Cleaning stage. The metrics of the merged Dataset can be seen in the <strong>after</strong> images of the Dataset Analysis stage to verify that this merge did not have any negative impacts on the integrity of the dataset.
+        </p>
+        <h4 class="mt-3 py-2" id="advanced-dataset-analysis">Advanced Dataset Analysis</h4>
+        <h5 class="my-2" id="1-overview">Overview</h5>
+        <p>
+            At this point the dataset is clean and balanced. To further explore the contents of the dataset. The goal here is to understand the contents of each sentence. The ideal outcome is that the discovers will offer insights on how to expand the dataset in the future, or what kind of data serves as the best input, and if there are any more meaningful features that can be extracted to improve the performance of the model.
+        </p>
+        <h5 class="my-2" id="2-sentence-length-distribution">Sentence Length Distribution</h5>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Statistical Measure</th>
+                    <th>Left</th>
+                    <th>Center</th>
+                    <th>Right</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Count</td>
+                    <td>991</td>
+                    <td>988</td>
+                    <td>989</td>
+                </tr>
+                <tr>
+                    <td>Mean</td>
+                    <td>31.90</td>
+                    <td>34.01</td>
+                    <td>32.90</td>
+                </tr>
+                <tr>
+                    <td>Standard Deviation</td>
+                    <td>12.03</td>
+                    <td>12.17</td>
+                    <td>12.81</td>
+                </tr>
+                <tr>
+                    <td>Minimum</td>
+                    <td>9</td>
+                    <td>9</td>
+                    <td>9</td>
+                </tr>
+                <tr>
+                    <td>Maximum</td>
+                    <td>80</td>
+                    <td>88</td>
+                    <td>85</td>
+                </tr>
+            </tbody>
+        </table>
+        <p>
+            <strong>Findings</strong>
+        </p>
+        <ol>
+            <li>
+                <p>
+                    <strong>Average Sentence Lengths:</strong> The mean sentence length is highest for Center labelled sentences (~34 words), followed by Right (~33 words) and Left (~32 words). This suggests that Center sentences tend to be slightly longer on average. The average word counts for each label are quite close to one another, indicating a good balance of different sentence length representations for all 3 ideologies.
+                </p>
+            </li>
+            <li>
+                <p>
+                    <strong>Variability in Sentence Lengths:</strong> The standard deviation for each label are quite equal at 12.03, 12.17, and 12.81 for Left, Center, and Right respectively. This indicates a nearly equal variability in the length of the sentences across all three labels and a good balance.
+                </p>
+            </li>
+            <li>
+                <p>
+                    <strong>Range of Sentence Lengths:</strong> The maximum sentence length is slightly lower for Left sentence at 80 for Left, 88 for Center, and 85 for Right. The min for all three labels are equal at 9 words. Like the other metrics, the range is also quite balanced. That being said, it is the least balanced finding with an 8 word Max difference between Left and Center. This difference should be highlighted and kept note of in case it has a meaningful impact on the performance of the model.
+                </p>
+            </li>
+        </ol>
+        <h5 class="my-2" id="3-distribution-of-sentences-containing-an-entity">
+            Distribution of Sentences Containing an Entity
+        </h5>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Label</th>
+                    <th>No. of Sentences</th>
+                    <th>Percentage of Sentences</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Left</td>
+                    <td>877</td>
+                    <td>88.%</td>
+                </tr>
+                <tr>
+                    <td>Center</td>
+                    <td>927</td>
+                    <td>93.82%</td>
+                </tr>
+                <tr>
+                    <td>Right</td>
+                    <td>892</td>
+                    <td>90.01%</td>
+                </tr>
+            </tbody>
+        </table>
+        <p>
+            <strong>Findings</strong>
+        </p>
+        <ol>
+            <li>Entities are highly represented across all sentences in the Dataset.</li>
+            <li>
+                The model is highly trained against sentences containing an entity. This indicates that presence of an entity in a sentence informs that sentence is likely a suitable input for the model.
+            </li>
+        </ol>
+        <h5 class="my-2" id="4-count-of-entity-types-mentioned-in-sentences">Count of Entity Types Mentioned in Sentences</h5>
+        <p>
+            <a href="https://www.newscatcherapi.com/blog/named-entity-recognition-with-spacy">SpaCY Entity Type Glossary</a>
+        </p>
+        <ul>
+            <li>DATE - Absolute or relative dates or periods</li>
+            <li>PERSON - People, including fictional</li>
+            <li>GPE - Countries, cities, states</li>
+            <li>LOC - Non-GPE locations, mountain ranges, bodies of water</li>
+            <li>MONEY - Monetary values, including unit</li>
+            <li>TIME - Times smaller than a day</li>
+            <li>PRODUCT - Objects, vehicles, foods, etc. (not services)</li>
+            <li>CARDINAL - Numerals that do not fall under another type</li>
+            <li>ORDINAL - &quot;first&quot;, &quot;second&quot;, etc.</li>
+            <li>QUANTITY - Measurements, as of weight or distance</li>
+            <li>EVENT - Named hurricanes, battles, wars, sports events, etc.</li>
+            <li>FAC - Buildings, airports, highways, bridges, etc.</li>
+            <li>LANGUAGE - Any named language</li>
+            <li>LAW - Named documents made into laws.</li>
+            <li>NORP - Nationalities or religious or political groups</li>
+            <li>PERCENT - Percentage, including &quot;%&quot;</li>
+            <li>WORK_OF_ART - Titles of books, songs, etc.</li>
+        </ul>
+        <p>
+            <strong>Entity Type Occurrence by Label</strong>
+        </p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Entity Type</th>
+                    <th>Left</th>
+                    <th>Center</th>
+                    <th>Right</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>ORG</td>
+                    <td>8</td>
+                    <td>744</td>
+                    <td>588</td>
+                    <td>2030</td>
+                </tr>
+                <tr>
+                    <td>PERSON</td>
+                    <td>4</td>
+                    <td>2</td>
+                    <td>581</td>
+                    <td>1705</td>
+                </tr>
+                <tr>
+                    <td>GPE</td>
+                    <td>387</td>
+                    <td>7</td>
+                    <td>445</td>
+                    <td>1489</td>
+                </tr>
+                <tr>
+                    <td>DATE</td>
+                    <td>3</td>
+                    <td>9</td>
+                    <td>392</td>
+                    <td>1453</td>
+                </tr>
+                <tr>
+                    <td>NORP</td>
+                    <td>333</td>
+                    <td>338</td>
+                    <td>491</td>
+                    <td>11</td>
+                </tr>
+                <tr>
+                    <td>CARDINAL</td>
+                    <td>144</td>
+                    <td>2</td>
+                    <td>159</td>
+                    <td>5</td>
+                </tr>
+                <tr>
+                    <td>ORDINAL</td>
+                    <td>41</td>
+                    <td></td>
+                    <td>39</td>
+                    <td>145</td>
+                </tr>
+                <tr>
+                    <td>TIME</td>
+                    <td>30</td>
+                    <td>54</td>
+                    <td>30</td>
+                    <td>114</td>
+                </tr>
+                <tr>
+                    <td>MONEY</td>
+                    <td>27</td>
+                    <td>52</td>
+                    <td>34</td>
+                    <td>113</td>
+                </tr>
+                <tr>
+                    <td>LOC</td>
+                    <td>24</td>
+                    <td>42</td>
+                    <td>37</td>
+                    <td>103</td>
+                </tr>
+                <tr>
+                    <td>FAC</td>
+                    <td>19</td>
+                    <td>33</td>
+                    <td>18</td>
+                    <td>70</td>
+                </tr>
+                <tr>
+                    <td>WORK_OF_ART</td>
+                    <td>26</td>
+                        <td>23</td>
+                        <td>21</td>
+                        <td>70</td>
+                    </tr>
+                    <tr>
+                        <td>PERCENT</td>
+                        <td>19</td>
+                        <td>26</td>
+                            <td>23</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>EVENT</td>
+                            <td>13</td>
+                            <td>18</td>
+                            <td>19</td>
+                            <td>50</td>
+                        </tr>
+                        <tr>
+                            <td>LAW</td>
+                            <td>20</td>
+                            <td>12</td>
+                            <td>14</td>
+                            <td>
+                                46</td>
+                            </tr>
+                            <tr>
+                                <td>PRODUCT</td>
+                                <td>12</td>
+                                <td>
+                                    16</td>
+                                    <td>13</td>
+                                    <td>41</td>
+                                </tr>
+                                <tr>
+                                    <td>QUANTITY</td>
+                                    <td>1</td>
+                                    <td>10</td>
+                                    <td>5</td>
+                                    <td>
+                                        16</td>
+                                    </tr>
+                                    <tr>
+                                        <td>LANGUAGE</td>
+                                        <td>0</td>
+                                        <td>1</td>
+                                        <td>1</td>
+                                        <td>2</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <p>
+                                <strong>Findings</strong>
+                            </p>
+                            <ol>
+                                <li>
+                                    Organizations (ORG), People (PERSON), Countries/Cities (GPE), and Nationalities or Religious Identities (NORP) are present in the top 5 mentioned entities across all labels.
+                                </li>
+                                <li>
+                                    The Center label has a more balanced representation of entity types, whereas the Left and Right ideologies have a stronger focus on organizations and people.
+                                </li>
+                                <li>
+                                    The Center<strong>s balance in referencing entities across almost all categories could suggest a broad focus on various aspects of discourse. The Right</strong>s focus on persons and NORPs could reflect concentration on individual and group identities, while the Left's lower mention of entities might imply a focus on more abstract content rather than specific entities.
+                                </li>
+                            </ol>
+                            <h4 class="mt-3 py-2" id="7-adjective-usage-across-political-ideologies">
+                                Adjective Usage Across Political Ideologies
+                            </h4>
+                            <h5 class="my-2"
+                                id="7-1-word-clouds-showing-most-common-adjectives-per-label">
+                                Word Clouds Showing Most Common Adjectives Per Label
+                            </h5>
+                            <p>
+                                <strong>Most Common Adjectives in Left Sentences</strong>
+                            </p>
+                            <p>
+                                <img src="{% static 'attachments/tech_spec_word_cloud_left.png' %}"
+                                     width="auto"
+                                     height="auto"
+                                     class="img-fluid d-block mx-auto p-2 border rounded border rounded"
+                                     alt="">
+                            </p>
+                            <p>
+                                <strong>Most Common Adjectives in Center Sentences</strong>
+                            </p>
+                            <p>
+                                <img src="{% static 'attachments/tech_spec_word_cloud_center.png' %}"
+                                     width="auto"
+                                     height="auto"
+                                     class="img-fluid d-block mx-auto p-2 border rounded border rounded"
+                                     alt="">
+                            </p>
+                            <p>
+                                <strong>Most Common Adjectives in Right Sentences</strong>
+                            </p>
+                            <p>
+                                <img src="{% static 'attachments/tech_spec_word_cloud_right.png' %}"
+                                     width="auto"
+                                     height="auto"
+                                     class="img-fluid d-block mx-auto p-2 border rounded border rounded"
+                                     alt="">
+                            </p>
+                            <p>
+                                <strong>Findings</strong>
+                            </p>
+                            <ol>
+                                <li>There is variety in the frequency of adjective word choices across all ideologies.</li>
+                                <li>A handful of adjectives stand out greatly above the others for each ideology.</li>
+                                <li>
+                                    The differences in the adjectives used, and their relative prominence showcase different focuses and concerns for the different ideological perspectives.
+                                    <h5 class="my-2"
+                                        id="7-2-overlap-of-adjective-usage-across-all-ideology-labels">
+                                        Overlap of Adjective Usage Across All Ideology Labels
+                                    </h5>
+                                </li>
+                            </ol>
+                            <p>
+                                <strong>Venn Diagram of Adjective Overlap Across All Classes</strong>
+                            </p>
+                            <p>
+                                <img src="{% static 'attachments/tech_spec_adjective_overlap.png' %}"
+                                     width="auto"
+                                     height="auto"
+                                     class="img-fluid d-block mx-auto p-2 border rounded border rounded"
+                                     alt="">
+                            </p>
+                            <p>
+                                <strong>Findings</strong>
+                            </p>
+                            <ol>
+                                <li>
+                                    Each label has a significant number of adjectives that they exclusively use with 400 Left only adjectives, 349 Right, and 235 Center. With the Left and Right labels having a larger exclusive adjective vocabulary.
+                                </li>
+                                <li>
+                                    The ideological groups share a common core of adjectives, as indicated by the intersection of all three circles where 33adjectives are used by all three groups. This suggests there is a shared vocabulary that transcends ideological boundaries.
+                                </li>
+                                <li>
+                                    The adjective usage across ideological labels demonstrates both  diversity and unity present in political language.
+                                </li>
+                            </ol>
+                            <h4 class="mt-3 py-2" id="8-model-training">Model Training</h4>
+                            <h5 class="my-2" id="8-1-overview">Overview</h5>
+                            <ul>
+                                <li>
+                                    <strong>Model Type:</strong> SetFit
+                                </li>
+                                <li>
+                                    <strong>Sentence Transformer body:</strong> <a href="https://huggingface.co/BAAI/bge-small-en-v1.5">BAAI/bge-small-en-v1.5</a>
+                                </li>
+                                <li>
+                                    <strong>Classification head:</strong> a <a href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html">LogisticRegression</a> instance
+                                </li>
+                                <li>
+                                    <strong>Maximum Sequence Length:</strong> 512 tokens
+                                </li>
+                                <li>
+                                    <p>
+                                        <strong>Number of Classes:</strong> 3 classes
+                                    </p>
+                                    <h4 class="mt-3 py-2" id="9-evaluation-metrics">Evaluation Metrics</h4>
+                                </li>
+                                <li>
+                                    <p>
+                                        <strong>Accuracy</strong>: The proportion of true results (both true positives and true negatives).
+                                    </p>
+                                </li>
+                                <li>
+                                    <strong>Recall</strong>: The proportion of actual positives that are correctly identified.
+                                </li>
+                                <li>
+                                    <strong>Precision</strong>: The proportion of positive identifications that are actually correct.
+                                </li>
+                                <li>
+                                    <strong>F1</strong>: The harmonic mean of precision and recall.
+                                </li>
+                            </ul>
+                            <h4 class="mt-3 py-2" id="10-evaluation-results">Evaluation Results</h4>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Label</th>
+                                        <th>Accuracy</th>
+                                        <th>Precision</th>
+                                        <th>Recall</th>
+                                        <th>F1</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <strong>all</strong>
+                                        </td>
+                                        <td>0.7010</td>
+                                        <td>0.7024</td>
+                                        <td>0.7010</td>
+                                        <td>0.7016</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <h4 class="mt-3 py-2" id="11-limitations-biases">Limitations / Biases</h4>
+                            <p>
+                                The UniFeed model dataset has quite a few limitations and biases. There are inherent biases in the sentences trained from, such as biases in topic selection, regional focus, media sources, and representation of different social groups.
+                            </p>
+                            <p>Some limitations/biases include:</p>
+                            <ol>
+                                <li>It is only trained on English sentences.</li>
+                                <li>It is incredibly American centric with almost all of the training data being from American news sources.</li>
+                                <li>
+                                    Most of the sentences are from around 2021. Language evolves over time, any changes in how people are biased, what they are biased to or who they are biased towards are not captured. The hope is that in the future, data collected from the results of the model being run on newly released articles can be used to retrain and evolve the bias detection over time.
+                                </li>
+                                <li>
+                                    The model relies solely on text data, it misses biases present in other forms of media such as images, videos, or audio that may exist within an article. While these aspects are outside of the current scope of this project, in the future may be a powerful in aiding the overall goal of detecting biased articles.
+                                </li>
+                            </ol>
+                            <h4 class="mt-3 py-2" id="12-reproducibility">Reproducibility</h4>
+                            <h5 class="my-2" id="12-1-training-hyperparameters">Training Hyperparameters</h5>
+                            <ul>
+                                <li>batch_size: (32, 32)</li>
+                                <li>num_epochs: (200, 200)</li>
+                                <li>max_steps: -1</li>
+                                <li>sampling_strategy: oversampling</li>
+                                <li>num_iterations: 1</li>
+                                <li>body_learning_rate: (2e-05, 1e-05)</li>
+                                <li>head_learning_rate: 0.01</li>
+                                <li>loss: CosineSimilarityLoss</li>
+                                <li>distance_metric: cosine_distance</li>
+                                <li>margin: 0.25</li>
+                                <li>end_to_end: False</li>
+                                <li>use_amp: True</li>
+                                <li>warmup_proportion: 0.1</li>
+                                <li>seed: 326</li>
+                                <li>run_name: unifeed_bias_training</li>
+                                <li>eval_max_steps: -1</li>
+                                <li>load_best_model_at_end: True</li>
+                            </ul>
+                            <h5 class="my-2" id="12-2-framework-versions">Framework Versions</h5>
+                            <ul>
+                                <li>
+                                    <code>Python: 3.10.12</code>
+                                </li>
+                                <li>
+                                    <code>SetFit: 1.0.3</code>
+                                </li>
+                                <li>
+                                    <code>Sentence Transformers: 2.3.1</code>
+                                </li>
+                                <li>
+                                    <code>Transformers: 4.37.2</code>
+                                </li>
+                                <li>
+                                    <code>PyTorch: 2.1.0+cu121</code>
+                                </li>
+                                <li>
+                                    <code>Datasets: 2.17.1</code>
+                                </li>
+                                <li>
+                                    <code>Tokenizers: 0.15.2</code>
+                                </li>
+                            </ul>
+                            <h5 class="my-2" id="12-3-library-versions">Library Versions</h5>
+                            <ul>
+                                <li>
+                                    <code>python==3.10.12</code>
+                                </li>
+                                <li>
+                                    <code>setFit==1.0.3</code>
+                                </li>
+                                <li>
+                                    <code>sentenceTransformers: 2.2.2</code>
+                                </li>
+                                <li>
+                                    <code>tansformers==4.35.2</code>
+                                </li>
+                                <li>
+                                    <code>datasets==2.16.1</code>
+                                </li>
+                                <li>
+                                    <code>transformers==4.35.2</code>
+                                </li>
+                                <li>
+                                    <code>huggingface-hub==0.20.3</code>
+                                </li>
+                                <li>
+                                    <code>setfit==1.0.3</code>
+                                </li>
+                                <li>
+                                    <code>spacy==3.6.1</code>
+                                </li>
+                                <li>
+                                    <code>spacytextblob==4.0.0</code>
+                                </li>
+                                <li>
+                                    <code>matplotlib==3.7.1</code>
+                                </li>
+                                <li>
+                                    <code>pandas==1.5.3</code>
+                                </li>
+                                <li>
+                                    <code>numpy==1.23.5</code>
+                                </li>
+                                <li>
+                                    <code>textblob==0.15.3</code>
+                                </li>
+                            </ul>
+                            <h5 class="my-2" id="12-4-dataset-split">Dataset Split</h5>
+                            <p>80 / 20 training validation split.</p>
+                            <p>Splitting was random with the seed 326 for deterministic reproducibility.</p>
+                        </div>
+                    {% endblock content %}
