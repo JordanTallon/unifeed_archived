@@ -466,7 +466,7 @@ Most sentences fall within the 20-40 word length range. Specifically, the mean i
 
 To further analyse the sentences with more than 70 words, a boxplot was created.
 
-![[attachments/tech_spec_sentence_box_plot.png]]
+![](attachments/tech_spec_sentence_box_plot.png)
 
 The Box Plot analysis revealed an outlier with a notably higher word count (99 words) compared to the rest of the dataset. This observation led to the decision to exclude this particular sentence. The motivation behind this choice was to maintain a more compact distribution of sentence lengths, particularly for longer sentences. The longer sentences may provide insights, such as a political affiliation being associated with longer sentences that this model wishes to retain. The outlier at 99 words is the only one of its sentence length, so it may falsely lead the model into associating very long sentences with its label due to its unique characteristics. The impact of this exclusion can be seen in the Box Plot on the right side of the figure, where the outliers are much better clustered.
 
@@ -759,15 +759,15 @@ UniFeed uses two `docker-compose.yml` files for different environments:
 
 UniFeed uses Jenkins for its  Continuous Integration and Continuous Deployment (CI/CD) pipeline. The Jenkins environment is also hosted on DigitalOcean under a separate server. It is setup to communicate with the Docker daemon using a socket. The pipeline is multi-branch meaning it monitors all branches of the UniFeed repo. It performs  automated builds, testing, linting, and deployment. The Jenkins server is configured to respond to changes in the GitLab repository using webhooks. This means  that every code update is automatically processed through the stages outlined in the Jenkinsfile. The Jenkins server also communicated back to GitLab to keep it updated on the status of the pipeline so that it can be viewed in the repo. Here's an overview of each stage in the pipeline:
 
-* Stage 1. Preparation
+* **Stage 1. Preparation**
 	- The pipeline begins with setting up the environment. It ensures that any previously running Docker containers are stopped and removed. This is to prevent collisions / conflicts and clean up any potential remaining files from previous builds.
-* Stage 2. Build
+* **Stage 2. Build**
 	- This stage builds the development version of UniFeed using `docker-compose.yml`. This is to make sure that the Docker image has no issues building and prepares the container so that it can run the next stages in a local environment away from the production database. If there are any issues building, the pipeline updates the GitLab commit status to 'failed' and terminates the process.
-* Stage 3. Linting Templates
+* **Stage 3. Linting Templates**
 	- Linting is performed on Django templates to ensure code quality and adherence to standards. The pipeline uses the local  UniFeed container and deploys `djlint` to lint the templates. If any errors are detected, the pipeline updates the GitLab commit status to 'failed' and terminates the process.
-* Stage 4. Test
+* **Stage 4. Test**
 	- The pipeline executes the application tests using Django's test framework. Test results are logged, and any failures or errors will result in the pipeline marking the GitLab commit status as 'failed' and stopping the process.
-* Stage 5. Deploy
+* **Stage 5. Deploy**
 	* At this point, if the pipeline was executed for a branch that isn't `main` the pipeline has succeeded. If this is the `main` branch, then Jenkins begins the deployment process to push the changes to the live server.  This involves SSHing into the remote server, pulling the latest changes from the repository, and restarting the application using Docker Compose. The deployment script handles the stopping of old servers, freeing up ports, and starting new Docker containers. The GitLab commit status is updated based on the success or failure of the deployment script.
 
 ## 7.4. Unit Tests
